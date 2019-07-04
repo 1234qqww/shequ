@@ -1,0 +1,247 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layuiAdmin 角色管理</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="__ADMIN__/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="__ADMIN__/style/admin.css" media="all">
+    <script src="/static/js/jquery.js"></script>
+    <style>
+        .yes{
+            color: #1BBC9D;
+
+        }
+        .no{
+            color: #9ea3a7;
+
+        }
+
+    </style>
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+                <legend>商品分类管理</legend>
+            </fieldset>
+            <div style="padding: 20px; background-color: #F2F2F2;">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md12">
+                        <div class="layui-card">
+                            <div class="layui-card-header">操作提示</div>
+                            <div class="layui-card-body">
+                                <ul>
+                                    <li>温馨提示：顶级分类（一级大类）设为推荐时才会在首页楼层中显示</li>
+                                    <li>最多只能分类到三级</li>
+                                    <li style="color:#ff0000;"><strong>"是否推荐"->设置为推荐之后, 该分类会在首页楼层显示</strong></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div style="padding-bottom: 10px;">
+        <button class="layui-btn layuiadmin-btn-admin" data-type="add" onclick="careAdd(this)">添加</button>
+    </div>
+    <table class="layui-table" lay-skin="line"  id="list" lay-filter="list">
+        <colgroup>
+            <col width="150">
+            <col width="200">
+            <col>
+        </colgroup>
+        <thead>
+        <tr>
+            <th align="center"><li class="layui-icon layui-icon-rate-half"></li></th>
+            <th align="center">分类id</th>
+            <th align="center">分类名称</th>
+            <th align="center">是否推荐</th>
+            <th align="center">是否显示</th>
+            <th align="center">排序</th>
+            <th align="center">设置</th>
+        </tr>
+        </thead>
+        <tbody >
+        {volist name="cat_list" id="vo"}
+        <tr  class="parent_id_{$vo.parent_id}"  parent_id_path ="{$vo.parent_id_path}" {if $vo.level gt 1}style="display: none"; {/if}>
+            <td >
+                {if $vo.level lt 3}
+                <li class="layui-icon layui-icon-down" onclick="xiaji(this,'{$vo.id}','{$vo.parent_id_path}')" ></li>
+                {/if}
+            </td>
+            <td>{$vo.id}</td>
+            <td>{$vo.name}</td>
+            <td>
+                    {if $vo.is_tuijian eq 1}
+                        <span class="yes" onClick="changeTableVal('good_category','id','{$vo.id}','is_tuijian',this)" ><i class="layui-icon layui-icon-ok-circle"></i>是</span>
+                    {else /}
+                        <span class="no" onClick="changeTableVal('good_category','id','{$vo.id}','is_tuijian',this)" ><i class="layui-icon layui-icon-close-fill"></i>否</span>
+                    {/if}
+            </td>
+            <td >
+                {if $vo.is_show eq 1}
+                <span class="yes" onClick="changeTableVal('good_category','id','{$vo.id}','is_show',this)" ><i class="layui-icon layui-icon-ok-circle"></i>是</span>
+                {else /}
+                <span class="no" onClick="changeTableVal('good_category','id','{$vo.id}','is_show',this)" ><i class="layui-icon layui-icon-close-fill"></i>否</span>
+                {/if}</td>
+            <td >{$vo.sort_order}</td>
+            <td >
+                <a type="button" class="layui-btn layui-btn-normal layui-btn-xs"  onclick="careEdit(this,'{$vo.id}')"><i class="layui-icon"></i></a>
+                <a type="button" class="layui-btn layui-btn-danger layui-btn-xs"  onclick="careDel(this,'{$vo.id}')" ><i class="layui-icon"></i></a>
+            </td>
+        </tr>
+        {/volist}
+        </tbody>
+    </table>
+</div>
+<script src="__ADMIN__/layui/layui.js"></script>
+<script src="__ADMIN__/js/app.js"></script>
+<script>
+    layui.config({
+        base: '__ADMIN__/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+        ,hhtc: 'hhtc'
+    }).use(['index', 'table','laydate','hhtc'], function() {
+    });
+</script>
+<script>
+
+    function xiaji(obj,cat_id,parent_id_path){
+
+        var src = $(obj).attr('class');
+
+        if(src == 'layui-icon layui-icon-down')
+        {
+            $(".parent_id_"+cat_id).show();
+            $(obj).attr('class','layui-icon layui-icon-up');
+        }else{
+            $(".parent_id_"+cat_id).hide();
+            $(obj).attr('class','layui-icon layui-icon-down');
+
+        }
+    }
+
+    // 修改指定表的指定字段值 包括有按钮点击切换是否 或者 排序 或者输入框文字
+    //table 表名  id_name表主键id名  id_value表主键id值  field 修改那个字段
+    function changeTableVal(table,id_name,id_value,field,obj)
+    {
+        var src = "";
+        if($(obj).hasClass('no')) // 图片点击是否操作
+        {
+            $(obj).removeClass('no').addClass('yes');
+            $(obj).html("<i class='layui-icon layui-icon-ok-circle'></i>是");
+            var value = 1;
+
+        }else if($(obj).hasClass('yes')){ // 图片点击是否操作
+            $(obj).removeClass('yes').addClass('no');
+            $(obj).html("<i class='layui-icon layui-icon-close-fill'></i>否");
+            var value = 0;
+        }else{ // 其他输入框操作
+            var value = $(obj).val();
+        }
+        console.log(value);
+
+        $.ajax({
+            url:"changeTableVal?table="+table+'&id='+id_name+'&id_value='+id_value+'&field='+field+'&value='+value,
+            // success: function(data){
+            //     if(!$(obj).hasClass('no') && !$(obj).hasClass('yes'))
+            //         layer.msg('更新成功', {icon: 1});
+            // }
+        });
+    }
+    function careAdd(obj){
+
+        layer.open({
+            type: 2
+            , title: '添加分类'
+            , content: '/admin/commodity/category_add'
+            , area: ['100%', '100%']
+            , btn: ['确定', '取消']
+            , yes: function (index, layero) {
+                var iframeWindow = window['layui-layer-iframe' + index]
+                    , submit = layero.find('iframe').contents().find("#add");
+                //监听提交
+                iframeWindow.layui.form.on('submit(add)', function (data) {
+                    $.post("{:url('commodity/category_add')}", data.field, function (res) {
+
+                        if (res.code == 1) {
+                            layer.msg(res.msg, {icon: 1}, function () {
+                                document.location.reload();
+                                layer.close(index); //关闭弹层
+                            })
+                        } else {
+                            layer.alert(res.msg, {icon: 2});
+                        }
+                    })
+                });
+                submit.trigger('click');
+            }
+        });
+    }
+
+
+
+    function careEdit(obj,id) {
+        layer.open({
+            type: 2
+            , title: '编辑分类'
+            , content: '/admin/commodity/category_edit?id='+id
+            , area: ['100%', '100%']
+            , btn: ['确定', '取消']
+            , yes: function (index, layero) {
+                var iframeWindow = window['layui-layer-iframe' + index]
+                    , submit = layero.find('iframe').contents().find("#edit");
+                //监听提交
+                iframeWindow.layui.form.on('submit(edit)', function (data) {
+                    console.log(data);
+                    $.post("{:url('commodity/category_edit')}", data.field, function (res) {
+
+
+                        if (res.code == 1) {
+                            layer.msg(res.msg, {icon: 1}, function () {
+                                document.location.reload();
+                                layer.close(index); //关闭弹层
+                            })
+                        } else {
+                            layer.alert(res.msg, {icon: 2});
+                        }
+                    })
+                });
+                submit.trigger('click');
+            }
+        });
+    }
+
+    function careDel(obj,id){
+        layer.confirm('确定删除此商品分类？', function (index) {
+            var post_json = {id: id};
+            $.post("{:url('commodity/category_del')}",post_json, function (res) {
+                if (res.code == 1) {
+                    layer.msg(res.msg, {icon: 1}, function () {
+                        document.location.reload();
+                        layer.close(index); //关闭弹层
+                    })
+                } else {
+                    layer.alert(res.msg, {icon: 2});
+                }
+            })
+        })
+
+    }
+
+
+
+
+</script>
+</body>
+</html>
+

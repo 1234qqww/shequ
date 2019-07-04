@@ -1,0 +1,131 @@
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:80:"D:\xy\project\shequshop\public/../application/admin\view\goodshop\good_back.html";i:1562134286;}*/ ?>
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>网站设置</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/static/admin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/static/admin/style/admin.css" media="all">
+</head>
+<body>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">商铺基本设置</div>
+                <div class="layui-card-body" pad15>
+                    <div class="layui-form" wid100 lay-filter="">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">商铺名称</label>
+                            <div class="layui-input-block">
+                                <input type="hidden" name="id" value="<?php echo $good['id']; ?>">
+                                <input type="text" name="name" value="<?php echo $good['name']; ?>" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">商铺头像</label>
+                            <div class="layui-input-block">
+                                <button type="button" class="layui-btn" id="upload1s">上传</button>
+                                <input type="hidden" id="img_urls" name="pic" value="<?php echo $good['pic']; ?>"/>
+                                <div class="layui-upload-list">
+                                    <img src="<?php echo $good['pic']; ?>" class="layui-upload-img"style="width: 200px;height:12rem" id="demo2" alt=""/>
+                                    <p id="demoTexts"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">商铺背景图</label>
+                            <div class="layui-input-block">
+                                <button type="button" class="layui-btn" id="upload1">上传</button>
+                                <input type="hidden" id="img_url" name="pic_bg" value="<?php echo $good['pic_bg']; ?>"/>
+                                <div class="layui-upload-list">
+                                    <img src="<?php echo $good['pic_bg']; ?>" class="layui-upload-img"style="width: 200px;height:12rem" id="demo10" alt=""/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item layui-form-text">
+                            <label class="layui-form-label">详细地址</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="address" value="<?php echo $good['address']; ?>" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux" style="margin-left: 110px">详细地址影响用户通过附近查询你的商铺。请务必准确</div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">操作</label>
+                            <div class="layui-input-inline">
+                                <input type="checkbox" name="is_fujin" lay-skin="primary" title="启用附近可见" lay-filter="is_fujin" <?php if($good['is_fujin'] == 1): ?> checked <?php endif; ?>>
+                            </div>
+                            <div class="layui-form-mid layui-word-aux" >启用附近可见，用户只能在你设置的范围内通过附近才能查询到你</div>
+                        </div>
+                        <div class="layui-form-item layui-form-text" id="fanwei" <?php if($good['is_fujin'] == 0): ?> style="display: none"<?php endif; ?>>
+                            <label class="layui-form-label">范围</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="fanwei" value="<?php echo $good['fanwei']; ?>" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">详细地址影响用户通过附近查询你的商铺。请务必准确</div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" lay-submit lay-filter="set_website">确认保存</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/static/admin/layui/layui.js"></script>
+<script src="/static/admin/js/app.js"></script>
+<script>
+    layui.config({
+        base: '/static/admin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index','form','hhtc'],function(){
+        var $=layui.$
+            ,form = layui.form
+            ,hhtc=layui.hhtc
+        form.render();
+        form.on('submit(set_website)',function(obj){
+            var result=ajax_post($,'',obj.field);
+
+            if(result.code==1){
+                layer.msg(result.msg,{icon:1});
+            }else{
+                layer.alert(result.msg,{icon:2})
+            }
+        });
+        $("#upload1s").click(function(){               //修改头像
+            hhtc.upload_one(function(res){
+                $("input[name='pic']").val(res);
+                $("#demo2").attr('src',res);
+            })
+        });
+        $("#upload1").click(function(){                //修改背景图
+            hhtc.upload_one(function(res){
+                $("input[name='pic_bg']").val(res);
+                $("#demo10").attr('src',res);
+            })
+        });
+
+        form.on('checkbox(is_fujin)', function(data){
+            if(data.elem.checked){
+                $('#fanwei').show();
+            }else{
+                $("input[name='fanwei']").val('');
+                $('#fanwei').hide();
+            }
+        });
+
+    });
+</script>
+</body>
+</html>
