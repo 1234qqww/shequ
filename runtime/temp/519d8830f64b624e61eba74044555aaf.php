@@ -1,0 +1,117 @@
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:82:"D:\phpstudy\PHPTutorial\WWW\shequshop\public/../application/admin\view\\login.html";i:1561612394;}*/ ?>
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title><?php echo config('base_config.site_name'); ?></title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="keywords" content="<?php echo config('base_config.keywords'); ?>">
+  <meta name="description" content="<?php echo config('base_config.description'); ?>">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="/static/admin/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="/static/admin/style/admin.css" media="all">
+  <link rel="stylesheet" href="/static/admin/style/login.css" media="all">
+</head>
+<body>
+
+  <div class="layadmin-user-login layadmin-user-display-show" id="LAY-user-login" style="display: none;">
+
+    <div class="layadmin-user-login-main">
+      <div class="layadmin-user-login-box layadmin-user-login-header">
+        <h2>后台登入</h2>
+        <p><?php echo config('base_config.site_name'); ?></p>
+      </div>
+      <div class="layadmin-user-login-box layadmin-user-login-body layui-form">
+        <div class="layui-form-item">
+          <label class="layadmin-user-login-icon layui-icon layui-icon-username" for="LAY-user-login-username"></label>
+          <input type="text" name="username" id="LAY-user-login-username" lay-verify="username" placeholder="用户名" class="layui-input">
+        </div>
+        <div class="layui-form-item">
+          <label class="layadmin-user-login-icon layui-icon layui-icon-password" for="LAY-user-login-password"></label>
+          <input type="password" name="password" id="LAY-user-login-password" lay-verify="password" placeholder="密码" class="layui-input">
+        </div>
+        <div class="layui-form-item">
+          <div class="layui-row">
+            <div class="layui-col-xs7">
+              <label class="layadmin-user-login-icon layui-icon layui-icon-vercode" for="LAY-user-login-vercode"></label>
+              <input type="text" name="vercode" id="LAY-user-login-vercode" lay-verify="vercode" placeholder="图形验证码" class="layui-input">
+            </div>
+            <div class="layui-col-xs5">
+              <div style="margin-left: 10px;">
+                <img src="<?php echo url('login/getcaptcha',array('id'=>'admin_login')); ?>" class="layadmin-user-login-codeimg" id="LAY-user-get-vercode">
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="layui-form-item">
+          <button class="layui-btn layui-btn-fluid" lay-submit lay-filter="LAY-user-login-submit">登 入</button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="layui-trans layadmin-user-login-footer">
+      
+      <p>© 2018 <?php echo config('base_config.site_name'); ?></p>
+      <p>
+        <span><a href="http://www.layui.com/admin/#get" target="_blank">获取授权</a></span>
+        <span><a href="http://www.layui.com/admin/pro/" target="_blank">在线演示</a></span>
+        <span><a href="http://www.layui.com/admin/" target="_blank">前往官网</a></span>
+      </p>
+    </div>
+  </div>
+
+  <script src="/static/admin/layui/layui.js"></script>
+  <script src="/static/admin/js/app.js"></script>
+  <script>
+  layui.config({
+    base: '/static/admin/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'form'], function(){
+    var $ = layui.$
+    ,setter = layui.setter
+    ,admin = layui.admin
+    ,form = layui.form
+    ,router = layui.router()
+    ,search = router.search;
+
+    form.render();
+      form.verify({
+          vercode:[/^$|^[0-9]{0,4}$/, '验证码位四位数字！']//这个就是上面的排序lay-verify="sort"
+          ,username: function (value){
+              if(value.length >100){
+                  return '用户名长度过长';
+              }
+          }
+          ,password: function (value){
+              if(value.length > 12 || value.length<5){
+                  return '密码长度为6-12位';
+              }
+          }
+      });
+    //更换图形验证码
+      $('body').on('click', '#LAY-user-get-vercode', function(){
+          var othis = $(this);
+          this.src = '/admin/login/getcaptcha/id/admin_login?t='+ new Date().getTime()
+      });
+    //提交
+    form.on('submit(LAY-user-login-submit)', function(obj){
+        var result=ajax_post($,"",obj.field);
+//        console.log(result);
+          if(result.code==1){
+              layer.msg(result.msg,{icon:1},function(){
+                  location="";
+              })
+          }else{
+              var index=layer.alert(result.msg,{icon:2},function(){
+                  layer.close(index);
+                  $("#LAY-user-get-vercode").attr('src','/admin/login/getcaptcha/id/admin_login?t='+ new Date().getTime())
+              });
+          }
+    });
+  });
+  </script>
+</body>
+</html>
