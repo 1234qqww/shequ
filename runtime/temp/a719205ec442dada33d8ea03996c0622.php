@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 <?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:81:"D:\xy\project\shequshop\public/../application/admin\view\commodity\commodity.html";i:1562147257;}*/ ?>
+=======
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:81:"D:\xy\project\shequshop\public/../application/admin\view\commodity\commodity.html";i:1562205220;}*/ ?>
+>>>>>>> ab434a71ae2085e5543b36f584c9ca6c557ef2d7
 
 
 <!DOCTYPE html>
@@ -159,8 +163,17 @@
                     ,yes: function(index, layero){
                     var iframeWindow = window['layui-layer-iframe'+ index]
                         ,submit = layero.find('iframe').contents().find("#add");
+<<<<<<< HEAD
                     //监听提交
                     iframeWindow.layui.form.on('submit(add)', function(data){
+=======
+
+
+
+
+                    // 监听提交
+                    iframeWindow.layui.form.on('submit(add1)', function(data){
+>>>>>>> ab434a71ae2085e5543b36f584c9ca6c557ef2d7
                         console.log(data);
                         var field = data.field; //获取提交的字段
                         console.log(field)
@@ -176,7 +189,10 @@
                         }
 
                     });
+<<<<<<< HEAD
 
+=======
+>>>>>>> ab434a71ae2085e5543b36f584c9ca6c557ef2d7
                     submit.trigger('click');
                 }
             });

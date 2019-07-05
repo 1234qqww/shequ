@@ -13,6 +13,7 @@ return [
     // 数据库类型
     'type'            => 'mysql',
     // 服务器地址
+<<<<<<< HEAD
     'hostname'        => '39.100.88.254',
     // 数据库名
     'database'        => 'sq',
@@ -20,6 +21,15 @@ return [
     'username'        => 'sq',
     // 密码
     'password'        => 'rCE3S3zKn5jeXpLa',
+=======
+    'hostname'        => '127.0.0.1',
+    // 数据库名
+    'database'        => 'shequshop',
+    // 用户名
+    'username'        => 'root',
+    // 密码
+    'password'        => 'root',
+>>>>>>> ab434a71ae2085e5543b36f584c9ca6c557ef2d7
     // 端口
     'hostport'        => '3306',
     // 连接dsn

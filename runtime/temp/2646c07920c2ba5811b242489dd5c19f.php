@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 <?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:69:"D:\xy\project\shequshop\public/../application/admin\view\\indexs.html";i:1562133120;}*/ ?>
+=======
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:69:"D:\xy\project\shequshop\public/../application/admin\view\\indexs.html";i:1562227424;}*/ ?>
+>>>>>>> ab434a71ae2085e5543b36f584c9ca6c557ef2d7
 
 <!DOCTYPE html>
 <html>
@@ -88,7 +92,11 @@
                         <div class="left-bar-list-item-font"><span>商品</span></div>
                     </div>
                 </a>
+<<<<<<< HEAD
                 <a href="<?php echo url('order/order'); ?>" target="rightframe">
+=======
+                <a href="<?php echo url('ceshi/ceshi'); ?>" target="rightframe">
+>>>>>>> ab434a71ae2085e5543b36f584c9ca6c557ef2d7
                     <div  class="left-bar-list-item usedcar usedcar_banner"  >
                         <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/shanghu.png"/>
                         </div>
@@ -158,9 +166,15 @@
                             <img src="/easyweb/layout/static/right_lit.png" />
                         </div>
                     </a>
+<<<<<<< HEAD
                     <a href="<?php echo url('good/good_tixian'); ?>" target="rightframe">
                         <div  class="left-bar-secendlist-item" id="good_tixian">
                             <span>提现申请</span>
+=======
+                    <a href="<?php echo url('goodshop/good_coupon'); ?>" target="rightframe">
+                        <div  class="left-bar-secendlist-item" id="good_tixian">
+                            <span>优惠券管理</span>
+>>>>>>> ab434a71ae2085e5543b36f584c9ca6c557ef2d7
                             <img src="/easyweb/layout/static/right_lit.png" />
                         </div>
                     </a>

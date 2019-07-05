@@ -54,4 +54,12 @@ class Goodshop extends Base
         return $this->fetch();
     }
 
+<<<<<<< HEAD
+=======
+    //优惠卷
+    public function good_coupon(){
+
+    }
+
+>>>>>>> ab434a71ae2085e5543b36f584c9ca6c557ef2d7
 }
