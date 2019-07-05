@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:85:"D:\xy\project\shequshop\public/../application/admin\view\commodity\add_commodity.html";i:1562304332;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:85:"D:\xy\project\shequshop\public/../application/admin\view\commodity\add_commodity.html";i:1562307384;}*/ ?>
 
 
 <!DOCTYPE html>
@@ -10,7 +10,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link rel="stylesheet" href="/static/admin/layui/css/layui.css" media="all">
-
     <script src="/static/js/jquery.js"></script>
     <style>
         .control-label {
@@ -67,7 +66,6 @@
         th {
             text-align: left;
         }
-
     </style>
 </head>
 <body>
@@ -203,7 +201,6 @@
 
 
                 </div>
-
             <div class="layui-tab-item">
 <!--                <div class="layui-form" lay-filter="layuiadmin-form-role" id="layuiadmin-form" style="padding:35px 45px;">-->
                     <div class="layui-form-item">
@@ -267,6 +264,7 @@
                 <button class="layui-btn" lay-submit lay-filter="add1" id="add">提交</button>
             </div>
 </div>
+
 </div>
 <script src="/static/admin/layui/layui.js"></script>
 <script src="/static/admin/js/app.js"></script>
@@ -322,6 +320,7 @@
                     }
                 })
             });
+
             form.on('switch(switchTest)', function(data){
                 if(this.checked){
                     $('#youfei').hide()
@@ -336,12 +335,9 @@
                     $('#guige').show();
 
                 }else{
-
                     $("input[name='store_count']").attr("readOnly",false).css("background-color","");
                     $('#guige').hide();
                 }
-
-
             });
                  var id=0 ;
                 //认证图片
@@ -361,11 +357,6 @@
                         $("#demo1").attr('src',res);
                     })
                 });
-
-
-
-
-
     })
 
 </script>
@@ -378,10 +369,6 @@
 
         console.log('21');
     }
-
-
-
-
 </script>
 
 <script>
@@ -428,6 +415,7 @@
         PE.appendChild(document.getElementById(data[0]));
     }
 </script>
+
 <script>
     var lv1HTML = '<div class="control-group lv1 item-attr">' +
         '<label class="control-label">规格名称</label>' +
@@ -439,14 +427,10 @@
         '<div class="controls lv2s"></div>' +
         '</div>';
 
-
-
-
     var lv2HTML = '<div style="margin-top: 5px;">' +
         '<input type="text" name="lv2" placeholder="参数名称">' +
         '<button  class="layui-btn layui-btn-sm layui-btn-danger remove_lv2" type="button">删除参数</button>' +
         '</div>';
-
 
     $(document).ready(function() {
         $('#add_lv1').on('click', function() {
@@ -457,9 +441,11 @@
                 last.after(lv1HTML);
             }
         });
+
         $(document).on('click', '.remove_lv1', function() {
             $(this).parents('.lv1').remove();
         });
+
         $(document).on('click', '.add_lv2', function() {
             $(this).parents('.lv1').find('.lv2s').append(lv2HTML);
         });
@@ -467,8 +453,8 @@
         $(document).on('click', '.remove_lv2', function() {
             $(this).parent().remove();
         });
-
         // $(document).on('click', '#save_product', function () {
+        //
         //     var obj = {};
         //     var i = 0;
         //     var first = '';
@@ -490,10 +476,8 @@
         //         obj[i] = tmp;
         //
         //     });
-        //
-        //
         //     $.ajax({
-        //         'url':"<?php echo url('commodity/save_sku'); ?>",
+        //         'url': '/api/test/test/save_sku',
         //         'method': 'post',
         //         'data': obj,
         //         'success': function (e) {
@@ -599,12 +583,10 @@
 //                    key=$(lv1Arr[j]).val();
 //                    key=$(lv1Arr[j]).attr('data-id');
                 }
-                // tableHTML += '<td width="20"><input type="text" name="' + name + '[sku_market_price]" /></td>';
-                // tableHTML += '<td width="20"><input type="text" name="' + name + '[sku_shop_price]" /></td>';
-                tableHTML += '<td width="20"><input type="text" name="'+ value + '|sku_market_price" value="'+ '"/></td>';
-                tableHTML += '<td width="20"><input type="text" name="' + value + '|sku_shop_price"  value="'+ '" /></td>';
-                tableHTML += '<td width="20"><input type="text" name="' +  value + '|sku_cost_price"  value="'+ '" /></td>';
-                tableHTML += '<td width="20"><input type="text" name="' +  value + '|sku_store_count"  value="'+ '" /></td>';
+                tableHTML += '<td width="20"><input type="text" name="' + value + '|sku_market_price" value="' + '"/></td>';
+                tableHTML += '<td width="20"><input type="text" name="' + value + '|sku_shop_price"  value="' + '" /></td>';
+                tableHTML += '<td width="20"><input type="text" name="' + value + '|sku_cost_price"  value="' + '" /></td>';
+                tableHTML += '<td width="20"><input type="text" name="' + value + '|sku_store_count"  value="' + '" /></td>';
                 tableHTML += '</tr>';
             }
             tableHTML += '</tbody>';
@@ -636,17 +618,18 @@
 
 
             $.ajax({
-                'url':"<?php echo url('commodity/save_attr'); ?>",
-                'method':'post',
-                'data':{key:JSON.stringify(key),'value':JSON.stringify(need)},
-                'sync':0,
-                'success':function (e) {
-                    key=e.data.key;
-                    value=e.data.value;
-                    create_attr_id(key,value);
+                'url': "<?php echo url('commodity/save_attr'); ?>",
+                'method': 'post',
+                'data': {key: JSON.stringify(key), 'value': JSON.stringify(need)},
+                'sync': 0,
+                'success': function (e) {
+                    key = e.data.key;
+                    value = e.data.value;
+                    create_attr_id(key, value);
                 }
             });
         }
+
         function create_attr_id(key,value) {
             console.log(key,value);
             $('.item-attr input[name=lv1]').each(function (index,ele) {
@@ -658,7 +641,10 @@
             update_table();
             $('#save_product').show();
         }
+
+
     });
 </script>
+
 </body>
 </html>

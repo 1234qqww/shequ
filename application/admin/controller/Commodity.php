@@ -5,6 +5,7 @@ namespace app\admin\controller;
 
 
 use think\Console;
+
 use think\Db;
 
 class Commodity extends Base
@@ -25,6 +26,7 @@ class Commodity extends Base
     //添加商品
     public function add_commodity(){
         if(request()->isAjax()){
+
             $param=$this->request->param();
             dump($param);die();
             if($param['sort']<0){
@@ -172,6 +174,7 @@ class Commodity extends Base
                 }
                 Db::name('goods_attr_key')->insertAll($lv1);
             }
+
         }
         $cat_list = Db::name('good_category')->where("parent_id = 0")->select();   //获取一级菜单
         $this->assign([
@@ -179,6 +182,7 @@ class Commodity extends Base
         ]);
         return $this->fetch();
     }
+
 
 
 
@@ -217,7 +221,7 @@ class Commodity extends Base
         if(request()->isPost()){
             $data=request()->post();
 //            $bool=ItemSku::where(['item_id'=>$data[0]['item_id']])->delete();
-            print_r($data);die()
+            print_r($data);die();
 
             foreach ($data as $item) {
                 $sku=new ItemSku();
@@ -249,6 +253,7 @@ class Commodity extends Base
 
 
 
+
     //回收站
     public function commodity_del(){
 
@@ -269,7 +274,9 @@ class Commodity extends Base
     }
 
 
+
     //添加商品属性
+
     public function category_add(){
         if(request()->isAjax()){
             $param=$this->request->param();

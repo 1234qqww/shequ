@@ -13,6 +13,13 @@ return [
     // 数据库类型
     'type'            => 'mysql',
     // 服务器地址
+    'hostname'        => '39.100.88.254',
+    // 数据库名
+    'database'        => 'sq',
+    // 用户名
+    'username'        => 'sq',
+    // 密码
+    'password'        => 'rCE3S3zKn5jeXpLa',
     'hostname'        => '127.0.0.1',
     // 数据库名
     'database'        => 'shequshop',

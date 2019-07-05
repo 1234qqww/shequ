@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:69:"D:\xy\project\shequshop\public/../application/admin\view\\indexs.html";i:1562227424;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:69:"D:\xy\project\shequshop\public/../application/admin\view\\indexs.html";i:1562306405;}*/ ?>
 
 <!DOCTYPE html>
 <html>
@@ -88,6 +88,7 @@
                         <div class="left-bar-list-item-font"><span>商品</span></div>
                     </div>
                 </a>
+
                 <a href="<?php echo url('ceshi/ceshi'); ?>" target="rightframe">
                     <div  class="left-bar-list-item usedcar usedcar_banner"  >
                         <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/shanghu.png"/>
@@ -158,9 +159,11 @@
                             <img src="/easyweb/layout/static/right_lit.png" />
                         </div>
                     </a>
+
                     <a href="<?php echo url('goodshop/good_coupon'); ?>" target="rightframe">
                         <div  class="left-bar-secendlist-item" id="good_tixian">
                             <span>优惠券管理</span>
+
                             <img src="/easyweb/layout/static/right_lit.png" />
                         </div>
                     </a>

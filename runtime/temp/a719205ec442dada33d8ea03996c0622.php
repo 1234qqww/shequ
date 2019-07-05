@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:81:"D:\xy\project\shequshop\public/../application/admin\view\commodity\commodity.html";i:1562205220;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:81:"D:\xy\project\shequshop\public/../application/admin\view\commodity\commodity.html";i:1562306592;}*/ ?>
 
 
 <!DOCTYPE html>
@@ -163,6 +163,7 @@
 
 
 
+
                     // 监听提交
                     iframeWindow.layui.form.on('submit(add1)', function(data){
                         console.log(data);
@@ -178,7 +179,6 @@
                         }else{
                             layer.alert(result.msg,{icon:2});
                         }
-
                     });
                     submit.trigger('click');
                 }
