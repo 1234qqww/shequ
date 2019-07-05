@@ -137,7 +137,6 @@ class Commodity extends Base
             $ret['goods_name']=$param['goods_name'];
             $ret['goods_name']=$param['goods_name'];
             if(isset($param['goods_content'])){
-
                 $ret['goods_content']=$param['goods_content'];
             }
 
@@ -188,28 +187,56 @@ class Commodity extends Base
             $data = request()->post();
             $key = json_decode($data['key'], true);
             $value = json_decode($data['value'], true);
+            $goods_id = 1;
             $key_id = [];
+            Db::name('goods_attr_key')->where(['goods_id' => $goods_id])->delete();  //删除之前创建的未使用的规格名
             foreach ($key as $k){
                 $list['attr_name']=$k;
+                $list['goods_id']=$goods_id;
                 $key_id=Db::name('goods_attr_key')->insertGetId($list);
             }
+            $tm_v = [];
+            Db::name('goods_attr_value')->where(['goods_id' => $goods_id])->delete();  //删除之前创建未使用的参数名
             foreach ($value as $key => $v) {
                 $attr_key_id = $key_id[$key];
-                $tm_v = [];
                 foreach ($v as $v1) {
                         $arr['attr_key_id'] = $attr_key_id;
                         $arr['attr_value'] = $v1;
-                        Db::name('goods_attr_key')->insertGetId($arr);
-
-                       $tm_v[] = $attr_value->symbol;
-
+                        $arr['goods_id']=$goods_id;
+                        Db::name('goods_attr_value')->insertGetId($arr);
+                       $tm_v[] = $v1;
                 }
+            }
+            return json(array('code'=>1,'msg'=>'操作成功','data'=>['key'=>$key_id,'value'=>$tm_v]));
+        }
 
+    }
+
+
+    public function save_skus(){
+        if(request()->isPost()){
+            $data=request()->post();
+//            $bool=ItemSku::where(['item_id'=>$data[0]['item_id']])->delete();
+            print_r($data);die()
+
+            foreach ($data as $item) {
+                $sku=new ItemSku();
+                $sku->item_id=$item['item_id'];
+                $sku->original_price=$item['original_price'];
+                $sku->price=$item['price'];
+                $sku->stock=$item['stock'];
+                $sku->attr_symbol_path=$item['symbol'];
+                $sku->save();
             }
 
+        }
+
+    }
 
 
-
+    public function save_sku(){
+        if(request()->isAjax()){
+            dump(input());die();
 
 
         }
@@ -319,8 +346,6 @@ class Commodity extends Base
         $this->assign([
            'cat_list' =>$cat_list
         ]);
-
-
         return $this->fetch();
     }
 

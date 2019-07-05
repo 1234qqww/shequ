@@ -228,9 +228,9 @@
                             <button id="update_table"  type="button" class="layui-btn layui-btn-sm layui-btn-normal">生成规格项目表</button>
                         </div>
                     </div>
-<!--                    <div>-->
-<!--                        <button id="save_product" style="display: none;">保存商品</button>-->
-<!--                    </div>-->
+                    <div>
+                        <button id="save_product" style="display: none;">保存商品</button>
+                    </div>
                     <div id="lv_table_con" class="control-group" style="display: none;">
                         <label class="control-label">规格项目表</label>
                         <div class="controls">
@@ -342,9 +342,6 @@
 
 
             });
-
-
-
                  var id=0 ;
                 //认证图片
                 $("#upload1s").click(function(){
@@ -469,39 +466,41 @@
         $(document).on('click', '.remove_lv2', function() {
             $(this).parent().remove();
         });
-        $(document).on('click', '#add', function () {
-            var obj = {};
-            var i = 0;
-            var first = '';
-            var tmp = {};
-            $('#lv_table input').each(function (index, e) {
-                var name = $(e).attr('name');
-                var value = $(e).val();
-                symbol = name.split('|')[0];
-                key = name.split('|')[1];
-                if (index == 0) {
-                    first = symbol;
-                    tmp = {symbol: symbol, item_id: 1};
-                } else if (first != symbol) {
-                    first = symbol;
-                    i++;
-                    tmp = {symbol: symbol, item_id: 1};
-                }
-                tmp[key] = value;
-                obj[i] = tmp;
 
-            });
-
-            // $.ajax({
-            //     'url': 'ceshi/save_sku',
-            //     'method': 'post',
-            //     'data': obj,
-            //     'success': function (e) {
-            //
-            //     }
-            // });
-            console.log(obj);
-        });
+        // $(document).on('click', '#save_product', function () {
+        //     var obj = {};
+        //     var i = 0;
+        //     var first = '';
+        //     var tmp = {};
+        //     $('#lv_table input').each(function (index, e) {
+        //         var name = $(e).attr('name');
+        //         var value = $(e).val();
+        //         symbol = name.split('|')[0];
+        //         key = name.split('|')[1];
+        //         if (index == 0) {
+        //             first = symbol;
+        //             tmp = {symbol: symbol, item_id: 1};
+        //         } else if (first != symbol) {
+        //             first = symbol;
+        //             i++;
+        //             tmp = {symbol: symbol, item_id: 1};
+        //         }
+        //         tmp[key] = value;
+        //         obj[i] = tmp;
+        //
+        //     });
+        //
+        //
+        //     $.ajax({
+        //         'url':"{:url('commodity/save_sku')}",
+        //         'method': 'post',
+        //         'data': obj,
+        //         'success': function (e) {
+        //
+        //         }
+        //     });
+        //     console.log(obj);
+        // });
 
 
         $(document).on('click', '#save_attr', function() {
@@ -599,10 +598,10 @@
 //                    key=$(lv1Arr[j]).val();
 //                    key=$(lv1Arr[j]).attr('data-id');
                 }
-                tableHTML += '<td width="20"><input type="text" name="' + name + '[sku_market_price]" /></td>';
-                tableHTML += '<td width="20"><input type="text" name="' + name + '[sku_shop_price]" /></td>';
-                // tableHTML += '<td width="20"><input type="text" name="'+ value + '|sku_market_price" value="'+ '"/></td>';
-                // tableHTML += '<td width="20"><input type="text" name="' + value + '|sku_shop_price"  value="'+ '" /></td>';
+                // tableHTML += '<td width="20"><input type="text" name="' + name + '[sku_market_price]" /></td>';
+                // tableHTML += '<td width="20"><input type="text" name="' + name + '[sku_shop_price]" /></td>';
+                tableHTML += '<td width="20"><input type="text" name="'+ value + '|sku_market_price" value="'+ '"/></td>';
+                tableHTML += '<td width="20"><input type="text" name="' + value + '|sku_shop_price"  value="'+ '" /></td>';
                 tableHTML += '<td width="20"><input type="text" name="' +  value + '|sku_cost_price"  value="'+ '" /></td>';
                 tableHTML += '<td width="20"><input type="text" name="' +  value + '|sku_store_count"  value="'+ '" /></td>';
                 tableHTML += '</tr>';
@@ -634,23 +633,18 @@
                 }
             });
 
-            // console.log(key);
-            // console.log(need);
-            create_attr_id(key,need);
-            //
-            // $.ajax({
-            //     'url':"{:url('commodity/save_attr')}",
-            //     'method':'post',
-            //     'data':{key:JSON.stringify(key),'value':JSON.stringify(need)},
-            //     'sync':0,
-            //     'success':function (e) {
-            //
-            //
-            //         // key=e.data.key;
-            //         // value=e.data.value;
-            //         // create_attr_id(key,value);
-            //     }
-            // });
+
+            $.ajax({
+                'url':"{:url('commodity/save_attr')}",
+                'method':'post',
+                'data':{key:JSON.stringify(key),'value':JSON.stringify(need)},
+                'sync':0,
+                'success':function (e) {
+                    key=e.data.key;
+                    value=e.data.value;
+                    create_attr_id(key,value);
+                }
+            });
         }
         function create_attr_id(key,value) {
             console.log(key,value);

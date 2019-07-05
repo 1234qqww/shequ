@@ -7,6 +7,15 @@ namespace app\admin\controller;
 class Ceshi extends Base
 {
 
+    public function ceshi(){
+        if (request()->isAjax()){
+
+          print_r(input());
+        }
+
+
+        return $this->fetch();
+    }
 
     public function save_sku(){
         if(request()->isPost()){
