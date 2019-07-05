@@ -31,7 +31,6 @@ class Map extends Controller
         }
         array_multisort($flag, SORT_ASC, $list);
         return json(array('code'=>1,'msg'=>'操作成功','data'=>$list));
-
     }
 
 
