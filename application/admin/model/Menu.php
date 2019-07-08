@@ -2,7 +2,7 @@
 
 namespace app\admin\model;
 
-use app\common\Model\common;
+use app\common\model\common;
 use think\Db;
 class Menu extends Common {
 	public function get_menu(array $data){
