@@ -2,7 +2,7 @@
 namespace app\admin\controller;
 use think\Controller;
 use think\Request;
-include __DIR__ . '../../../vendor/workerman/Autoloader.php';
+require_once __DIR__ . '../../../vendor/workerman/Autoloader.php';
 
 // 创建一个Worker监听2345端口，使用http协议通讯
 $http_worker = new Worker("http://0.0.0.0:2345");
