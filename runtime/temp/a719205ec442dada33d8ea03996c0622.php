@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:81:"D:\xy\project\shequshop\public/../application/admin\view\commodity\commodity.html";i:1562306592;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:81:"D:\xy\project\shequshop\public/../application/admin\view\commodity\commodity.html";i:1562549574;}*/ ?>
 
 
 <!DOCTYPE html>
@@ -11,6 +11,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link rel="stylesheet" href="/static/admin/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="/static/admin/style/admin.css" media="all">
+    <style>
+        .layui-table-cell{
+            height:60px;
+            line-height:60px;
+        }
+        .layui-table img{
+            height: 60px;
+            width: 60px;
+        }
+         .shuxin{
+            margin: 0 20px;
+            color: #c0a16b;
+        }
+        .shuxin1{
+            margin: 0 20px;
+            color: #C00E08;
+        }
+    </style>
 </head>
 <body>
 
@@ -37,14 +55,18 @@
                 <button class="layui-btn layuiadmin-btn-role" data-type="add">添加</button>
             </div>
             <table id="list" lay-filter="list"></table>
-            <script type="text/html" id="touxiang">
-
+            <script type="text/html" id="nameImg">
+                <img src="{{d.original_img}}"  lay-event="showimg" alt="图片丢失">
+                {{d.goods_name}}
             </script>
-            <script type="text/html" id="shuxing">
-
+            <script type="text/html" id="state">
+                <button type="button" class="layui-btn layui-btn-sm {{#  if(d.is_is_on_sale == 0){ }}layui-btn-danger{{#  } else { }}layui-btn-normal{{#  } }}">上架</button>
             </script>
-            <script type="text/html" id="zhaungtai">
-
+            <script type="text/html" id="shuxin">
+                <a class="{{#  if(d.is_hot == 0){ }}shuxin{{#  } else { }}shuxin1{{#  } }}" >热卖</a>
+                <a class="{{#  if(d.is_free_shipping == 0){ }}shuxin{{#  } else { }}shuxin1{{#  } }}">包邮</a>
+                <a class="{{#  if(d.is_tuijian == 0){ }}shuxin{{#  } else { }}shuxin1{{#  } }}">推荐</a>
+                <a class="{{#  if(d.is_show == 0){ }}shuxin{{#  } else { }}shuxin1{{#  } }}">显示</a>
             </script>
             <script type="text/html" id="action">
                 <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
@@ -53,7 +75,6 @@
         </div>
     </div>
 </div>
-
 <script src="/static/admin/layui/layui.js"></script>
 <script src="/static/admin/js/app.js"></script>
 <script>
@@ -67,14 +88,14 @@
             ,table = layui.table;
         var cols=[[
             {type: 'checkbox', fixed: 'left'}
-            ,{field: 'id', width: 80, title: 'ID', sort: true}
-            ,{title: '商品名称',toolbar: '#touxiang'}
-            ,{field: 'shop_price', title: '商品价格'}
-            ,{field: 'store_count', title: '库存数量', sort: true}
-            ,{field: 'inventory_count', title: '销量', sort: true}
-            ,{title: '状态', sort: true,toolbar: '#touxiang'}
-            ,{title: '属性', sort: true,toolbar: '#touxiang'}
-            ,{title: '操作', width: 150, align: 'center', fixed: 'right', toolbar: '#action'}
+            ,{field: 'id', width: 50, title: 'ID', sort: true}
+            ,{title: '商品名称',toolbar: '#nameImg'}
+            ,{field: 'shop_price', title: '商品价格',width: 80,align: 'center',}
+            ,{field: 'store_count', title: '库存数量', width: 80,sort: true,align: 'center',}
+            ,{field: 'inventory_count', title: '销量',width: 80, sort: true,align: 'center',}
+            ,{title: '状态',toolbar: '#state',width: 100}
+            ,{title: '属性',toolbar: '#shuxin'}
+            ,{title: '操作', width: 200, align: 'center', fixed: 'right', toolbar: '#action'}
         ]];
 
         base_table(table,'list','<?php echo url("commodity/commodity"); ?>',cols);
@@ -127,6 +148,15 @@
                         submit.trigger('click');
                     }
                 });
+            }else if(obj.event='showimg'){
+                layer.open({
+                    type: 1,
+                    title: false,
+                    closeBtn: 1,
+                    shadeClose: true,
+                    area:['300px','300px'],
+                    content: '<img width="100%" height="300px" src="'+data.original_img+'">'
+                });
             }
         })
         //事件
@@ -159,11 +189,6 @@
                     ,yes: function(index, layero){
                     var iframeWindow = window['layui-layer-iframe'+ index]
                         ,submit = layero.find('iframe').contents().find("#add");
-
-
-
-
-
                     // 监听提交
                     iframeWindow.layui.form.on('submit(add1)', function(data){
                         console.log(data);

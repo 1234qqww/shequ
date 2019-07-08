@@ -19,14 +19,7 @@
             height: 60px;
             width: 60px;
         }
-         .shuxin{
-            margin: 0 20px;
-            color: #c0a16b;
-        }
-        .shuxin1{
-            margin: 0 20px;
-            color: #C00E08;
-        }
+
     </style>
 </head>
 <body>
@@ -59,13 +52,11 @@
                 {{d.goods_name}}
             </script>
             <script type="text/html" id="state">
-                <button type="button" class="layui-btn layui-btn-sm {{#  if(d.is_is_on_sale == 0){ }}layui-btn-danger{{#  } else { }}layui-btn-normal{{#  } }}">上架</button>
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-normal">上架</button>
             </script>
             <script type="text/html" id="shuxin">
-                <a class="{{#  if(d.is_hot == 0){ }}shuxin{{#  } else { }}shuxin1{{#  } }}" >热卖</a>
-                <a class="{{#  if(d.is_free_shipping == 0){ }}shuxin{{#  } else { }}shuxin1{{#  } }}">包邮</a>
-                <a class="{{#  if(d.is_tuijian == 0){ }}shuxin{{#  } else { }}shuxin1{{#  } }}">推荐</a>
-                <a class="{{#  if(d.is_show == 0){ }}shuxin{{#  } else { }}shuxin1{{#  } }}">显示</a>
+
+
             </script>
             <script type="text/html" id="action">
                 <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
@@ -186,27 +177,27 @@
                     ,area: ['100%', '100%']
                     ,btn: ['确定', '取消']
                     ,yes: function(index, layero){
-                    var iframeWindow = window['layui-layer-iframe'+ index]
-                        ,submit = layero.find('iframe').contents().find("#add");
-                    // 监听提交
-                    iframeWindow.layui.form.on('submit(add1)', function(data){
-                        console.log(data);
-                        var field = data.field; //获取提交的字段
-                        console.log(field)
-                        //提交 Ajax 成功后，静态更新表格中的数据
-                        var result=ajax_post($,'{:url("commodity/add_commodity")}',field);
-                        if(result.code==1){
-                            layer.msg(result.msg,{icon:1},function(){
-                                table.reload('list');
-                                layer.close(index); //关闭弹层
-                            })
-                        }else{
-                            layer.alert(result.msg,{icon:2});
-                        }
-                    });
-                    submit.trigger('click');
-                }
-            });
+                        var iframeWindow = window['layui-layer-iframe'+ index]
+                            ,submit = layero.find('iframe').contents().find("#add");
+                        // 监听提交
+                        iframeWindow.layui.form.on('submit(add1)', function(data){
+                            console.log(data);
+                            var field = data.field; //获取提交的字段
+                            console.log(field)
+                            //提交 Ajax 成功后，静态更新表格中的数据
+                            var result=ajax_post($,'{:url("commodity/add_commodity")}',field);
+                            if(result.code==1){
+                                layer.msg(result.msg,{icon:1},function(){
+                                    table.reload('list');
+                                    layer.close(index); //关闭弹层
+                                })
+                            }else{
+                                layer.alert(result.msg,{icon:2});
+                            }
+                        });
+                        submit.trigger('click');
+                    }
+                });
             }
         }
         $('.layui-btn.layuiadmin-btn-role').on('click', function(){

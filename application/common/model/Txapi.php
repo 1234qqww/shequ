@@ -10,8 +10,8 @@ use think\Model;
 class Txapi extends Model
 {
     const CONSTANT = 'ZS4BZ-V743I-2XGGL-52DY5-VDY2V-FJFRI';
-    const appid='wx0ba2dffe016541bf';
-    const appsecret='9d3c1361edd533067b2179e1cb774bc4';
+    const appid='wx1d2f233b4c28773b';
+    const appsecret='5eab82a4cb0f0ebd4e8cd7b39c2b7333';
     public function coordinate( $address){
         $url = "http://apis.map.qq.com/ws/geocoder/v1/?address=$address&key=".self::CONSTANT;
 // 初始url会话

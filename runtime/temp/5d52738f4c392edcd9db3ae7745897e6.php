@@ -1,3 +1,4 @@
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:85:"D:\xy\project\shequshop\public/../application/admin\view\commodity\commodity_del.html";i:1562320936;}*/ ?>
 
 
 <!DOCTYPE html>
@@ -8,8 +9,8 @@
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <link rel="stylesheet" href="__ADMIN__/layui/css/layui.css" media="all">
-    <link rel="stylesheet" href="__ADMIN__/style/admin.css" media="all">
+    <link rel="stylesheet" href="/static/admin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/static/admin/style/admin.css" media="all">
     <style>
         .layui-table-cell{
             height:60px;
@@ -19,14 +20,12 @@
             height: 60px;
             width: 60px;
         }
-         .shuxin{
+        .shuxin{
             margin: 0 20px;
             color: #c0a16b;
         }
-        .shuxin1{
-            margin: 0 20px;
-            color: #C00E08;
-        }
+
+
     </style>
 </head>
 <body>
@@ -59,13 +58,11 @@
                 {{d.goods_name}}
             </script>
             <script type="text/html" id="state">
-                <button type="button" class="layui-btn layui-btn-sm {{#  if(d.is_is_on_sale == 0){ }}layui-btn-danger{{#  } else { }}layui-btn-normal{{#  } }}">上架</button>
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-normal">上架</button>
             </script>
             <script type="text/html" id="shuxin">
-                <a class="{{#  if(d.is_hot == 0){ }}shuxin{{#  } else { }}shuxin1{{#  } }}" >热卖</a>
-                <a class="{{#  if(d.is_free_shipping == 0){ }}shuxin{{#  } else { }}shuxin1{{#  } }}">包邮</a>
-                <a class="{{#  if(d.is_tuijian == 0){ }}shuxin{{#  } else { }}shuxin1{{#  } }}">推荐</a>
-                <a class="{{#  if(d.is_show == 0){ }}shuxin{{#  } else { }}shuxin1{{#  } }}">显示</a>
+
+
             </script>
             <script type="text/html" id="action">
                 <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
@@ -74,11 +71,11 @@
         </div>
     </div>
 </div>
-<script src="__ADMIN__/layui/layui.js"></script>
-<script src="__ADMIN__/js/app.js"></script>
+<script src="/static/admin/layui/layui.js"></script>
+<script src="/static/admin/js/app.js"></script>
 <script>
     layui.config({
-        base: '__ADMIN__/' //静态资源所在路径
+        base: '/static/admin/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
     }).use(['index', 'table'], function(){
@@ -97,14 +94,14 @@
             ,{title: '操作', width: 200, align: 'center', fixed: 'right', toolbar: '#action'}
         ]];
 
-        base_table(table,'list','{:url("commodity/commodity")}',cols);
+        base_table(table,'list','<?php echo url("commodity/commodity"); ?>',cols);
         table.on('tool(list)',function(obj){
             var data=obj.data;
             if(obj.event=='del'){
                 if(obj.event=='del'){
                     layer.confirm('确定删除此角色？', function(index){
                         post_json={role_id:data.role_id};
-                        var result=ajax_post($,'{:url("admin/del_role")}',post_json);
+                        var result=ajax_post($,'<?php echo url("admin/del_role"); ?>',post_json);
                         if(result.code==1){
                             layer.msg(result.msg,{icon:1},function(){
                                 obj.del();
@@ -132,7 +129,7 @@
                             var field = data.field; //获取提交的字段
                             console.log(field)
                             //提交 Ajax 成功后，静态更新表格中的数据
-                            var result=ajax_post($,'{:url('admin/edit_role')}',field);
+                            var result=ajax_post($,'<?php echo url('admin/edit_role'); ?>',field);
                             if(result.code==1){
                                 layer.msg(result.msg,{icon:1},function(){
                                     table.reload('list');
@@ -182,31 +179,31 @@
                 layer.open({
                     type: 2
                     ,title: '添加商品'
-                    ,content: '{:url("commodity/add_commodity")}'
+                    ,content: '<?php echo url("commodity/add_commodity"); ?>'
                     ,area: ['100%', '100%']
                     ,btn: ['确定', '取消']
                     ,yes: function(index, layero){
-                    var iframeWindow = window['layui-layer-iframe'+ index]
-                        ,submit = layero.find('iframe').contents().find("#add");
-                    // 监听提交
-                    iframeWindow.layui.form.on('submit(add1)', function(data){
-                        console.log(data);
-                        var field = data.field; //获取提交的字段
-                        console.log(field)
-                        //提交 Ajax 成功后，静态更新表格中的数据
-                        var result=ajax_post($,'{:url("commodity/add_commodity")}',field);
-                        if(result.code==1){
-                            layer.msg(result.msg,{icon:1},function(){
-                                table.reload('list');
-                                layer.close(index); //关闭弹层
-                            })
-                        }else{
-                            layer.alert(result.msg,{icon:2});
-                        }
-                    });
-                    submit.trigger('click');
-                }
-            });
+                        var iframeWindow = window['layui-layer-iframe'+ index]
+                            ,submit = layero.find('iframe').contents().find("#add");
+                        // 监听提交
+                        iframeWindow.layui.form.on('submit(add1)', function(data){
+                            console.log(data);
+                            var field = data.field; //获取提交的字段
+                            console.log(field)
+                            //提交 Ajax 成功后，静态更新表格中的数据
+                            var result=ajax_post($,'<?php echo url("commodity/add_commodity"); ?>',field);
+                            if(result.code==1){
+                                layer.msg(result.msg,{icon:1},function(){
+                                    table.reload('list');
+                                    layer.close(index); //关闭弹层
+                                })
+                            }else{
+                                layer.alert(result.msg,{icon:2});
+                            }
+                        });
+                        submit.trigger('click');
+                    }
+                });
             }
         }
         $('.layui-btn.layuiadmin-btn-role').on('click', function(){

@@ -14,21 +14,19 @@ class Commodity extends Base
     public function commodity(){
         if(request()->isAjax()){
             $get=input();
-            $where=array('store_count'=>0,'state'=>1);
+            $where=array('store_count'=>0,'state'=>1,'good_id'=>session('good'));
             if(isset($get['good_name']) && $get['good_name']!=''){
                 $where['good_name']=array('like','%'.$get['good_name'].'%');
             }
             return model('goods')->goods($where);
         }
         return $this->fetch();
-
     }
+
     //添加商品
     public function add_commodity(){
         if(request()->isAjax()){
-
             $param=$this->request->param();
-            dump($param);die();
             if($param['sort']<0){
                 return json(array('code'=>0,'msg'=>'排序数字不能小于0'));
             }
@@ -138,11 +136,12 @@ class Commodity extends Base
             $ret['is_reduce']=$param['is_reduce'];
             $ret['goods_name']=$param['goods_name'];
             $ret['goods_name']=$param['goods_name'];
+            $ret['good_id']=session('good');
             if(isset($param['goods_content'])){
                 $ret['goods_content']=$param['goods_content'];
             }
 
-            $goodid=model('goods')->goods_add($ret);
+            $goodid=model('goods')->goods_add($ret);   //返回商品id
             if(isset($aut)){
                 $list = array();
                 foreach ($aut as $k=>$v){
@@ -154,26 +153,21 @@ class Commodity extends Base
                 }
                 Db::name('goods_img')->insertAll($list);
             }
-            if(isset($param['lv1'])){
-                $attr_key=$param['lv1'];
-                $lv1=array();
-                foreach ($attr_key as $k=>$v){
-                    $l['goods_id']=$goodid;
-                    $l['attr_name']=$v;
-                    array_push($lv1, $l);
+
+
+            if(isset($param['is_model'])){      //是否开启规格
+                $good_id=-1;
+                $sku=Db::name('goods_item_sku')->where(['goods_id' =>$good_id])->select();
+                $num=0;
+                foreach ($sku as $k){
+                    $num+=$k['sku_store_count'];
                 }
-                Db::name('goods_attr_key')->insertAll($lv1);
+                Db::name('goods')->where(['id'=>$goodid])->data(['store_count'=>$num])->update();
+                Db::name('goods_attr_key')->where(['goods_id' =>$good_id])->data(['goods_id' =>$goodid])->update();
+                Db::name('goods_attr_value')->where(['goods_id' =>$good_id])->data(['goods_id' =>$goodid])->update();
+                Db::name('goods_item_sku')->where(['goods_id' =>$good_id])->data(['goods_id' =>$goodid])->update();
             }
-            if(isset($param['lv2'])){
-                $attr_key=$param['lv2'];
-                $lv1=array();
-                foreach ($attr_key as $k=>$v){
-                    $l['goods_id']=$goodid;
-                    $l['attr_name']=$v;
-                    array_push($lv1, $l);
-                }
-                Db::name('goods_attr_key')->insertAll($lv1);
-            }
+            return json(array('code'=>1,'msg'=>'储存成功'));
 
         }
         $cat_list = Db::name('good_category')->where("parent_id = 0")->select();   //获取一级菜单
@@ -183,21 +177,18 @@ class Commodity extends Base
         return $this->fetch();
     }
 
-
-
-
     public function save_attr(){
         if (request()->isAjax()){
             $data = request()->post();
             $key = json_decode($data['key'], true);
             $value = json_decode($data['value'], true);
-            $goods_id = 1;
+            $goods_id = -1;
             $key_id = [];
             Db::name('goods_attr_key')->where(['goods_id' => $goods_id])->delete();  //删除之前创建的未使用的规格名
             foreach ($key as $k){
                 $list['attr_name']=$k;
                 $list['goods_id']=$goods_id;
-                $key_id=Db::name('goods_attr_key')->insertGetId($list);
+                $key_id[]=Db::name('goods_attr_key')->insertGetId($list);
             }
             $tm_v = [];
             Db::name('goods_attr_value')->where(['goods_id' => $goods_id])->delete();  //删除之前创建未使用的参数名
@@ -211,57 +202,43 @@ class Commodity extends Base
                        $tm_v[] = $v1;
                 }
             }
+
+
             return json(array('code'=>1,'msg'=>'操作成功','data'=>['key'=>$key_id,'value'=>$tm_v]));
         }
 
     }
-
-
-    public function save_skus(){
-        if(request()->isPost()){
-            $data=request()->post();
-//            $bool=ItemSku::where(['item_id'=>$data[0]['item_id']])->delete();
-            print_r($data);die();
-
-            foreach ($data as $item) {
-                $sku=new ItemSku();
-                $sku->item_id=$item['item_id'];
-                $sku->original_price=$item['original_price'];
-                $sku->price=$item['price'];
-                $sku->stock=$item['stock'];
-                $sku->attr_symbol_path=$item['symbol'];
-                $sku->save();
-            }
-
-        }
-
-    }
-
-
+    //保存sku
     public function save_sku(){
         if(request()->isAjax()){
-            dump(input());die();
+            $data=request()->post();
 
-
+            Db::name('goods_item_sku')->where(['goods_id'=>-1])->delete();
+            foreach ($data as $item) {
+                $arr['goods_id']=-1;
+                $arr['sku_market_price']=$item['sku_market_price'];
+                $arr['sku_shop_price']=$item['sku_shop_price'];
+                $arr['sku_cost_price']=$item['sku_cost_price'];
+                $arr['sku_store_count']=$item['sku_store_count'];
+                $arr['attr_path']=$item['symbol'];
+                Db::name('goods_item_sku')->insert($arr);
+            }
         }
-
-
     }
-
-
-
-
-
 
 
     //回收站
     public function commodity_del(){
 
 
+        return $this->fetch();
     }
 
     //已售罄
     public function commodity_out(){
+
+
+        return $this->fetch();
 
 
     }

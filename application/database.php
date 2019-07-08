@@ -20,13 +20,6 @@ return [
     'username'        => 'sq',
     // 密码
     'password'        => 'rCE3S3zKn5jeXpLa',
-    'hostname'        => '127.0.0.1',
-    // 数据库名
-    'database'        => 'shequshop',
-    // 用户名
-    'username'        => 'root',
-    // 密码
-    'password'        => 'root',
     // 端口
     'hostport'        => '3306',
     // 连接dsn

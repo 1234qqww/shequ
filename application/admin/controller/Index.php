@@ -15,12 +15,7 @@ class Index extends Base
     }
     public function index()
     {
-//        //加载所有菜单
-//        $menu=model('menu')->get_menus();
-////        dump($menu);die;
-//        $this->assign('menus',$menu);
     	return $this->fetch(":index");
-
     }
     public function indexs()
     {
@@ -32,10 +27,7 @@ class Index extends Base
            'admin'=>$admin,
            'good'=>$good
         ]);
-
-
         return $this->fetch(":indexs");
-
     }
     //跳转商铺
     public function goodindexs(){

@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:71:"D:\xy\project\shequshop\public/../application/admin\view\user\user.html";i:1561098452;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:71:"D:\xy\project\shequshop\public/../application/admin\view\user\user.html";i:1562318499;}*/ ?>
 
 
 <!DOCTYPE html>
@@ -12,9 +12,13 @@
     <link rel="stylesheet" href="/static/admin/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="/static/admin/style/admin.css" media="all">
     <style>
-        .layui-table-cell {
-            height: 100%;
-            max-width: 100%;
+        .layui-table-cell{
+            height:60px;
+            line-height:60px;
+        }
+        .layui-table img{
+            height: 60px;
+            width: 60px;
         }
     </style>
 </head>

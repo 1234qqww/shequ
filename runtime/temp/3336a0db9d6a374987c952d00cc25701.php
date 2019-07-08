@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:85:"D:\xy\project\shequshop\public/../application/admin\view\commodity\add_commodity.html";i:1562307384;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:85:"D:\xy\project\shequshop\public/../application/admin\view\commodity\add_commodity.html";i:1562319413;}*/ ?>
 
 
 <!DOCTYPE html>
@@ -321,6 +321,7 @@
                 })
             });
 
+
             form.on('switch(switchTest)', function(data){
                 if(this.checked){
                     $('#youfei').hide()
@@ -453,39 +454,36 @@
         $(document).on('click', '.remove_lv2', function() {
             $(this).parent().remove();
         });
-        // $(document).on('click', '#save_product', function () {
-        //
-        //     var obj = {};
-        //     var i = 0;
-        //     var first = '';
-        //     var tmp = {};
-        //     $('#lv_table input').each(function (index, e) {
-        //         var name = $(e).attr('name');
-        //         var value = $(e).val();
-        //         symbol = name.split('|')[0];
-        //         key = name.split('|')[1];
-        //         if (index == 0) {
-        //             first = symbol;
-        //             tmp = {symbol: symbol, item_id: 1};
-        //         } else if (first != symbol) {
-        //             first = symbol;
-        //             i++;
-        //             tmp = {symbol: symbol, item_id: 1};
-        //         }
-        //         tmp[key] = value;
-        //         obj[i] = tmp;
-        //
-        //     });
-        //     $.ajax({
-        //         'url': '/api/test/test/save_sku',
-        //         'method': 'post',
-        //         'data': obj,
-        //         'success': function (e) {
-        //
-        //         }
-        //     });
-        //     console.log(obj);
-        // });
+        $(document).on('click', '#add', function () {
+            var obj = {};
+            var i = 0;
+            var first = '';
+            var tmp = {};
+            $('#lv_table input').each(function (index, e) {
+                var name = $(e).attr('name');
+                var value = $(e).val();
+                symbol = name.split('|')[0];
+                key = name.split('|')[1];
+                if (index == 0) {
+                    first = symbol;
+                    tmp = {symbol: symbol, item_id: 1};
+                } else if (first != symbol) {
+                    first = symbol;
+                    i++;
+                    tmp = {symbol: symbol, item_id: 1};
+                }
+                tmp[key] = value;
+                obj[i] = tmp;
+            });
+            $.ajax({
+                'url': "<?php echo url('commodity/save_sku'); ?>",
+                'method': 'post',
+                'data': obj,
+                'success': function (e) {
+
+                }
+            });
+        });
 
 
         $(document).on('click', '#save_attr', function() {
@@ -495,7 +493,6 @@
             save_attr();
 //            update_table();
         });
-
         function update_table() {
             var lv1Arr = $('input[name="lv1"]');
             if (!lv1Arr || lv1Arr.length == 0) {
@@ -532,7 +529,6 @@
                 numsArr.push($(lv1Arr[i]).parents('.lv1').find('input[name="lv2"]').length);
                 idxArr[i] = 0;
             }
-
             var len = 1;
             var rowsArr = new Array();
             for (var i = 0; i < numsArr.length; i++) {
@@ -565,7 +561,6 @@
                         var m = parseInt(i / rowsArr[j]);
                         n = m % numsArr[j];
                     }
-
                     var text = $(lv1Arr[j]).parents('.lv1').find('input[name="lv2"]').eq(n).val();
                     var id = $(lv1Arr[j]).parents('.lv1').find('input[name="lv2"]').eq(n).attr('data-id');
                     if (j != lv1Arr.length - 1) {
@@ -642,9 +637,7 @@
             $('#save_product').show();
         }
 
-
     });
 </script>
-
 </body>
 </html>
