@@ -177,6 +177,43 @@ class Commodity extends Base
         return $this->fetch();
     }
 
+    //修改商品
+    public function edit_commodity(){
+
+
+        $list=array();
+
+        $goods=Db::name('goods')->where(input())->find();  //商品基本信息
+        $goods_category=model('good_category')->arr_push($goods['goods_category_id'],$list);
+        $goods['goods_category_id1']=$goods_category[1];
+        $goods['goods_category_id2']=$goods_category[0];
+        $cat_list1 = Db::name('good_category')->where("parent_id = 0")->select();   //获取一级菜单
+        $cat_list2= Db::name('good_category')->where("parent_id=$goods_category[1]")->select();   //获取3级菜单
+        $cat_list3= Db::name('good_category')->where("parent_id=$goods_category[0]")->select();   //获取3级菜单
+        $goods_img=Db::name('goods_img')->where(['goods_id'=>$goods['id']])->select(); //商品图片
+        $goods_attr_key=Db::name('goods_attr_key')->where(['goods_id'=>$goods['id']])->select();   //sku key值
+        $goods_attr_value = Db::name('goods_attr_value')->where(['goods_id'=>$goods['id']])->select();
+        $goods_item_sku=Db::name('goods_item_sku')->where(['goods_id'=>$goods['id']])->select();
+        foreach ($goods_attr_value as $k=>$v){
+            foreach ($goods_attr_key as $x=>$y){
+                if($v['attr_key_id']==$y['id']){
+                    $goods_attr_key[$x]['itemattrval'][$k]=$v;
+                }
+            }
+        }
+        $this->assign([
+            'goods_img'=>$goods_img,
+            'goods'=>$goods,
+            'cat_list1'=>$cat_list1,
+            'cat_list2'=>$cat_list2,
+            'cat_list3'=>$cat_list3,
+            'itemAttr'=>$goods_attr_key,
+            'itemSku'=>json_encode($goods_item_sku,320)
+        ]);
+        return $this->fetch();
+
+    }
+
     public function save_attr(){
         if (request()->isAjax()){
             $data = request()->post();
@@ -208,6 +245,23 @@ class Commodity extends Base
         }
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     //保存sku
     public function save_sku(){
         if(request()->isAjax()){

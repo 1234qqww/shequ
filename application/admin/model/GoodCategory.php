@@ -63,5 +63,27 @@ class GoodCategory extends Model
     }
 
 
+    public function arr_push($parent_id,$list){
+     $good_category=Db::name('good_category')->where(['id'=>$parent_id])->find();
+
+         if($good_category['parent_id']!=0){
+             $list[]=$good_category['parent_id'];
+             $list=$this->arr_push($good_category['parent_id'],$list);
+         }
+        return  $list;
+
+    }
+    function get_top_parentid($cate,$id){
+        $arr=array();
+        foreach($cate as $v){
+            if($v['id']==$id){
+                $arr[]=$v;// $arr[$v['id']]=$v['name'];
+                $arr=array_merge(get_top_parentid($cate,$v['fid']),$arr);
+            }
+        }return $arr;
+
+    }
+
+
 
 }
