@@ -2,7 +2,7 @@
 
 namespace app\admin\model;
 
-use app\common\Model\common;
+use app\common\model\common;
 use think\Db;
 class Admin extends Common {
     //登录
