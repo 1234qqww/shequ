@@ -22,5 +22,12 @@ class Goods extends Base
 
     }
 
+    //删除商品
+    public function del_commodity($id,$state){
+
+      return  Db::name('goods')->where($id)->data(['state'=>$state])->update();
+
+    }
+
 
 }

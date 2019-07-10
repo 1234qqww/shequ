@@ -4,6 +4,7 @@
 namespace app\admin\controller;
 
 
+use app\admin\model\Goods;
 use think\Console;
 
 use think\Db;
@@ -13,11 +14,18 @@ class Commodity extends Base
     //销售中的商品
     public function commodity(){
         if(request()->isAjax()){
+
+            $admin=session('admin');
             $get=input();
-            $where=array('store_count'=>0,'state'=>1,'good_id'=>session('good'));
-            if(isset($get['good_name']) && $get['good_name']!=''){
-                $where['good_name']=array('like','%'.$get['good_name'].'%');
+            $where['store_count']= array('neq',0);
+            $where['state']= 1;
+            if($admin['role_id']!=1){               //超级管理员权限
+                $where['good_id']= session('good');
             }
+            if(isset($get['goods_name']) && $get['goods_name']!=''){
+                $where['goods_name']=array('like','%'.$get['goods_name'].'%');
+            }
+
             return model('goods')->goods($where);
         }
         return $this->fetch();
@@ -27,9 +35,6 @@ class Commodity extends Base
     public function add_commodity(){
         if(request()->isAjax()){
             $param=$this->request->param();
-            if($param['sort']<0){
-                return json(array('code'=>0,'msg'=>'排序数字不能小于0'));
-            }
             $ret['sort']=$param['sort'];
             if(!empty($param['sales_sum'])) {
                 if (!preg_match("/^[1-9]\d*$/", $param['give_integral'])) {   //积分
@@ -37,7 +42,6 @@ class Commodity extends Base
                 }
                 $ret['give_integral']=$param['give_integral'];
             }
-
             if(!empty($param['sales_sum'])){
                 if(!preg_match(   "/^[1-9]\d*$/",$param['sales_sum'])){   //销量
                     return json(array('code'=>0,'msg'=>'请输入正确的销量'));
@@ -45,27 +49,18 @@ class Commodity extends Base
                 $ret['sales_sum']=$param['sales_sum'];
             }
 
-
-
-
                 if(!empty($param['shipping_money'])){
                     if(!preg_match(   "/^\d+(?:\.\d{0,2})?$/",$param['shipping_money'])){   //邮费
                         return json(array('code'=>0,'msg'=>'请输入正确的邮费金额'));
                     }
                     $ret['shipping_money']=$param['shipping_money'];
                 }
-
-
                  if(!empty($param['store_count'])){
                      if(!preg_match(   "/^[1-9]\d*$/",$param['shipping_money'])){   //库存
                          return json(array('code'=>0,'msg'=>'请输入正确的库存数量'));
                      }
                      $ret['store_count']=$param['store_count'];
                  }
-
-
-
-
             if(!preg_match(   "/^\d+(?:\.\d{0,2})?$/",$param['market_price'])){   //市场价
                 return json(array('code'=>0,'msg'=>'请输入正确的市场价'));
             }
@@ -81,14 +76,12 @@ class Commodity extends Base
             if(empty($param['parent_id_1']) && empty($param['parent_id_2'])  && empty($param['parent_id_3']) ){
                 return json(array('code'=>0,'msg'=>'请选择商品分类'));
             }
-
             if(!empty($param['parent_id_1'])  && empty($param['parent_id_2']) ||empty($param['parent_id_3'])) {
-                $ret['goods_category_id']=$param['parent_id_1'];
+                return json(array('code'=>0,'msg'=>'请选择二三级分类'));
             }
             if(!empty($param['parent_id_2']) && empty($param['parent_id_3'])){
                 $ret['goods_category_id']=$param['parent_id_2'];
             }
-
             if(!empty($param['parent_id_3'])){
                 $ret['goods_category_id']=$param['parent_id_3'];
             }
@@ -134,13 +127,15 @@ class Commodity extends Base
             $ret['goods_name']=$param['goods_name'];
             $ret['goods_gjc']=$param['goods_gjc'];
             $ret['is_reduce']=$param['is_reduce'];
-            $ret['goods_name']=$param['goods_name'];
-            $ret['goods_name']=$param['goods_name'];
-            $ret['good_id']=session('good');
+            $admin=session('admin');
+            if($admin['role_id']!=1){
+                $ret['good_id']=session('good');
+            }else{
+                $ret['good_id']=-1;        //超级管理员添加商品商户id为-1
+            }
             if(isset($param['goods_content'])){
                 $ret['goods_content']=$param['goods_content'];
             }
-
             $goodid=model('goods')->goods_add($ret);   //返回商品id
             if(isset($aut)){
                 $list = array();
@@ -148,24 +143,24 @@ class Commodity extends Base
                     $b['goods_id']=$goodid;
                     if(strpos($v,'base64') !== false){
                         $b['path']=base64toimg($v);
+                    }else{
+                        $b['path']=$v;
                     }
                     array_push($list, $b);
                 }
                 Db::name('goods_img')->insertAll($list);
             }
-
-
             if(isset($param['is_model'])){      //是否开启规格
                 $good_id=-1;
+                Db::name('goods_attr_key')->where(['goods_id' =>$good_id])->data(['goods_id' =>$goodid])->update();
+                Db::name('goods_attr_value')->where(['goods_id' =>$good_id])->data(['goods_id' =>$goodid])->update();
+                Db::name('goods_item_sku')->where(['goods_id' =>$good_id])->data(['goods_id' =>$goodid])->update();
                 $sku=Db::name('goods_item_sku')->where(['goods_id' =>$good_id])->select();
                 $num=0;
                 foreach ($sku as $k){
                     $num+=$k['sku_store_count'];
                 }
                 Db::name('goods')->where(['id'=>$goodid])->data(['store_count'=>$num])->update();
-                Db::name('goods_attr_key')->where(['goods_id' =>$good_id])->data(['goods_id' =>$goodid])->update();
-                Db::name('goods_attr_value')->where(['goods_id' =>$good_id])->data(['goods_id' =>$goodid])->update();
-                Db::name('goods_item_sku')->where(['goods_id' =>$good_id])->data(['goods_id' =>$goodid])->update();
             }
             return json(array('code'=>1,'msg'=>'储存成功'));
 
@@ -179,10 +174,148 @@ class Commodity extends Base
 
     //修改商品
     public function edit_commodity(){
+        if(request()->isAjax()){
+            $param=$this->request->param();
+            $ret['sort']=$param['sort'];
+            if(!empty($param['sales_sum'])) {
+                if (!preg_match("/^[1-9]\d*$/", $param['give_integral'])) {   //积分
+                    return json(array('code' => 0, 'msg' => '请输入正确的赠送积分'));
+                }
+                $ret['give_integral']=$param['give_integral'];
+            }
+            if(!empty($param['sales_sum'])){
+                if(!preg_match(   "/^[1-9]\d*$/",$param['sales_sum'])){   //销量
+                    return json(array('code'=>0,'msg'=>'请输入正确的销量'));
+                }
+                $ret['sales_sum']=$param['sales_sum'];
+            }
+            if(!empty($param['shipping_money'])){
+                if(!preg_match(   "/^\d+(?:\.\d{0,2})?$/",$param['shipping_money'])){   //邮费
+                    return json(array('code'=>0,'msg'=>'请输入正确的邮费金额'));
+                }
+                $ret['shipping_money']=$param['shipping_money'];
+            }
+            if(!empty($param['store_count'])){
+                if(!preg_match(   "/^[1-9]\d*$/",$param['shipping_money'])){   //库存
+                    return json(array('code'=>0,'msg'=>'请输入正确的库存数量'));
+                }
+                $ret['store_count']=$param['store_count'];
+            }
+            if(!preg_match(   "/^\d+(?:\.\d{0,2})?$/",$param['market_price'])){   //市场价
+                return json(array('code'=>0,'msg'=>'请输入正确的市场价'));
+            }
+            $ret['market_price']=$param['market_price'];
+            if(!preg_match(   "/^\d+(?:\.\d{0,2})?$/",$param['shop_price'])){   //本店价
+                return json(array('code'=>0,'msg'=>'请输入正确的本店价'));
+            }
+            $ret['shop_price']=$param['shop_price'];
+            if(!preg_match(   "/^\d+(?:\.\d{0,2})?$/",$param['cost_price'])){   //成本价
+                return json(array('code'=>0,'msg'=>'请输入正确的成本价'));
+            }
+            $ret['cost_price']=$param['cost_price'];
+            if(empty($param['parent_id_1']) && empty($param['parent_id_2'])  && empty($param['parent_id_3']) ){
+                return json(array('code'=>0,'msg'=>'请选择商品分类'));
+            }
+            if(!empty($param['parent_id_1'])  && empty($param['parent_id_2']) ||empty($param['parent_id_3'])) {
+                return json(array('code'=>0,'msg'=>'请选择二三级分类'));
+            }
+            if(!empty($param['parent_id_2']) && empty($param['parent_id_3'])){
+                $ret['goods_category_id']=$param['parent_id_2'];
+            }
+            if(!empty($param['parent_id_3'])){
+                $ret['goods_category_id']=$param['parent_id_3'];
+            }
+            if(isset($param['is_free_shipping'])){   //是否包邮
+                $ret['is_free_shipping']=1;
+            }else{
+                $ret['is_free_shipping']=0;
+            }
+            if(isset($param['is_tuijian'])){   //是否推荐
+                $ret['is_tuijian']=1;
+            }else{
+                $ret['is_tuijian']=0;
+            }
+            if(isset($param['is_show'])){      //是否显示
+                $ret['is_show']=1;
+            }else{
+                $ret['is_show']=0;
+            }
+            if(isset($param['is_on_sale'])){      //是否上架
+                $ret['is_on_sale']=1;
+            }else{
+                $ret['is_on_sale']=0;
+            }
+            if(isset($param['is_hot'])){      //是否热卖
+                $ret['is_hot']=1;
+            }else{
+                $ret['is_hot']=0;
+            }
+            if(isset($param['is_model'])){      //是否开启规格
+                $ret['is_model']=1;
+            }else{
+                $ret['is_model']=0;
+            }
+            if(array_key_exists('autuimg',$param)){
+                $aut= $param['autuimg'];
+                $ret['original_img']=$param['autuimg'][0];  //第一张图片为首页展示图
+                if(strpos($ret['original_img'],'base64') !== false){
+                    $ret['original_img']=base64toimg($ret['original_img']);
+                }
+            }
+            $ret['goods_name']=$param['goods_name'];
+            $ret['goods_gjc']=$param['goods_gjc'];
+            $ret['is_reduce']=$param['is_reduce'];
+            if(isset($param['goods_content'])){
+                $ret['goods_content']=$param['goods_content'];
+            }
+            Db::name('goods')->where(['id'=>$param['id']])->data($ret)->update();   //修改商品基本资料
+
+            if(isset($aut)){
+                $list = array();
+                foreach ($aut as $k=>$v){
+                        $b['goods_id']=$param['id'];
+                    if(strpos($v,'base64') !== false){
+                        $b['path']=base64toimg($v);
+                    }else{
+                        $b['path']=$v;
+                    }
+                    array_push($list, $b);
+                }
+                model('goods_img')->getSelectAll($param['id'],$list);
+            }
+
+            if(isset($param['is_model'])){
+                $good_id=-1;
+                $goods_attr_key=Db::name('goods_attr_key')->where(['goods_id'=>$good_id])->select();
+                $goods_attr_value=Db::name('goods_attr_value')->where(['goods_id'=>$good_id])->select();
+                $goods_item_sku=Db::name('goods_item_sku')->where(['goods_id'=>$good_id])->select();
+
+                if($goods_attr_key){
+                    Db::name('goods_attr_key')->where(['goods_id'=>$param['id']])->delete();
+                    Db::name('goods_attr_key')->where(['goods_id'=>$good_id])->data(['goods_id'=>$param['id']])->update();
+                }
+                if($goods_attr_value){
+                    Db::name('goods_attr_value')->where(['goods_id'=>$param['id']])->delete();
+                    Db::name('goods_attr_value')->where(['goods_id'=>$good_id])->data(['goods_id'=>$param['id']])->update();
+                }
+                if($goods_item_sku){
+                    Db::name('goods_item_sku')->where(['goods_id'=>$param['id']])->delete();
+                    Db::name('goods_item_sku')->where(['goods_id'=>$good_id])->data(['goods_id'=>$param['id']])->update();
+                }
+                     $sku=Db::name('goods_item_sku')->where(['goods_id'=>$param['id']])->select();
+                $num=0;
+                foreach ($sku as $k){
+                    $num+=$k['sku_store_count'];
+                }
+                Db::name('goods')->where(['id'=>$param['id']])->data(['store_count'=>$num])->update();
+            }
+            return json(array('code'=>1,'msg'=>'修改成功'));
 
 
+
+
+        }
         $list=array();
-
         $goods=Db::name('goods')->where(input())->find();  //商品基本信息
         $goods_category=model('good_category')->arr_push($goods['goods_category_id'],$list);
         $goods['goods_category_id1']=$goods_category[1];
@@ -199,9 +332,12 @@ class Commodity extends Base
                 if($v['attr_key_id']==$y['id']){
                     $goods_attr_key[$x]['itemattrval'][$k]=$v;
                 }
+
             }
+
         }
         $this->assign([
+            'goods_imgs'=>json_encode($goods_img,320),
             'goods_img'=>$goods_img,
             'goods'=>$goods,
             'cat_list1'=>$cat_list1,
@@ -214,6 +350,22 @@ class Commodity extends Base
 
     }
 
+
+    //删除商品
+    public function del_commodity(){
+
+        if(request()->isAjax()){
+            $state=2;
+            $goods=model('goods')->del_commodity(input(),$state); //修改商品状态，软删除
+            if(!$goods){
+                return json(array('code'=>0,'msg'=>'删除失败'));
+
+            }
+            return json(array('code'=>1,'msg'=>'删除成功'));
+
+
+        }
+    }
     public function save_attr(){
         if (request()->isAjax()){
             $data = request()->post();
@@ -245,23 +397,6 @@ class Commodity extends Base
         }
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     //保存sku
     public function save_sku(){
         if(request()->isAjax()){
@@ -283,18 +418,37 @@ class Commodity extends Base
 
     //回收站
     public function commodity_del(){
-
-
+        if(request()->isAjax()){
+            $admin=session('admin');
+            $get=input();
+            $where['state']=2;
+            if($admin['role_id']!=1){               //超级管理员权限
+                $where['good_id']= session('good');
+            }
+            if(isset($get['goods_name']) && $get['goods_name']!=''){
+                $where['goods_name']=array('like','%'.$get['goods_name'].'%');
+            }
+            return model('goods')->goods($where);
+        }
         return $this->fetch();
     }
 
     //已售罄
     public function commodity_out(){
-
-
+        if(request()->isAjax()){
+            $admin=session('admin');
+            $get=input();
+            $where['store_count']= array('eq',0);
+            $where['state']= 1;
+            if($admin['role_id']!=1){               //超级管理员权限
+                $where['good_id']= session('good');
+            }
+            if(isset($get['goods_name']) && $get['goods_name']!=''){
+                $where['goods_name']=array('like','%'.$get['goods_name'].'%');
+            }
+            return model('goods')->goods($where);
+        }
         return $this->fetch();
-
-
     }
 
     //商品分类
@@ -469,11 +623,26 @@ class Commodity extends Base
 
 
 
-    //标签组
-    public function commodity_biaoqian(){
+    //批量删除
+    public function commodity_delAll(){
+        $id = input();
 
+        foreach ($id['id'] as $k){
+            $state=2;
+            model('goods')->del_commodity(['id'=>$k],$state); //修改商品状态，软删除
+        }
+        return json(array('code'=>1,'msg'=>'删除成功'));
+    }
+    //回收站恢复商品
+    public function commodity_huifu(){
+        $state=1;
+      $goods=model('goods')->del_commodity(input(),$state); //修改商品状态，恢复
 
+        if(!$goods){
+            return json(array('code'=>0,'msg'=>'恢复失败'));
 
+        }
+        return json(array('code'=>1,'msg'=>'恢复成功'));
 
     }
 

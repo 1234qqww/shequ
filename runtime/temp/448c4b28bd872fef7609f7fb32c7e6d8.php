@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:68:"D:\xy\project\shequshop\public/../application/admin\view\\index.html";i:1562567967;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:68:"D:\xy\project\shequshop\public/../application/admin\view\\index.html";i:1562656734;}*/ ?>
 
 <!DOCTYPE html>
 <html>
@@ -123,6 +123,7 @@
             <div class="left-bar-list-item-font"><span>管理</span></div>
           </div>
         </a>
+
         <a href="<?php echo url('qudao/qudao'); ?>" target="rightframe">
           <div  class="left-bar-list-item user"  >
             <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/wxapp.png" />
@@ -137,8 +138,13 @@
             <div class="left-bar-list-item-font"><span>应用</span></div>
           </div>
         </a>
-
-
+        <a href="<?php echo url('report/report'); ?>" target="rightframe">
+          <div  class="left-bar-list-item user"  >
+            <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/guanli.png" />
+            </div>
+            <div class="left-bar-list-item-font"><span>及时通讯</span></div>
+          </div>
+        </a>
         <a href="<?php echo url('system/setting'); ?>" target="rightframe" >
           <div  class="left-bar-list-item administrators"  >
             <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/shezhi.png" />
@@ -197,12 +203,6 @@
           <a href="<?php echo url('good/good_listadd'); ?>" target="rightframe">
             <div  class="left-bar-secendlist-item" id="good_add">
               <span>入驻申请</span>
-              <img src="/easyweb/layout/static/right_lit.png" />
-            </div>
-          </a>
-          <a href="<?php echo url('report/index'); ?>" target="rightframe">
-            <div  class="left-bar-secendlist-item" id="report">
-              <span>及时通讯</span>
               <img src="/easyweb/layout/static/right_lit.png" />
             </div>
           </a>
