@@ -245,4 +245,7 @@ return [
         'var_page'  => 'page',
         'list_rows' => 15,
     ],
+    'host'=>[
+      'url'=>'http://127.0.0.4'
+    ],
 ];

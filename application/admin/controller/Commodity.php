@@ -110,6 +110,13 @@ class Commodity extends Base
             }else{
                 $ret['is_hot']=0;
             }
+
+            if(isset($param['is_newshop'])){      //是否新品
+                $ret['is_newshop']=1;
+            }else{
+                $ret['is_newshop']=0;
+            }
+
             if(isset($param['is_model'])){      //是否开启规格
                 $ret['is_model']=1;
             }else{
@@ -249,6 +256,11 @@ class Commodity extends Base
                 $ret['is_hot']=1;
             }else{
                 $ret['is_hot']=0;
+            }
+            if(isset($param['is_newshop'])){      //是否新品
+                $ret['is_newshop']=1;
+            }else{
+                $ret['is_newshop']=0;
             }
             if(isset($param['is_model'])){      //是否开启规格
                 $ret['is_model']=1;
@@ -466,10 +478,6 @@ class Commodity extends Base
         if(request()->isAjax()){
             $param=$this->request->param();
 
-
-            if($param['sort_order']<0){
-                return json(array('code'=>0,'msg'=>'排序数字不能小于0'));
-            }
             if(strpos($param['image'],'base64') !== false){
                 $param['image']=base64toimg($param['image']);
             }
@@ -556,13 +564,10 @@ class Commodity extends Base
     public function category_edit(){
         if (request()->isAjax()){
             $param=$this->request->param();
-            if($param['sort_order']<0){
-                return json(array('code'=>0,'msg'=>'排序数字不能小于0'));
-            }
             if(strpos($param['image'],'base64') !== false){
                 $param['image']=base64toimg($param['image']);
             }
-            if(isset($data['is_show'])){
+            if(isset($param['is_show'])){
                 $param['is_show']=1;
             }else{
                 $param['is_show']=0;
@@ -618,11 +623,6 @@ class Commodity extends Base
         $value=$param['value'];
         Db::name($table)->where("$id=$id_value")->data([$field=>$value])->update();
     }
-
-
-
-
-
     //批量删除
     public function commodity_delAll(){
         $id = input();

@@ -71,13 +71,14 @@ class GoodCategory extends Model
              $list=$this->arr_push($good_category['parent_id'],$list);
          }
         return  $list;
-
     }
+
+
     function get_top_parentid($cate,$id){
         $arr=array();
         foreach($cate as $v){
             if($v['id']==$id){
-                $arr[]=$v;// $arr[$v['id']]=$v['name'];
+                $arr[]=$v;
                 $arr=array_merge(get_top_parentid($cate,$v['fid']),$arr);
             }
         }return $arr;
