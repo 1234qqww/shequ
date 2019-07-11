@@ -39,9 +39,7 @@ class Index extends Base
             'admin'=>$admin,
             'good'=>$good
         ]);
-
         return $this->fetch(":indexs");
     }
-
 
 }

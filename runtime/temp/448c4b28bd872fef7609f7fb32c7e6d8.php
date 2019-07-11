@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:68:"D:\xy\project\shequshop\public/../application/admin\view\\index.html";i:1562551775;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:68:"D:\xy\project\shequshop\public/../application/admin\view\\index.html";i:1562656734;}*/ ?>
 
 <!DOCTYPE html>
 <html>
@@ -76,7 +76,7 @@
         </a>
         <a href="<?php echo url('good/good'); ?>" target="rightframe">
           <div  class="left-bar-list-item usedcar usedcar_banner"  >
-            <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/shanghu.png"/>
+            <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/mendian.png"/>
             </div>
             <div class="left-bar-list-item-font"><span>商户</span></div>
           </div>
@@ -90,28 +90,28 @@
         </a>
         <a href="<?php echo url('commodity/commodity'); ?>" target="rightframe">
           <div  class="left-bar-list-item usedcar usedcar_banner"  >
-            <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/shanghu.png"/>
+            <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/shangpin.png"/>
             </div>
             <div class="left-bar-list-item-font"><span>商品</span></div>
           </div>
         </a>
         <a href="<?php echo url('order/order'); ?>" target="rightframe">
           <div  class="left-bar-list-item usedcar usedcar_banner"  >
-            <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/shanghu.png"/>
+            <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/dingdan.png"/>
             </div>
             <div class="left-bar-list-item-font"><span>订单</span></div>
           </div>
         </a>
         <a href="<?php echo url('marketing/marketing'); ?>" target="rightframe">
           <div  class="left-bar-list-item usedcar usedcar_banner"  >
-            <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/shanghu.png"/>
+            <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/yingxiao.png"/>
             </div>
             <div class="left-bar-list-item-font"><span>营销</span></div>
           </div>
         </a>
         <a href="<?php echo url('finance/finance'); ?>" target="rightframe">
           <div  class="left-bar-list-item business"  >
-            <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/yonghu.png" />
+            <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/caiwu.png" />
             </div>
             <div class="left-bar-list-item-font"><span>财务</span></div>
           </div>
@@ -121,6 +121,28 @@
             <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/guanli.png" />
             </div>
             <div class="left-bar-list-item-font"><span>管理</span></div>
+          </div>
+        </a>
+
+        <a href="<?php echo url('qudao/qudao'); ?>" target="rightframe">
+          <div  class="left-bar-list-item user"  >
+            <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/wxapp.png" />
+            </div>
+            <div class="left-bar-list-item-font"><span>渠道</span></div>
+          </div>
+        </a>
+        <a href="<?php echo url('yingyong/yingyong'); ?>" target="rightframe">
+          <div  class="left-bar-list-item user"  >
+            <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/application.png" />
+            </div>
+            <div class="left-bar-list-item-font"><span>应用</span></div>
+          </div>
+        </a>
+        <a href="<?php echo url('report/report'); ?>" target="rightframe">
+          <div  class="left-bar-list-item user"  >
+            <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/guanli.png" />
+            </div>
+            <div class="left-bar-list-item-font"><span>及时通讯</span></div>
           </div>
         </a>
         <a href="<?php echo url('system/setting'); ?>" target="rightframe" >
@@ -314,8 +336,40 @@
           <div class="line"></div>
         </div>
       </div>
-
-
+      <div class="left-bar-secendlist" id="9" style="display:none">
+        <div   class="left-bar-secendlist-items" >
+          <a href="<?php echo url('qudao/qudao'); ?>" target="rightframe">
+            <div  class="left-bar-secendlist-item" >
+              <span>小程序设置</span>
+              <img src="/easyweb/layout/static/right_lit.png" />
+            </div>
+          </a>
+          <div class="line"></div>
+        </div>
+      </div>
+<!--      <div class="left-bar-secendlist" id="10" style="display:none">-->
+<!--        <div   class="left-bar-secendlist-items" >-->
+<!--          <a href="<?php echo url('finance/finance'); ?>" target="rightframe">-->
+<!--            <div  class="left-bar-secendlist-item" >-->
+<!--              <span>充值记录</span>-->
+<!--              <img src="/easyweb/layout/static/right_lit.png" />-->
+<!--            </div>-->
+<!--          </a>-->
+<!--          <a href="<?php echo url('finance/finance'); ?>" target="rightframe">-->
+<!--            <div  class="left-bar-secendlist-item" >-->
+<!--              <span>提现明细</span>-->
+<!--              <img src="/easyweb/layout/static/right_lit.png" />-->
+<!--            </div>-->
+<!--          </a>-->
+<!--          <a href="<?php echo url('finance/finance'); ?>" target="rightframe">-->
+<!--            <div  class="left-bar-secendlist-item" >-->
+<!--              <span>积分明细</span>-->
+<!--              <img src="/easyweb/layout/static/right_lit.png" />-->
+<!--            </div>-->
+<!--          </a>-->
+<!--          <div class="line"></div>-->
+<!--        </div>-->
+<!--      </div>-->
     </div>
     <div class="right_bar_body" style="overflow: hidden;width: 100%;min-height:95%;display: flex;">
          <iframe id="mainContent" width="100%" height="100%" style="border: none" src="<?php echo url('home/welcome'); ?>" name="rightframe" title="rightframe"></iframe>
@@ -394,18 +448,14 @@
         }else {
           $('#8').hide();
         }
+        if(href=='qudao.html'){
+          $('#9').show();
+        }else {
+          $('#9').hide();
+        }
 
 
 
-
-
-
-
-
-      //
-      // $('.'+href).css({'background':'#24303C','border-radius':'3px'});
-      // $('#'+href).find('img').show();
-      // $('#'+href).css({'background':'#e9eaf0'});
 
     });
   });

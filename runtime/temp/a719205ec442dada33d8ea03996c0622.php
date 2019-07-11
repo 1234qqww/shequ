@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:81:"D:\xy\project\shequshop\public/../application/admin\view\commodity\commodity.html";i:1562549574;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:81:"D:\xy\project\shequshop\public/../application/admin\view\commodity\commodity.html";i:1562660822;}*/ ?>
 
 
 <!DOCTYPE html>
@@ -11,6 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link rel="stylesheet" href="/static/admin/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="/static/admin/style/admin.css" media="all">
+    <script src="/static/js/jquery.js"></script>
     <style>
         .layui-table-cell{
             height:60px;
@@ -22,16 +23,15 @@
         }
          .shuxin{
             margin: 0 20px;
-            color: #c0a16b;
+            color: #0e0e0e;
         }
         .shuxin1{
             margin: 0 20px;
-            color: #C00E08;
+            color: #fb0b03;
         }
     </style>
 </head>
 <body>
-
 <div class="layui-fluid">
     <div class="layui-card">
         <div class="layui-card-body">
@@ -60,13 +60,13 @@
                 {{d.goods_name}}
             </script>
             <script type="text/html" id="state">
-                <button type="button" class="layui-btn layui-btn-sm {{#  if(d.is_is_on_sale == 0){ }}layui-btn-danger{{#  } else { }}layui-btn-normal{{#  } }}">上架</button>
+                <button type="button" class="layui-btn layui-btn-sm {{#  if(d.is_on_sale == 0){ }}layui-btn-danger{{#  } else { }}layui-btn-normal{{#  } }}"  onclick="changeTableSale('goods','id','{{d.id}}','is_on_sale',this)">上架</button>
             </script>
             <script type="text/html" id="shuxin">
-                <a class="{{#  if(d.is_hot == 0){ }}shuxin{{#  } else { }}shuxin1{{#  } }}" >热卖</a>
-                <a class="{{#  if(d.is_free_shipping == 0){ }}shuxin{{#  } else { }}shuxin1{{#  } }}">包邮</a>
-                <a class="{{#  if(d.is_tuijian == 0){ }}shuxin{{#  } else { }}shuxin1{{#  } }}">推荐</a>
-                <a class="{{#  if(d.is_show == 0){ }}shuxin{{#  } else { }}shuxin1{{#  } }}">显示</a>
+                    <a class="{{#  if(d.is_hot == 0){ }}shuxin{{#  } else { }}shuxin1{{#  } }}"  onclick="changeTable('goods','id','{{d.id}}','is_hot',this)">热卖</a>
+                    <a class="{{#  if(d.is_free_shipping == 0){ }}shuxin{{#  } else { }}shuxin1{{#  } }}" onclick="changeTable('goods','id','{{d.id}}','is_free_shipping',this)">包邮</a>
+                    <a class="{{#  if(d.is_tuijian == 0){ }}shuxin{{#  } else { }}shuxin1{{#  } }}" onclick="changeTable('goods','id','{{d.id}}','is_tuijian',this)">推荐</a>
+                    <a class="{{#  if(d.is_show == 0){ }}shuxin{{#  } else { }}shuxin1{{#  } }}" onclick="changeTable('goods','id','{{d.id}}','is_show',this)">显示</a>
             </script>
             <script type="text/html" id="action">
                 <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
@@ -97,15 +97,27 @@
             ,{title: '属性',toolbar: '#shuxin'}
             ,{title: '操作', width: 200, align: 'center', fixed: 'right', toolbar: '#action'}
         ]];
-
         base_table(table,'list','<?php echo url("commodity/commodity"); ?>',cols);
+        form.on('submit(search)', function (data) {
+            var field = data.field;
+            //执行重载
+            table.reload('list', {
+                where: field,
+                page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+            });
+        });
+
+
         table.on('tool(list)',function(obj){
             var data=obj.data;
+            console.log(data);
             if(obj.event=='del'){
                 if(obj.event=='del'){
-                    layer.confirm('确定删除此角色？', function(index){
-                        post_json={role_id:data.role_id};
-                        var result=ajax_post($,'<?php echo url("admin/del_role"); ?>',post_json);
+                    layer.confirm('确定删除此商品？', function(index){
+                        post_json={id:data.id};
+                        var result=ajax_post($,'<?php echo url("commodity/del_commodity"); ?>',post_json);
                         if(result.code==1){
                             layer.msg(result.msg,{icon:1},function(){
                                 obj.del();
@@ -120,20 +132,19 @@
                 layer.open({
                     type: 2
                     ,title: '编辑角色'
-                    ,content: '/admin/admin/edit_role/role_id/'+data.role_id
-                    ,area: ['800px', '800px']
+                    ,content:'/admin/commodity/edit_commodity/id/'+data.id
+                    ,area: ['100%', '100%']
                     ,btn: ['确定', '取消']
                     ,yes: function(index, layero){
                         var iframeWindow = window['layui-layer-iframe'+ index]
                             ,submit = layero.find('iframe').contents().find("#edit");
-
                         //监听提交
                         iframeWindow.layui.form.on('submit(edit)', function(data){
                             console.log(data)
                             var field = data.field; //获取提交的字段
                             console.log(field)
                             //提交 Ajax 成功后，静态更新表格中的数据
-                            var result=ajax_post($,'<?php echo url('admin/edit_role'); ?>',field);
+                            var result=ajax_post($,"<?php echo url('commodity/edit_commodity'); ?>",field);
                             if(result.code==1){
                                 layer.msg(result.msg,{icon:1},function(){
                                     table.reload('list');
@@ -157,27 +168,45 @@
                     area:['300px','300px'],
                     content: '<img width="100%" height="300px" src="'+data.original_img+'">'
                 });
+            }else if(obj.event='is_hot'){
+                    console.log('111');
             }
         })
         //事件
         var active = {
             batchdel: function(){
-                var checkStatus = table.checkStatus('LAY-user-back-role')
+                var checkStatus = table.checkStatus('list')
                     ,checkData = checkStatus.data; //得到选中的数据
+                console.log(checkData);
                 if(checkData.length === 0){
                     return layer.msg('请选择数据');
                 }
-                layer.confirm('确定删除吗？', function(index) {
-                    //执行 Ajax 后重载
-                    /*
-                    admin.req({
-                      url: 'xxx'
-                      //,……
-                    });
-                    */
-                    table.reload('LAY-user-back-role');
-                    layer.msg('已删除');
+
+                var idList=[];
+
+                checkData.forEach(function(n,i){
+                    idList.push(n.id);
+
                 });
+
+
+
+//             var a=JSON.stringify(idList);
+                layer.confirm('确定删除吗？', function(index) {
+                    $.ajax({
+                        url: 'commodity_delAll',
+                        type: 'post',
+                        dataType:'json',
+                        data:{"id":idList},
+                        success: function (data) {
+                            if(data.code==1){
+                                table.reload('list');
+                                layer.msg('删除成功');
+                            }
+                        }
+                    });
+                });
+
             },
             add: function(){
                 layer.open({
@@ -187,27 +216,27 @@
                     ,area: ['100%', '100%']
                     ,btn: ['确定', '取消']
                     ,yes: function(index, layero){
-                    var iframeWindow = window['layui-layer-iframe'+ index]
-                        ,submit = layero.find('iframe').contents().find("#add");
-                    // 监听提交
-                    iframeWindow.layui.form.on('submit(add1)', function(data){
-                        console.log(data);
-                        var field = data.field; //获取提交的字段
-                        console.log(field)
-                        //提交 Ajax 成功后，静态更新表格中的数据
-                        var result=ajax_post($,'<?php echo url("commodity/add_commodity"); ?>',field);
-                        if(result.code==1){
-                            layer.msg(result.msg,{icon:1},function(){
-                                table.reload('list');
-                                layer.close(index); //关闭弹层
-                            })
-                        }else{
-                            layer.alert(result.msg,{icon:2});
-                        }
-                    });
-                    submit.trigger('click');
-                }
-            });
+                        var iframeWindow = window['layui-layer-iframe'+ index]
+                            ,submit = layero.find('iframe').contents().find("#add");
+                        // 监听提交
+                        iframeWindow.layui.form.on('submit(add1)', function(data){
+                            console.log(data);
+                            var field = data.field; //获取提交的字段
+                            console.log(field)
+                            //提交 Ajax 成功后，静态更新表格中的数据
+                            var result=ajax_post($,'<?php echo url("commodity/add_commodity"); ?>',field);
+                            if(result.code==1){
+                                layer.msg(result.msg,{icon:1},function(){
+                                    table.reload('list');
+                                    layer.close(index); //关闭弹层
+                                })
+                            }else{
+                                layer.alert(result.msg,{icon:2});
+                            }
+                        });
+                        submit.trigger('click');
+                    }
+                });
             }
         }
         $('.layui-btn.layuiadmin-btn-role').on('click', function(){
@@ -215,6 +244,49 @@
             active[type] ? active[type].call(this) : '';
         });
     });
+</script>
+<script>
+  function  changeTable(table,id_name,id_value,field,obj){
+      var src = "";
+      if($(obj).hasClass('shuxin')) // 图片点击是否操作
+      {
+          $(obj).removeClass('shuxin').addClass('shuxin1');
+          var value = 1;
+      }else if($(obj).hasClass('shuxin1')){ // 图片点击是否操作
+          $(obj).removeClass('shuxin1').addClass('shuxin');
+          var value = 0;
+      }else{ // 其他输入框操作
+          var value = $(obj).val();
+      }
+      $.ajax({
+          url:"changeTableVal?table="+table+'&id='+id_name+'&id_value='+id_value+'&field='+field+'&value='+value,
+      });
+
+  }
+
+
+  function changeTableSale(table,id_name,id_value,field,obj) {
+      var src = "";
+      if($(obj).hasClass('layui-btn-danger')) // 图片点击是否操作
+      {
+          $(obj).removeClass('layui-btn-danger').addClass('layui-btn-normal').html('上架');
+          var value = 1;
+      }else if($(obj).hasClass('layui-btn-normal')){ // 图片点击是否操作
+          $(obj).removeClass('layui-btn-normal').addClass('layui-btn-danger').html('下架');
+          var value = 0;
+      }else{ // 其他输入框操作
+          var value = $(obj).val();
+      }
+      $.ajax({
+          url:"changeTableVal?table="+table+'&id='+id_name+'&id_value='+id_value+'&field='+field+'&value='+value,
+      });
+  }
+
+
+
+
+
+
 </script>
 </body>
 </html>

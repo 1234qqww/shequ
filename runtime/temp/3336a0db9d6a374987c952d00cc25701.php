@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:85:"D:\xy\project\shequshop\public/../application/admin\view\commodity\add_commodity.html";i:1562319413;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:85:"D:\xy\project\shequshop\public/../application/admin\view\commodity\add_commodity.html";i:1562651785;}*/ ?>
 
 
 <!DOCTYPE html>
@@ -578,10 +578,10 @@
 //                    key=$(lv1Arr[j]).val();
 //                    key=$(lv1Arr[j]).attr('data-id');
                 }
-                tableHTML += '<td width="20"><input type="text" name="' + value + '|sku_market_price" value="' + '"/></td>';
-                tableHTML += '<td width="20"><input type="text" name="' + value + '|sku_shop_price"  value="' + '" /></td>';
-                tableHTML += '<td width="20"><input type="text" name="' + value + '|sku_cost_price"  value="' + '" /></td>';
-                tableHTML += '<td width="20"><input type="text" name="' + value + '|sku_store_count"  value="' + '" /></td>';
+                tableHTML += '<td width="20"><input type="text" name="' + name + '|sku_market_price" value="' + '"/></td>';
+                tableHTML += '<td width="20"><input type="text" name="' + name + '|sku_shop_price"  value="' + '" /></td>';
+                tableHTML += '<td width="20"><input type="text" name="' + name + '|sku_cost_price"  value="' + '" /></td>';
+                tableHTML += '<td width="20"><input type="text" name="' + name + '|sku_store_count"  value="' + '" /></td>';
                 tableHTML += '</tr>';
             }
             tableHTML += '</tbody>';
@@ -624,7 +624,6 @@
                 }
             });
         }
-
         function create_attr_id(key,value) {
             console.log(key,value);
             $('.item-attr input[name=lv1]').each(function (index,ele) {
@@ -634,9 +633,8 @@
                 $(ele).attr('data-id',value[index]);
             });
             update_table();
-            $('#save_product').show();
+            // $('#save_product').show();
         }
-
     });
 </script>
 </body>
