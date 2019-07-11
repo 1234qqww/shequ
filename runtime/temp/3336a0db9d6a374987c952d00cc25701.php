@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:85:"D:\xy\project\shequshop\public/../application/admin\view\commodity\add_commodity.html";i:1562651785;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:85:"D:\xy\project\shequshop\public/../application/admin\view\commodity\add_commodity.html";i:1562740946;}*/ ?>
 
 
 <!DOCTYPE html>
@@ -189,7 +189,12 @@
                             <input type="checkbox" name="is_hot"  lay-skin="switch" lay-text="是|否">
                         </div>
                     </div>
-
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">是否新品</label>
+                        <div class="layui-input-block">
+                            <input type="checkbox" name="is_newshop"  lay-skin="switch" lay-text="是|否">
+                        </div>
+                    </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">是否上架</label>
                         <div class="layui-input-block">

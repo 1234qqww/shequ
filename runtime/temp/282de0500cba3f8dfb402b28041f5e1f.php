@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:80:"D:\xy\project\shequshop\public/../application/admin\view\banner\edit_banner.html";i:1560737525;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:80:"D:\xy\project\shequshop\public/../application/admin\view\banner\edit_banner.html";i:1562722100;}*/ ?>
 
 
 <!DOCTYPE html>
@@ -26,6 +26,15 @@
         <label class="layui-form-label">显示状态</label>
         <div class="layui-input-block">
             <input type="checkbox" name="display" <?php if($data['display']==1): ?>checked<?php endif; ?> lay-skin="switch" lay-text="显示|隐藏">
+        </div>
+    </div>
+    <div class="layui-form-item" id="menu_one" >
+        <label class="layui-form-label">展示位置</label>
+        <div class="layui-input-inline">
+            <select name="position">
+                <option value="1" <?php if($data['position']==1): ?>selected<?php endif; ?>>商城首页</option>
+                <option value="2"  <?php if($data['position']==2): ?>selected<?php endif; ?>>话题首页</option>
+            </select>
         </div>
     </div>
     <div class="layui-form-item">

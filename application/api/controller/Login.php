@@ -50,34 +50,6 @@ class Login extends   Base
 //    }
 
 
-    //广告图
-    public function banner(){
-
-    $param=$this->request->param();
-    if(!$param['userid']){
-        return  json(array('code'=>0,'msg'=>'非法操作'));
-    }
-    $banner_config=Config::get('banner_config');
-    return json(array('code'=>1,'data'=>$banner_config['bannerimg']));
-
-    }
-
-    //关于我们
-    public function weimen(){
-        $param=$this->request->param();
-        if(!$param['userid']){
-            return  json(array('code'=>0,'msg'=>'非法操作'));
-        }
-        $weimen_config=Config::get('weimen_config');
-        return json(array('code'=>1,'data'=>$weimen_config['content']));
-
-    }
-
-    //首页广告图
-    public function slide(){
-       $slide=Db::name('slide')->order('order desc')->field('imgs')->select();
-       return json(array('code'=>1,'data'=>$slide));
-    }
 
 
 

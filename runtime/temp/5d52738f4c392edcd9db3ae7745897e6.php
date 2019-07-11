@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:85:"D:\xy\project\shequshop\public/../application/admin\view\commodity\commodity_del.html";i:1562660223;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:85:"D:\xy\project\shequshop\public/../application/admin\view\commodity\commodity_del.html";i:1562740866;}*/ ?>
 
 
 <!DOCTYPE html>
@@ -63,6 +63,7 @@
                 <a class="{{#  if(d.is_free_shipping == 0){ }}shuxin{{#  } else { }}shuxin1{{#  } }}" onclick="changeTable('goods','id','{{d.id}}','is_free_shipping',this)">包邮</a>
                 <a class="{{#  if(d.is_tuijian == 0){ }}shuxin{{#  } else { }}shuxin1{{#  } }}" onclick="changeTable('goods','id','{{d.id}}','is_tuijian',this)">推荐</a>
                 <a class="{{#  if(d.is_show == 0){ }}shuxin{{#  } else { }}shuxin1{{#  } }}" onclick="changeTable('goods','id','{{d.id}}','is_show',this)">显示</a>
+                <a class="{{#  if(d.is_newshop == 0){ }}shuxin{{#  } else { }}shuxin1{{#  } }}" onclick="changeTable('goods','id','{{d.id}}','is_newshop',this)">新品</a>
             </script>
             <script type="text/html" id="action">
                 <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-util"></i>恢复</a>

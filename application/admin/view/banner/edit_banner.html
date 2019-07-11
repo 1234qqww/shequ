@@ -27,6 +27,15 @@
             <input type="checkbox" name="display" {if $data.display==1}checked{/if} lay-skin="switch" lay-text="显示|隐藏">
         </div>
     </div>
+    <div class="layui-form-item" id="menu_one" >
+        <label class="layui-form-label">展示位置</label>
+        <div class="layui-input-inline">
+            <select name="position">
+                <option value="1" {if  $data.position==1}selected{/if}>商城首页</option>
+                <option value="2"  {if  $data.position==2}selected{/if}>话题首页</option>
+            </select>
+        </div>
+    </div>
     <div class="layui-form-item">
         <label class="layui-form-label">更改图片</label>
         <div class="layui-input-block">

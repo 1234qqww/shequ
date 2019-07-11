@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:85:"D:\xy\project\shequshop\public/../application/admin\view\commodity\category_edit.html";i:1561960493;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:85:"D:\xy\project\shequshop\public/../application/admin\view\commodity\category_edit.html";i:1561960533;}*/ ?>
 
 <!DOCTYPE html>
 <html>
@@ -15,10 +15,10 @@
     <div class="layui-form-item">
         <label class="layui-form-label">分类名称</label>
         <div class="layui-input-inline">
-            <input type="text"  name="name"  lay-verify="required" value="<?php echo $data['name']; ?>" autocomplete="off" class="layui-input" onchange="alert('21')" >
+            <input type="text"  name="name"  lay-verify="required" value="<?php echo $data['name']; ?>" autocomplete="off" class="layui-input">
             <input type="hidden" name="id" value="<?php echo $data['id']; ?>">
         </div>
-    </div>\
+    </div>
     <div class="layui-form-item">
         <label class="layui-form-label">排序</label>
         <div class="layui-input-inline">

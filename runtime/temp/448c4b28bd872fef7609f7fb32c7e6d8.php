@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:68:"D:\xy\project\shequshop\public/../application/admin\view\\index.html";i:1562656734;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:68:"D:\xy\project\shequshop\public/../application/admin\view\\index.html";i:1562726518;}*/ ?>
 
 <!DOCTYPE html>
 <html>
@@ -116,14 +116,13 @@
             <div class="left-bar-list-item-font"><span>财务</span></div>
           </div>
         </a>
-        <a href="<?php echo url('banner/banner'); ?>" target="rightframe">
+        <a href="<?php echo url('banner/slide'); ?>" target="rightframe">
           <div  class="left-bar-list-item user"  >
             <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/guanli.png" />
             </div>
             <div class="left-bar-list-item-font"><span>管理</span></div>
           </div>
         </a>
-
         <a href="<?php echo url('qudao/qudao'); ?>" target="rightframe">
           <div  class="left-bar-list-item user"  >
             <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/wxapp.png" />
@@ -170,13 +169,6 @@
       </div>
       <div class="left-bar-secendlist " id="2" style="display:none">
         <div   class="left-bar-secendlist-items" >
-          <a  href="<?php echo url('banner/banner'); ?>" target="rightframe">
-            <div  class="left-bar-secendlist-item" id="usedcar">
-              <span>广告设置</span>
-              <img src="/easyweb/layout/static/right_lit.png" />
-            </div>
-          </a>
-
           <a href="<?php echo url('banner/slide'); ?>" target="rightframe">
             <div  class="left-bar-secendlist-item" id="usedcar_banner">
               <span>轮播图管理</span>
@@ -347,59 +339,16 @@
           <div class="line"></div>
         </div>
       </div>
-<!--      <div class="left-bar-secendlist" id="10" style="display:none">-->
-<!--        <div   class="left-bar-secendlist-items" >-->
-<!--          <a href="<?php echo url('finance/finance'); ?>" target="rightframe">-->
-<!--            <div  class="left-bar-secendlist-item" >-->
-<!--              <span>充值记录</span>-->
-<!--              <img src="/easyweb/layout/static/right_lit.png" />-->
-<!--            </div>-->
-<!--          </a>-->
-<!--          <a href="<?php echo url('finance/finance'); ?>" target="rightframe">-->
-<!--            <div  class="left-bar-secendlist-item" >-->
-<!--              <span>提现明细</span>-->
-<!--              <img src="/easyweb/layout/static/right_lit.png" />-->
-<!--            </div>-->
-<!--          </a>-->
-<!--          <a href="<?php echo url('finance/finance'); ?>" target="rightframe">-->
-<!--            <div  class="left-bar-secendlist-item" >-->
-<!--              <span>积分明细</span>-->
-<!--              <img src="/easyweb/layout/static/right_lit.png" />-->
-<!--            </div>-->
-<!--          </a>-->
-<!--          <div class="line"></div>-->
-<!--        </div>-->
-<!--      </div>-->
+
     </div>
     <div class="right_bar_body" style="overflow: hidden;width: 100%;min-height:95%;display: flex;">
          <iframe id="mainContent" width="100%" height="100%" style="border: none" src="<?php echo url('home/welcome'); ?>" name="rightframe" title="rightframe"></iframe>
     </div>
   </div>
 </div>
-<!-- 加载动画，移除位置在common.js中 -->
-<!--<div class="page-loading">-->
-<!--  <div class="ball-loader">-->
-<!--        <span>-->
-<!--            <img src="/layout/static/test.jpg" alt="">-->
-<!--        </span>-->
-<!--    <span>-->
-<!--            <img src="/layout/static/test.jpg" alt="">-->
-<!--        </span>-->
-<!--    <span>-->
-<!--            <img src="/layout/static/test.jpg" alt="">-->
-<!--        </span>-->
-<!--    <span>-->
-<!--            <img src="/layout/static/test.jpg" alt="">-->
-<!--        </span>-->
-<!--  </div>-->
-<!--</div>-->
+
 </body>
 <script>
-  // var domain = document.location.href;
-  // var i = domain.lastIndexOf('/');
-  // if(href == 'usedcar' || href =='usedcar_banner'){
-  //   $('#2').show();
-  // }
 </script>
 <script>
   $(function () {
@@ -413,7 +362,7 @@
         }else {
           $('#1').hide();
         }
-        if(href == 'banner.html' || href == 'slide.html' ){
+        if(href == 'slide.html' ){
           $('#2').show();
         }else {
           $('#2').hide();
