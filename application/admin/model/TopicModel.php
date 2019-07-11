@@ -2,19 +2,18 @@
 
 namespace app\admin\model;
 use think\Model;
-use think\Db;
-class SubjectModel extends Model {
-    protected $table='httc_subject';  //表名称
+class TopicModel extends Model {
+    protected $table='httc_topic';  //表名称
 
     /**
-     * 分类全部数据
+     * 标题全部数据
      */
     public function lists($param){
         $page = empty($param['page'])?0:$param['page'];
         $limit = empty($param['limit'])?20:$param['limit'];
         $query=$this;
         if(!empty($param['key'])){
-            $query = $query->where('title','like',"%{$param['key']}%");
+            $query = $query->where('head','like',"%{$param['key']}%");
         }
         $data=$query->page($page)->limit($limit)->select();
         return ['data'=>$data,'count'=>count($data)];

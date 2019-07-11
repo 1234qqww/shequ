@@ -93,7 +93,7 @@
     // 渲染表格
     var insTb = table.render({
       elem: '#userTable',
-      url: "{:url('subject/lists')}",
+      url: "{:url('subject/topiclist')}",
       page: true,
       cellMinWidth: 100,
       cols: [[
@@ -111,7 +111,7 @@
         ,area: ['40%', '40%']
         ,shade: 0.2
         ,maxmin: true
-        ,content:"{:url('subject/add_subject')}"
+        ,content:"{:url('subject/add_topic')}"
         ,btn: ['保存关闭', '取消'] //只是为了演示
         ,yes: function(){
           var index = parent.layer.getFrameIndex()
