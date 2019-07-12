@@ -5,7 +5,7 @@ use think\Controller;
 
 class Report extends Controller
 {
-    public function index(){
+    public function Report(){
         return $this->fetch('index');
     }
 }

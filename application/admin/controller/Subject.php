@@ -21,7 +21,7 @@ class Subject extends Controller
      * @return mixed
      * 主界面
      */
-    public function index(){
+    public function subject(){
         return $this->fetch('index');
     }
     public function lists(){
