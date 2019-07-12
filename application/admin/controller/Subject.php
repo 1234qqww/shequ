@@ -89,35 +89,19 @@ class Subject extends Controller
     /**
      * 上传视屏
      */
-    public function upload_file()
-
-    {
-        // 获取表单上传文件 例如上传了001.jpg
-        $file = request()->file('image');
-        $test=request()->post("test");
-        echo $file;
-        return;
-        $src=[];//返回文件路径
-        // 移动到框架应用根目录/public/uploads/ 目录下
-        if($file){
-            $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads');
-            if($info){
-                // 成功上传后 获取上传信息
-                // 输出 jpg
-                $info->getExtension();
-                // 输出 20160820/42a79759f284b767dfcb2a0197904287.jpg
-                $info->getSaveName();
-                // 输出 42a79759f284b767dfcb2a0197904287.jpg
-                $info->getFilename();
-
-                $src["src"]=DS.'public'.DS.'uploads'.DS.$info->getSaveName();
-            }else{
-                // 上传失败获取错误信息
-                $file->getError();
+    public function update(Request $request){
+        $file = $request->file('file');
+        // 判断文件是否上传
+        if ($file) {
+            // 获取后缀名
+            $ext=$file->getClientOriginalExtension();
+            // 新的文件名
+            $newFile=date('YmdHis',time()).'_'.rand().".".$ext;
+            // 上传文件操作
+            $path = public_path().'/cert/';
+            if($file->move($path,$newFile)){
+                return json_encode(['code'=>0,'msg'=>'文件信息','url'=>$newFile]);
             }
-        };
-        return json_encode($src);
-
-
+        }
     }
 }
