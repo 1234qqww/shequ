@@ -1,5 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:68:"D:\xy\project\shequshop\public/../application/admin\view\\index.html";i:1562726518;}*/ ?>
-
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:68:"D:\xy\project\shequshop\public/../application/admin\view\\index.html";i:1562900630;}*/ ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -76,7 +75,7 @@
         </a>
         <a href="<?php echo url('good/good'); ?>" target="rightframe">
           <div  class="left-bar-list-item usedcar usedcar_banner"  >
-            <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/mendian.png"/>
+            <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/shanghu.png"/>
             </div>
             <div class="left-bar-list-item-font"><span>商户</span></div>
           </div>
@@ -116,7 +115,14 @@
             <div class="left-bar-list-item-font"><span>财务</span></div>
           </div>
         </a>
-        <a href="<?php echo url('banner/slide'); ?>" target="rightframe">
+        <a href="<?php echo url('subject/subject'); ?>" target="rightframe">
+          <div  class="left-bar-list-item business"  >
+            <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/yonghu.png" />
+            </div>
+            <div class="left-bar-list-item-font"><span>话题</span></div>
+          </div>
+        </a>
+        <a href="<?php echo url('banner/banner'); ?>" target="rightframe">
           <div  class="left-bar-list-item user"  >
             <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/guanli.png" />
             </div>
@@ -330,16 +336,21 @@
       </div>
       <div class="left-bar-secendlist" id="9" style="display:none">
         <div   class="left-bar-secendlist-items" >
-          <a href="<?php echo url('qudao/qudao'); ?>" target="rightframe">
+          <a href="<?php echo url('subject/subject'); ?>" target="rightframe">
             <div  class="left-bar-secendlist-item" >
-              <span>小程序设置</span>
+              <span>话题分类</span>
+              <img src="/easyweb/layout/static/right_lit.png" />
+            </div>
+          </a>
+          <a href="<?php echo url('subject/topic'); ?>" target="rightframe">
+            <div  class="left-bar-secendlist-item" >
+              <span>话题</span>
               <img src="/easyweb/layout/static/right_lit.png" />
             </div>
           </a>
           <div class="line"></div>
         </div>
       </div>
-
     </div>
     <div class="right_bar_body" style="overflow: hidden;width: 100%;min-height:95%;display: flex;">
          <iframe id="mainContent" width="100%" height="100%" style="border: none" src="<?php echo url('home/welcome'); ?>" name="rightframe" title="rightframe"></iframe>
@@ -397,14 +408,23 @@
         }else {
           $('#8').hide();
         }
-        if(href=='qudao.html'){
-          $('#9').show();
-        }else {
-          $('#9').hide();
-        }
+      if(href=='subject.html' || href=='topic.html'){
+        $('#9').show();
+      }else{
+        $('#9').hide();
+      }
 
 
 
+
+
+
+
+
+      //
+      // $('.'+href).css({'background':'#24303C','border-radius':'3px'});
+      // $('#'+href).find('img').show();
+      // $('#'+href).css({'background':'#e9eaf0'});
 
     });
   });
