@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:68:"D:\xy\project\shequshop\public/../application/admin\view\\index.html";i:1562900630;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:68:"D:\xy\project\shequshop\public/../application/admin\view\\index.html";i:1562979849;}*/ ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -293,12 +293,6 @@
           <a href="<?php echo url('marketing/marketing'); ?>" target="rightframe">
             <div  class="left-bar-secendlist-item" >
               <span>满额立减</span>
-              <img src="/easyweb/layout/static/right_lit.png" />
-            </div>
-          </a>
-          <a href="<?php echo url('marketing/marketing'); ?>" target="rightframe">
-            <div  class="left-bar-secendlist-item" >
-              <span>满额包邮</span>
               <img src="/easyweb/layout/static/right_lit.png" />
             </div>
           </a>
