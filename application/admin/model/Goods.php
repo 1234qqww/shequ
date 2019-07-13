@@ -3,13 +3,12 @@
 
 namespace app\admin\model;
 
-
-use app\admin\controller\Base;
 use think\Db;
+use think\Model;
 
-class Goods extends Base
+class Goods extends Model
 {
-
+    protected $table='hhtc_goods';  //表名称
     //商品列表
     public function goods($where){
       return Db::name('goods')->where($where)->order('sort desc')->paginate(15);
@@ -27,6 +26,25 @@ class Goods extends Base
 
       return  Db::name('goods')->where($id)->data(['state'=>$state])->update();
 
+    }
+    /**
+     * 全部数据
+     */
+    public function goodshops($param){
+        $page = empty($param['page'])?0:$param['page'];
+        $limit = empty($param['limit'])?20:$param['limit'];
+        $query=$this;
+        if(!empty($param['key'])){
+            $query = $query->where('goods_name','like',"%{$param['key']}%");
+        }
+        $data=$query->where('is_on_sale',1)->page($page)->limit($limit)->select();
+        return ['data'=>$data,'count'=>count($data)];
+    }
+    /**
+     * 商品详情
+     */
+    public function onedata($id){
+        return $this->where('id',$id)->find();
     }
 
 
