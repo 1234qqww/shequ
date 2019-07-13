@@ -34,8 +34,10 @@ class Marketing extends Base
                 $data['good_id']=-1;        //超级管理员添加商品商户id为-1
             }
             $mark=Db::name('goods_marketing')->where(['good_id'=>$data['good_id']])->find();
+
             if($mark){
                 Db::name('goods_marketing')->where(['id'=>$mark['id']])->data($data)->update();
+                return ['code'=>1,'msg'=>'修改成功'];
             }
             $marketing=Db::name('goods_marketing') ->insert($data);
             return $marketing?['code'=>1,'msg'=>'添加成功']:['code'=>0,'msg'=>'添加失败'];
@@ -56,11 +58,111 @@ class Marketing extends Base
 
 
     //满额包邮
-    public function shipping(){
+    public function youhuijuan(){
+        if(request()->isAjax()){
+            $get=input();
+            $admin=session('admin');
+            $where=array();
+            if($admin['role_id']!=1){
+                $where['goods_id']=session('good');
+            }else{
+                $where['goods_id']=-1;        //超级管理员id为-1
+            }
+            if(isset($get['dis_name']) && $get['dis_name']!=''){
+                $where['dis_name']=array('like','%'.$get['dis_name'].'%');
+            }
+//
+
+            return  Db::name('goods_discount')->where($where)->order('order asc')->paginate(15);
+
+        }
+
+
+         return $this->fetch();
+    }
+
+    //添加优惠卷
+
+
+    public function youhuijuan_add(){
+        if (request()->isAjax()){
+            $param=$this->request->param();
+            $admin=session('admin');
+            if($admin['role_id']!=1){
+                $param['goods_id']=session('good');
+            }else{
+                $param['goods_id']=-1;          //超级管理员id为-1
+            }
+            if(!preg_match(   "/^\d+(?:\.\d{0,2})?$/",$param['satisfy'])){
+                return json(array('code'=>0,'msg'=>'请输入正确的格式哦！'));
+            }
+            if(!preg_match(   "/^\d+(?:\.\d{0,2})?$/",$param['reduction'])){
+                return json(array('code'=>0,'msg'=>'请输入正确的优惠金额格式！'));
+            }
+            if(!preg_match(   "/^(0|[1-9][0-9]*)$/",$param['total'])){
+                return json(array('code'=>0,'msg'=>'请数字正确的发行总数！'));
+            }
+            if(empty($param['time'])){
+                return json(['code'=>0,'msg'=>'请选择使用时间限制']);
+            }
+            $one=explode('-',$param['time'],4);
+
+
+//            $param['start_time']=strtotime($one[0].'-'.$one[1].'-'.$one[2]);
+            $param['start_time']=$one[0].'-'.$one[1].'-'.$one[2];
+
+//            $param['end_time']=strtotime($one[3]);
+            $param['end_time']=$one[3];
+            unset($param['time']);
+
+            $goods_discount=Db::name('goods_discount')->insert($param);
+            return  $goods_discount?['code'=>1,'msg'=>'添加成功']:['code'=>0,'msg'=>'添加失败'];
+
+        }
+
+
+        return $this->fetch();
+    }
+
+
+    //编辑优惠卷
+    public function youhuijuan_edit(){
+        if(request()->isAjax()){
+            $param=$this->request->param();
+
+            if(!preg_match(   "/^\d+(?:\.\d{0,2})?$/",$param['satisfy'])){
+                return json(array('code'=>0,'msg'=>'请输入正确的格式哦！'));
+            }
+            if(!preg_match(   "/^\d+(?:\.\d{0,2})?$/",$param['reduction'])){
+                return json(array('code'=>0,'msg'=>'请输入正确的优惠金额格式！'));
+            }
+            if(!preg_match(   "/^(0|[1-9][0-9]*)$/",$param['total'])){
+                return json(array('code'=>0,'msg'=>'请数字正确的发行总数！'));
+            }
+            if(empty($param['time'])){
+                return json(['code'=>0,'msg'=>'请选择使用时间限制']);
+            }
+            $one=explode('-',$param['time'],4);
+            $param['start_time']=$one[0].'-'.$one[1].'-'.$one[2];
+            $param['end_time']=$one[3];
+            unset($param['time']);
+
+            $goods_discount=Db::name('goods_discount')->where(['id'=>$param['id']])->data($param)->update();
+
+            return  $goods_discount?['code'=>1,'msg'=>'修改成功']:['code'=>0,'msg'=>'修改失败'];
 
 
 
 
+
+
+        }
+
+        $goods_discount= Db::name('goods_discount')->where(input())->find();
+
+        $this->assign([
+            'vo'=>$goods_discount
+        ]);
         return $this->fetch();
     }
 

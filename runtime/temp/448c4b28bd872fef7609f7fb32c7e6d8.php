@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:68:"D:\xy\project\shequshop\public/../application/admin\view\\index.html";i:1562979849;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:68:"D:\xy\project\shequshop\public/../application/admin\view\\index.html";i:1562994566;}*/ ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -147,7 +147,7 @@
           <div  class="left-bar-list-item user"  >
             <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/guanli.png" />
             </div>
-            <div class="left-bar-list-item-font"><span>及时通讯</span></div>
+            <div class="left-bar-list-item-font"><span>通讯</span></div>
           </div>
         </a>
         <a href="<?php echo url('system/setting'); ?>" target="rightframe" >
@@ -296,7 +296,7 @@
               <img src="/easyweb/layout/static/right_lit.png" />
             </div>
           </a>
-          <a href="<?php echo url('marketing/marketing'); ?>" target="rightframe">
+          <a href="<?php echo url('marketing/youhuijuan'); ?>" target="rightframe">
             <div  class="left-bar-secendlist-item" >
               <span>优惠卷</span>
               <img src="/easyweb/layout/static/right_lit.png" />
@@ -392,7 +392,7 @@
         }else{
           $('#6').hide();
         }
-        if(href=='marketing.html'){
+        if(href=='marketing.html' || href=='youhuijuan.html'){
           $('#7').show();
         }else {
           $('#7').hide();
