@@ -128,7 +128,7 @@
             <div class="layui-input-block">
                 <button type="button" class="layui-btn" id="picker"><i class="layui-icon"></i>选择文件</button>
                 <button type="button" class="layui-btn" id="ctlBtn">开始上传</button>
-                <input type="hidden" value="{$topic?$topic->image:''}" >
+                <input type="hidden" value="{$topic?$topic->image:''}" id="image">
             </div>
         </div>
         <div class="layui-form-item layui-form-text">
@@ -316,13 +316,14 @@
         // 渲染表格
         // 添加
         $('#images').click(function () {
+            var goods_id=$('#goods_id').val();
             layer.open({
                 type: 2 //此处以iframe举例
                 ,title: '修改商品链接'
                 ,area: ['70%', '70%']
                 ,shade: 0.2
                 ,maxmin: true
-                ,content:"{:url('subject/shopgood')}"
+                ,content:"{:url('subject/shopgood')}?goods_id="+goods_id
                 ,btn: ['保存关闭', '取消'] //只是为了演示
                 ,yes: function(){
                     var index = parent.layer.getFrameIndex()

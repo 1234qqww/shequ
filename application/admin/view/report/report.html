@@ -1,0 +1,179 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>layuiAdmin 角色管理</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="/easyweb/assets/libs/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="/static/admin/style/admin.css" media="all">
+  <script src="/static/js/jquery.js"></script>
+  <style>
+    .layui-table-cell{
+      height:60px;
+      line-height:60px;
+    }
+    .layui-table img{
+      height: 60px;
+      width: 60px;
+    }
+    .shuxin{
+      margin: 0 20px;
+      color: #0e0e0e;
+    }
+    .shuxin1{
+      margin: 0 20px;
+      color: #fb0b03;
+    }
+  </style>
+</head>
+<body>
+
+<div class="layui-fluid" style="width:800px" id="div1">
+  <div class="layui-card" style="padding-top:40px">
+    <div class="layui-card-body">
+      {volist name="$info" id="vo"}
+        {if condition="$vo['disnate']==1"}
+        <div class="layui-form-item" >
+        {if condition="$vo['user']!=null"}
+        <div style="text-align: center;height: 50px;" >{$vo['time']}</div>
+        <label class="layui-form-label" style="float:right"><img src="{$vo['goods']['pic']}" alt="" style="width:50px;height:50px;border-radius: 50px"></label>
+        <div class="layui-input-block" style="float:right;margin-top: 20px;" >
+          {if condition="$vo['flag']==0"}
+          <div>{$vo['text']}</div>
+          {else}
+          <div><img src="{$vo['text']}" alt="" style="width:50px;height:50px"> </div>
+          {/if}
+        </div>
+        {/if}
+      </div>
+        {else}
+          <div class="layui-form-item">
+            {if condition="$vo['user']!=null"}
+            <div style="text-align: center;height: 50px;" >{$vo['time']}</div>
+            <label class="layui-form-label"><img src="{$vo['user']['userImg']}" alt="" style="width:50px;height:50px;border-radius: 50px"></label>
+            <div class="layui-input-block"  style="margin-top: 20px;">
+              {if condition="$vo['flag']==0"}
+              <div>{$vo['text']}</div>
+              {else}
+              <div><img src="{$vo['text']}" alt="" style="width:50px;height:50px"> </div>
+              {/if}
+            </div>
+            {/if}
+          </div>
+        {/if}
+
+
+      {/volist}
+      <form class="layui-form" style="max-width: 700px"  action="" onsubmit="return false;" id="deploy">
+        <div class="layui-form-item" style="margin-top:30px">
+          <label class="layui-form-label">回复</label>
+          <div class="layui-input-block">
+            <button type="button" class="layui-btn" id="test1" style="display: inline;float: right">上传图片</button>
+            <input type="text" name="text" id="text" placeholder="发送消息" value="" class="layui-input"
+                   lay-verify="required" style="width:80%" required/>
+
+            <input type="hidden" id="texts" name="texts" value="">
+            <input type="hidden" value="{$store_id}" id="store_id">
+            <input type="hidden" value="{$user_id}" id="user_id">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <div class="layui-input-block">
+            <button class="layui-btn" lay-submit="" lay-filter="demo1" id="demo1">回复</button>
+            <button class="layui-btn" lay-submit="" lay-filter="demo1" id="demo2">刷新</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- 表格状态列 -->
+<script type="text/html" id="tableState">
+  <input type="checkbox" lay-filter="ckState" value="{{d.userId}}" lay-skin="switch"
+         lay-text="正常|锁定" {{d.state==0?'checked':''}}/>
+</script>
+<!-- js部分 -->
+<script type="text/javascript" src="__STATIC__/admin/layui/layui.js"></script>
+<script type="text/javascript" src="/easyweb/assets//js/common.js?v=304"></script>
+<script type="text/javascript" src="/easyweb/assets/libs/jquery/jquery-3.2.1.min.js"></script>
+<script>
+  $(function(){
+    $(document).scrollTop($(document).height());
+
+    function showAuto(){
+      location.reload()
+    }
+    $('#demo2').click(function(){
+      setInterval(showAuto(), 1);
+    })
+    var store_id=$('#store_id').val();
+    var user_id=$('#user_id').val();
+    var disnate=1
+    $.post("{:url('report/readstore')}", {user_id:user_id,store_id:store_id,disnate:disnate},function (data) {
+
+    })
+  })
+  layui.use(['layer', 'form', 'table', 'util', 'admin', 'formSelects'], function () {
+    var $ = layui.jquery;
+    var layer = layui.layer;
+    var form = layui.form;
+    var table = layui.table;
+    var util = layui.util;
+    var admin = layui.admin;
+    var formSelects = layui.formSelects;
+    var store_id=$('#store_id').val();
+    var user_id=$('#user_id').val();
+    //监听行工具事件
+    $('#demo2').click(function(){
+      $.post("{:url('report/reports')}",
+              {user_id:user_id,limit:100}
+              ,function (data) {
+
+              })
+    });
+    form.on('submit(demo1)', function (data) {
+      console.log(data)
+      var text=$('#text').val();
+      if(!text){
+        layer.msg('请回复内容');
+        return;
+      }
+      $.post("{:url('report/store')}",
+        {store_id:store_id,user_id:user_id,text:text,read:0,flag:0,disnate:1}
+        ,function (data) {
+            location.reload();
+        })
+      });
+  });
+  layui.use('upload', function(){
+    var $ = layui.jquery
+            ,upload = layui.upload;
+    var store_id=$('#store_id').val();
+    var user_id=$('#user_id').val();
+    //添加驾驶证配图
+    //添加驾驶证配图
+    var uploadInst = upload.render({
+      elem: '#test1'
+      ,url: '{:url("subject/update")}'
+      ,before: function(obj){
+
+      }
+      ,done: function(res){
+        $("input[name='texts']").val(res.url);
+        var text=$("input[name='texts']").val();
+        $.post("{:url('report/store')}",
+                {user_id:user_id,store_id:store_id,text:text,read:0,flag:1,disnate:1}
+                ,function (data) {
+                  location.reload();
+                })
+      }
+    });
+  })
+</script>
+</body>
+</html>
+

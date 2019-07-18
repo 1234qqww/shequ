@@ -2,9 +2,8 @@
 
 namespace app\admin\model;
 use think\Model;
-use think\Db;
 class SubjectModel extends Model {
-    protected $table='httc_subject';  //表名称
+    protected $table='hhtc_subject';  //表名称
 
     /**
      * 分类全部数据

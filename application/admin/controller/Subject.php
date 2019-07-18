@@ -94,12 +94,23 @@ class Subject extends Controller
     /**
      * 商品列表
      */
-    public function shopgood(){
+    public function shopgood(Request $request){
+        $param=$request->param();
+        if(isset($param['goods_id'])){
+            $this->assign('goods_id',$param['goods_id']);
+        }else{
+            $this->assign('goods_id','');
+        }
         return $this->fetch('shopgood');
     }
     public function shopgoodlist(Request $request){
         $param=$request->param();
         $data=$this->goods->goodshops($param);
+        foreach($data['data'] as $k=>$val){
+            if($val->id==$param['goods_id']){
+                $data['data'][$k]['LAY_CHECKED']=true;
+            }
+        }
         return $data['count']!=0?['code'=>0,'msg'=>'全部商品','data'=>$data['data'],'count'=>$data['count']]:['code'=>1,'msg'=>'无数据','data'=>$data['data'],'count'=>$data['count']];
     }
     /**
@@ -121,7 +132,22 @@ class Subject extends Controller
         $this->assign('topic',$topic);
         return $this->fetch('update_topic');
     }
-
+    /**
+     * 修改话题内容
+     */
+    public function topic_edit(Request $request,$id){
+        $param=$request->param();
+        $param['id']=$id;
+        $data=$this->topic->edit($param);
+        return $data?['code'=>0,'msg'=>'修改成功','data'=>$data]:['code'=>1,'msg'=>'修改失败','data'=>''];
+    }
+    /**
+     * 删除话题
+     */
+    public function topic_del($id){
+        $data=$this->topic->del($id);
+        return $data?['code'=>0,'msg'=>'删除成功','data'=>$data]:['code'=>1,'msg'=>'删除失败','data'=>''];
+    }
     /**
      * 上传大文件
      */
@@ -228,6 +254,29 @@ class Subject extends Controller
         $info = $file->move(ROOT_PATH.'public/static/cert/'); // 移动文件到指定目录 没有则创建
         $img = $info->getSaveName();
         exit(json_encode(array('code'=>0,'msg'=>'上传成功','url'=>$this->nowUrl().'/static/cert/'.$img)));
+    }
+    /**
+     * 前端分类接口
+     */
+    public function subjectpai(Request $request){
+        $data=$this->subject->subjectall();
+        return $data?json_encode(['code'=>0,'msg'=>'全部接口','data'=>$data]):json_encode(['code'=>1,'msg'=>'无数据','data'=>'']);
+    }
+    /**
+     * 分类下话题
+     */
+    public function topicpai(Request $request){
+        $param=$request->param();
+        $data=$this->topic->topicapi($param);
+        return $data?json_encode(['code'=>0,'msg'=>'查询成功','data'=>$data]):json_encode(['code'=>1,'msg'=>'无数据','data'=>'']);
+    }
+    /**
+     * 查看详情
+     */
+    public function topicdet(Request $request){
+        $param=$request->param();
+        $data=$this->topic->onedata($param['id']);
+        return $data?json_encode(['code'=>0,'msg'=>'查询成功','data'=>$data]):json_encode(['code'=>1,'msg'=>'无数据','data'=>'']);
     }
 
 }

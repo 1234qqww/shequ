@@ -37,6 +37,7 @@ class Goods extends Model
         if(!empty($param['key'])){
             $query = $query->where('goods_name','like',"%{$param['key']}%");
         }
+
         $data=$query->where('is_on_sale',1)->page($page)->limit($limit)->select();
         return ['data'=>$data,'count'=>count($data)];
     }

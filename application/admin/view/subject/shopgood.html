@@ -98,6 +98,7 @@
             <form id="modelUserForm" lay-filter="modelUserForm" class="layui-form model-form">
                 <input type="hidden"  id="gid" value="">
             </form>
+            <input type="hidden" value="{$goods_id}" id="goods_id">
 
 
             <table class="layui-table" id="userTable" lay-filter="userTable"></table>
@@ -131,24 +132,33 @@
         var util = layui.util;
         var admin = layui.admin;
         var formSelects = layui.formSelects;
+        var goods_id=$('#goods_id').val();
         // 渲染表格
         var insTb = table.render({
             elem: '#userTable',
-            url: "{:url('subject/shopgoodlist')}",
+            url: "{:url('subject/shopgoodlist')}?goods_id="+goods_id,
             page: true,
             cellMinWidth: 100,
             cols: [[
-                {type:'radio'},
-                {field: 'id',align:"center",title:"id"},
-                {field: 'goods_name', title: '商品名称',align:"center"},
-                {field: 'market_price', title: '市场价',align:"center"},
-                {field: 'store_count', title: '库存',align:"center"},
-            ]]
+                    {type:'radio'},
+                    {field: 'id',align:"center",title:"id"},
+                    {field: 'goods_name', title: '商品名称',align:"center"},
+                    {field: 'market_price', title: '市场价',align:"center"},
+                    {field: 'store_count', title: '库存',align:"center"},
+                ]]
+            ,done:function(res,page,count){
+                // for ( var i = 0; i <res.data.length; i++){
+                //     if(res.data[i]['id']==goods_id){
+                //         res.data[i].LAY_CHECKED=true
+                //         form.render("radio");
+                //         console.log(res.data[i]['goods_name'])
+                //     }
+                // }
+            }
         });
         table.on('radio(userTable)', function(obj){
             $('#gid').val(obj.data.id)
         });
-
         // 搜索
         $('#btnSearch').click(function () {
             var value = $('#edtSearch').val();
