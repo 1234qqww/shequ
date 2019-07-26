@@ -18,13 +18,13 @@ class Goods extends Model
         $where['state']= 1;
         $where['is_show']=1;
         $category=$this->category($id,$list);
+        $order='';
         if(!$category){
             $where['goods_category_id']=$id;
-            return  $this->selectAll($where,$page);
+            return  $this->selectAll($where,$page,$order);
         }
         foreach ($category as $k=>$v){
             $category[$k]='goods_category_id='.$v;
-
         }
         $category=join(",",$category);
         $category=str_replace(',',' or ',$category);
@@ -43,22 +43,16 @@ class Goods extends Model
             }
 
         return $goods;
-
-
-
-
     }
     //根据条件查询商品
-    public function selectAll($where,$page){
-        $goods=Db::name('goods')->where($where)->order('sort asc')->page($page)->limit(20)->select();
+    public function selectAll($where,$page,$order){
+        $goods=Db::name('goods')->where($where)->order($order)->page($page)->limit(20)->select();
         $url=Config::get('host');
-
         foreach ($goods as $k=>$v){
             if(!preg_match("/(http|https):\/\/([\w.]+\/?)\S*/",$v['original_img'])){
 
                 $goods[$k]['original_img']=$url['url'].$v['original_img'];
             }
-
         }
       return $goods;
 
@@ -77,9 +71,18 @@ class Goods extends Model
             }
         }
       return $list;
+    }
+    //查询单条商品
+    public function goodsFind($where,$field){
+        $goods=Db::name('goods')->field($field)->where($where)->find();
+        $url=Config::get('host');
+        if(!preg_match("/(http|https):\/\/([\w.]+\/?)\S*/",$goods['original_img'])){
+
+            $goods['original_img']=$url['url'].$goods['original_img'];
+        }
+        return $goods;
 
     }
-
 
 
 }

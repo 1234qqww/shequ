@@ -97,3 +97,12 @@ function base64toimg($code){
     file_put_contents($imageSrc, base64_decode($code));
     return '/upload/adminimg/'.$file_name;
 }
+
+//图片拼接绝对路径
+function url_imgs($img_path){
+   $url=Config::get('host');
+    if(!preg_match("/(http|https):\/\/([\w.]+\/?)\S*/",$img_path)){
+        $img_path=$url['url'].$img_path;
+    }
+    return $img_path;
+}

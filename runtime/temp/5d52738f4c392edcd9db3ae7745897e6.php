@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:85:"D:\xy\project\shequshop\public/../application/admin\view\commodity\commodity_del.html";i:1562740866;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:85:"D:\xy\project\shequshop\public/../application/admin\view\commodity\commodity_del.html";i:1562836233;}*/ ?>
 
 
 <!DOCTYPE html>
@@ -83,7 +83,6 @@
             ,form = layui.form
             ,table = layui.table;
         var cols=[[
-
             ,{field: 'id', width: 50, title: 'ID', sort: true}
             ,{title: '商品名称',toolbar: '#nameImg'}
             ,{field: 'shop_price', title: '商品价格',width: 80,align: 'center',}

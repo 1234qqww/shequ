@@ -18,22 +18,13 @@ class Good extends Model
        $admin=Db::name('admin')->where(['goodid'=>$good['id']])->find();
 
     }
-
-
-
-
-
-
-
-
-
-
     //商家入驻申请
     public function good_add($data){
         return    Db::name('good')->insert($data);
 
     }
-
-
-
+    //查询商家数据
+    public function getFind($field,$where){
+     return   Db::name('good')->field($field)->where($where)->find();
+    }
 }

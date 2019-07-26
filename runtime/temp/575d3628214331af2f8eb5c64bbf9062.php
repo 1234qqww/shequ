@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:80:"D:\xy\project\shequshop\public/../application/admin\view\goodshop\good_back.html";i:1562134286;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:80:"D:\xy\project\shequshop\public/../application/admin\view\goodshop\good_back.html";i:1562912351;}*/ ?>
 
 
 <!DOCTYPE html>
@@ -20,7 +20,7 @@
             <div class="layui-card">
                 <div class="layui-card-header">商铺基本设置</div>
                 <div class="layui-card-body" pad15>
-                    <div class="layui-form" wid100 lay-filter="">
+                  <div class="layui-form" wid100 lay-filter="">
                         <div class="layui-form-item">
                             <label class="layui-form-label">商铺名称</label>
                             <div class="layui-input-block">

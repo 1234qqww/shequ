@@ -4,16 +4,25 @@
 namespace app\common\model;
 
 
+use think\Config;
 use think\Model;
 
 //坐标拾取
 class Txapi extends Model
 {
-    const CONSTANT = 'ZS4BZ-V743I-2XGGL-52DY5-VDY2V-FJFRI';
-    const appid='wx1d2f233b4c28773b';
-    const appsecret='5eab82a4cb0f0ebd4e8cd7b39c2b7333';
+    public function __construct(){
+       $qudao=Config::get("qudao");
+        $this->appid=$qudao['appid'];
+        $this->appsecret=$qudao['appsecret'];
+        $this->CONSTANT='ZS4BZ-V743I-2XGGL-52DY5-VDY2V-FJFRI';
+    }
+
+//    const CONSTANT = 'ZS4BZ-V743I-2XGGL-52DY5-VDY2V-FJFRI';
+////    const appid='wx1d2f233b4c28773b';
+////    const appsecret='5eab82a4cb0f0ebd4e8cd7b39c2b7333';
+
     public function coordinate( $address){
-        $url = "http://apis.map.qq.com/ws/geocoder/v1/?address=$address&key=".self::CONSTANT;
+        $url = "http://apis.map.qq.com/ws/geocoder/v1/?address=$address&key=". $this->CONSTANT;
 // 初始url会话
         $ch = curl_init();
 //  设置url传输选项
@@ -33,10 +42,10 @@ class Txapi extends Model
     public function decryptData( $encryptedData, $iv, &$data )
     {
 
-        if (strlen(self::appsecret) != 24) {
+        if (strlen( $this->appsecret) != 24) {
             return -41001;
         }
-        $aesKey=base64_decode(self::appsecret);
+        $aesKey=base64_decode( $this->appsecret);
 
 
         if (strlen($iv) != 24) {
@@ -53,7 +62,7 @@ class Txapi extends Model
         {
             return -41003;
         }
-        if( $dataObj->watermark->appid !=self::appid)
+        if( $dataObj->watermark->appid != $this->appid)
         {
             return -41003;
         }

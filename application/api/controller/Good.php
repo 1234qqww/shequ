@@ -4,6 +4,7 @@
 namespace app\api\controller;
 
 
+use think\Config;
 use think\Db;
 
 class Good extends Base
@@ -34,8 +35,6 @@ class Good extends Base
         }
         return json(array('code'=>1,'msg'=>'查询成功','data'=>$good));
     }
-
-
 
     //图片上传
     public function good_upload(){
@@ -77,4 +76,60 @@ class Good extends Base
         }
         return json(array('code'=>1,'msg'=>'添加成功'));
     }
+
+    //商家店面
+    public function good_main(){
+        $param=$this->request->param();
+        unset($param['token']);
+        $url=Config::get('host');
+        $page=$param['page'];
+        if(!$param['userid']){
+            return  json(array('code'=>0,'msg'=>'非法操作'));
+        }
+        $where['store_count']= array('gt',0);
+        $where['state']= 1;
+        $where['is_show']=1;
+        $where['good_id']=$param['id'];
+        $where['prom_type']=0;
+        $order='';
+        if($param['listnum']==3){
+            $where['is_tuijian']=1;   //商品展示推荐商品
+        }elseif ($param['listnum']==0){
+            $where['is_newshop']=1;  //最新商品
+        }elseif($param['listnum']==1){
+            $order='shop_price asc';
+        }elseif ($param['listnum']==2){
+            $order='sales_sum desc';
+        }
+        $goods=model('goods')->selectAll($where,$page,$order);
+        if($param['id']!=-1){
+            $field='id,name,tel,pic,pic_bg';
+            $good=model('good')->getFind($field,['id'=>$param['id']]);
+
+            if(!preg_match("/(http|https):\/\/([\w.]+\/?)\S*/", $good['pic'])){
+                $good['pic']=$url['url']. $good['pic'];
+            }
+            if(!preg_match("/(http|https):\/\/([\w.]+\/?)\S*/",$good['pic_bg'])){
+                $good['pic_bg']=$url['url'].$good['pic_bg'];
+            }
+        }else{
+            $base_congif=Config::get('base_config');
+            $good['name']='平台自营';
+            $good['pic']=$base_congif['imgs'];
+            $good['pic_bg']=$base_congif['pic_bg'];
+            $good['tel']=$base_congif['service_number'];
+            if(!preg_match("/(http|https):\/\/([\w.]+\/?)\S*/",$base_congif['imgs'])){
+                $good['pic']=$url['url'].$base_congif['imgs'];
+            }
+            if(!preg_match("/(http|https):\/\/([\w.]+\/?)\S*/",$base_congif['pic_bg'])){
+                $good['pic_bg']=$url['url'].$base_congif['pic_bg'];
+            }
+        }
+        $arr=array('goods'=>$goods,'good'=>$good);
+        return  json(array('code'=>1,'msg'=>'成功','data'=>$arr));
+    }
+
+
+
+
 }

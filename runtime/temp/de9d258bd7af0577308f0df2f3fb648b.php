@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:76:"D:\xy\project\shequshop\public/../application/admin\view\system\setting.html";i:1561340579;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:76:"D:\xy\project\shequshop\public/../application/admin\view\system\setting.html";i:1563255769;}*/ ?>
 
 
 <!DOCTYPE html>
@@ -18,7 +18,7 @@
     <div class="layui-row layui-col-space15">
       <div class="layui-col-md12">
         <div class="layui-card">
-          <div class="layui-card-header">网站基本信息</div>
+          <div class="layui-card-header">自营商店基本信息</div>
           <div class="layui-card-body" pad15>
             <div class="layui-form" wid100 lay-filter="">
               <div class="layui-form-item">
@@ -36,6 +36,16 @@
                   <div class="layui-upload-list">
                     <img src="<?php echo config('base_config.imgs'); ?>" class="layui-upload-img"style="width: 200px;height:12rem" id="demo2" alt=""/>
                     <p id="demoTexts"></p>
+                  </div>
+                </div>
+              </div>
+              <div class="layui-form-item">
+                <label class="layui-form-label">网站背景图</label>
+                <div class="layui-input-block">
+                  <button type="button" class="layui-btn" id="upload1">上传</button>
+                  <input type="hidden" id="img_url" name="pic_bg" value="<?php echo config('base_config.pic_bg'); ?>"/>
+                  <div class="layui-upload-list">
+                    <img src="<?php echo config('base_config.pic_bg'); ?>" class="layui-upload-img"style="width: 200px;height:12rem" id="demo3" alt=""/>
                   </div>
                 </div>
               </div>
@@ -81,7 +91,6 @@
                 </div>
               </div>
             </div>
-            
           </div>
         </div>
       </div>
@@ -112,6 +121,12 @@
       hhtc.upload_one(function(res){
         $("input[name='imgs']").val(res);
         $("#demo2").attr('src',res);
+      })
+    })
+    $("#upload1").click(function(){
+      hhtc.upload_one(function(res){
+        $("input[name='pic_bg']").val(res);
+        $("#demo3").attr('src',res);
       })
     })
 

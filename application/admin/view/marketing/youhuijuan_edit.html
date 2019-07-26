@@ -14,59 +14,51 @@
 
 <div class="layui-form" lay-filter="layuiadmin-form-role" id="layuiadmin-form-role" style="padding: 20px 30px 0 0;">
     <div class="layui-form-item">
-        <label class="layui-form-label">分类名称</label>
+        <label class="layui-form-label">优惠卷名称</label>
         <div class="layui-input-inline">
-            <input type="text"  name="name"  lay-verify="required" value="" autocomplete="off" class="layui-input" >
+            <input type="text"  name="dis_name"  lay-verify="required" value="{$vo.dis_name}" autocomplete="off" class="layui-input" >
+            <input type="hidden" name="id" value="{$vo.id}">
         </div>
-    </div>
-    <div class="layui-form-item" id="menu_one" >
-        <label class="layui-form-label">一级菜单</label>
-        <div class="layui-input-inline">
-            <select name="parent_id_1"  id="parent_id_1" model="select" lay-filter="menu_one" >
-                <option value="0">顶级菜单</option>
-                {volist name="cat_list" id="vo"}
-                <option value="{$vo.id}">{$vo.name}</option>
-                {/volist}
-            </select>
-        </div>
-        <div class="layui-input-inline">
-            <select model="select"  name="parent_id_2" id="parent_id_2"  lay-filter="menu_two">
-                <option value="">请选择商品分类</option>
-            </select>
-        </div>
-        <div class="layui-form-mid layui-word-aux">最多成为第三级,如果设置为第二级, 只选择第一级即可</div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">排序</label>
         <div class="layui-input-inline">
-            <input type="number" name="sort_order" lay-verify="required" value="" autocomplete="off" class="layui-input">
+            <input type="number" name="order" lay-verify="required" value="{$vo.order}" autocomplete="off" class="layui-input">
         </div>
         <div class="layui-form-mid layui-word-aux">数字越小排序越靠前</div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">是否推荐</label>
-        <div class="layui-input-block">
-            <input type="checkbox" name="is_tuijian" lay-skin="switch" lay-text="是|否">
+        <label class="layui-form-label">使用条件</label>
+        <div class="layui-input-inline">
+            <input type="text" name="satisfy" lay-verify="required" value="{$vo.satisfy}" autocomplete="off" class="layui-input">
+        </div>
+        <div class="layui-form-mid layui-word-aux">消费满多少可以使用,填写准确金额</div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">优惠金额</label>
+        <div class="layui-input-inline">
+            <input type="text" name="reduction" lay-verify="required" value="{$vo.reduction}" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">是否显示</label>
-        <div class="layui-input-block">
-            <input type="checkbox" name="is_show"  lay-skin="switch" lay-text="是|否">
+        <label class="layui-form-label">发行总数</label>
+        <div class="layui-input-inline">
+            <input type="number" name="total" lay-verify="required" value="{$vo.total}" autocomplete="off" class="layui-input">
         </div>
+        <div class="layui-form-mid layui-word-aux">发行数量，不填写不能领取或发放</div>
     </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">分类展示图片</label>
-        <div class="layui-input-block">
-            <button type="button" class="layui-btn" id="image"><i class="layui-icon"></i>点我</button>
-            <input type="hidden" id="beijing" name="image" value=""/>
-            <div class="layui-upload-list">
-                <img src=""  class="layui-upload-img" style="width: 200px;height:12rem"   id="demo1" alt=""/>
+    <div class="layui-form">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">使用时间限制</label>
+                <div class="layui-input-inline">
+                    <input  class="layui-input" name="time" value="{$vo.start_time|substr=###,0,10}-{$vo.end_time|substr=###,0,10}"  id="test16" placeholder="-">
+                </div>
             </div>
         </div>
     </div>
     <div class="layui-form-item layui-hide">
-        <button class="layui-btn" lay-submit lay-filter="add" id="add">提交</button>
+        <button class="layui-btn" lay-submit lay-filter="edit" id="edit">提交</button>
     </div>
 </div>
 
@@ -77,11 +69,17 @@
         base: '__ADMIN__/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use(['index', 'form','hhtc'], function(){
+    }).use(['index', 'form','hhtc','laydate'], function(){
         var $ = layui.$
             ,form = layui.form
             ,hhtc=layui.hhtc
             ,level=1
+            ,laydate = layui.laydate;
+        //日期范围
+        laydate.render({
+            elem: '#test16',
+            range:true
+        });
         form.on("select(menu_one)",function(data){
             var pid=data.value;
             var post_json = {parent_id: pid};
