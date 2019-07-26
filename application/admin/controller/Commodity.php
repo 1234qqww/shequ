@@ -168,6 +168,7 @@ class Commodity extends Base
                     $num+=$k['sku_store_count'];
                 }
                 Db::name('goods')->where(['id'=>$goodid])->data(['store_count'=>$num])->update();
+
             }
             return json(array('code'=>1,'msg'=>'储存成功'));
 

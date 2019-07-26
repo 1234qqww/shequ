@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 <?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:68:"D:\xy\project\shequshop\public/../application/admin\view\\index.html";i:1562994566;}*/ ?>
+=======
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:68:"D:\xy\project\shequshop\public/../application/admin\view\\index.html";i:1563000386;}*/ ?>
+>>>>>>> 2a69b51e83f8261530558450787c969dff562e28
 <!DOCTYPE html>
 <html>
 <head>
@@ -129,7 +133,7 @@
             <div class="left-bar-list-item-font"><span>管理</span></div>
           </div>
         </a>
-        <a href="<?php echo url('qudao/qudao'); ?>" target="rightframe">
+        <a href="<?php echo url('system/qudao'); ?>" target="rightframe">
           <div  class="left-bar-list-item user"  >
             <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/wxapp.png" />
             </div>
@@ -331,6 +335,8 @@
       <div class="left-bar-secendlist" id="9" style="display:none">
         <div   class="left-bar-secendlist-items" >
           <a href="<?php echo url('subject/subject'); ?>" target="rightframe">
+<<<<<<< HEAD
+=======
             <div  class="left-bar-secendlist-item" >
               <span>话题分类</span>
               <img src="/easyweb/layout/static/right_lit.png" />
@@ -345,6 +351,30 @@
           <div class="line"></div>
         </div>
       </div>
+      <div class="left-bar-secendlist" id="10" style="display:none">
+        <div   class="left-bar-secendlist-items" >
+          <a href="<?php echo url('system/qudao'); ?>" target="rightframe">
+>>>>>>> 2a69b51e83f8261530558450787c969dff562e28
+            <div  class="left-bar-secendlist-item" >
+              <span>话题分类</span>
+              <img src="/easyweb/layout/static/right_lit.png" />
+            </div>
+          </a>
+          <a href="<?php echo url('subject/topic'); ?>" target="rightframe">
+            <div  class="left-bar-secendlist-item" >
+              <span>话题</span>
+              <img src="/easyweb/layout/static/right_lit.png" />
+            </div>
+          </a>
+          <div class="line"></div>
+        </div>
+      </div>
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> 2a69b51e83f8261530558450787c969dff562e28
     </div>
     <div class="right_bar_body" style="overflow: hidden;width: 100%;min-height:95%;display: flex;">
          <iframe id="mainContent" width="100%" height="100%" style="border: none" src="<?php echo url('home/welcome'); ?>" name="rightframe" title="rightframe"></iframe>
@@ -402,11 +432,24 @@
         }else {
           $('#8').hide();
         }
+<<<<<<< HEAD
       if(href=='subject.html' || href=='topic.html'){
         $('#9').show();
       }else{
         $('#9').hide();
       }
+=======
+        if(href=='subject.html' || href=='topic.html'){
+          $('#9').show();
+        }else{
+          $('#9').hide();
+        }
+        if(href=='qudao.html' || href=='qudao.html'){
+          $('#10').show();
+        }else{
+          $('#10').hide();
+        }
+>>>>>>> 2a69b51e83f8261530558450787c969dff562e28
 
 
 

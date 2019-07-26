@@ -57,12 +57,20 @@ class Marketing extends Base
     }
 
 
+<<<<<<< HEAD
     //满额包邮
+=======
+    //优惠卷
+>>>>>>> 2a69b51e83f8261530558450787c969dff562e28
     public function youhuijuan(){
         if(request()->isAjax()){
             $get=input();
             $admin=session('admin');
+<<<<<<< HEAD
             $where=array();
+=======
+            $where=array('state'=>1);
+>>>>>>> 2a69b51e83f8261530558450787c969dff562e28
             if($admin['role_id']!=1){
                 $where['goods_id']=session('good');
             }else{
@@ -71,6 +79,7 @@ class Marketing extends Base
             if(isset($get['dis_name']) && $get['dis_name']!=''){
                 $where['dis_name']=array('like','%'.$get['dis_name'].'%');
             }
+<<<<<<< HEAD
 //
 
             return  Db::name('goods_discount')->where($where)->order('order asc')->paginate(15);
@@ -78,12 +87,19 @@ class Marketing extends Base
         }
 
 
+=======
+            return  Db::name('goods_discount')->where($where)->order('order asc')->paginate(15);
+        }
+>>>>>>> 2a69b51e83f8261530558450787c969dff562e28
          return $this->fetch();
     }
 
     //添加优惠卷
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 2a69b51e83f8261530558450787c969dff562e28
     public function youhuijuan_add(){
         if (request()->isAjax()){
             $param=$this->request->param();
@@ -150,12 +166,15 @@ class Marketing extends Base
             $goods_discount=Db::name('goods_discount')->where(['id'=>$param['id']])->data($param)->update();
 
             return  $goods_discount?['code'=>1,'msg'=>'修改成功']:['code'=>0,'msg'=>'修改失败'];
+<<<<<<< HEAD
 
 
 
 
 
 
+=======
+>>>>>>> 2a69b51e83f8261530558450787c969dff562e28
         }
 
         $goods_discount= Db::name('goods_discount')->where(input())->find();
@@ -166,5 +185,22 @@ class Marketing extends Base
         return $this->fetch();
     }
 
+<<<<<<< HEAD
+=======
+    //删除优惠卷
+    public function youhuijuan_del(){
+            if(request()->isAjax()){
+                  $goods_discount=Db::name('goods_discount')->where(input())->update(['state'=>2]);
+                     return  $goods_discount?['code'=>1,'msg'=>'删除成功']:['code'=>0,'msg'=>'删除失败'];
+
+
+            }
+
+
+
+    }
+
+
+>>>>>>> 2a69b51e83f8261530558450787c969dff562e28
 
 }

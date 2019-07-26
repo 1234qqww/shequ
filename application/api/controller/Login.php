@@ -17,8 +17,9 @@ class Login extends   Base
             exit();
         }
         $code=trim($param['code']);
-        $appid=trim(Txapi::appid);
-        $appsecret=trim(Txapi::appsecret);
+        $txapi=new Txapi();
+        $appid=trim($txapi->appid);
+        $appsecret=trim($txapi->appsecret);
         $get_token_url = 'https://api.weixin.qq.com/sns/jscode2session?appid='.$appid.'&secret='.$appsecret.'&js_code='.$code.'&grant_type=authorization_code';
         //        $get_token_url = 'https://api.weixin.qq.com/sns/jscode2session?appid=wx6071a4f5cfa26455&secret=342394868bb290de0e167c02db13895b&js_code=081TssVq0x9ZRm1rOuWq0yjBVq0TssVZ&grant_type=authorization_code'
         $weixin=file_get_contents($get_token_url);
@@ -39,18 +40,5 @@ class Login extends   Base
         }
         return json(array('code'=>1,'msg'=>'登录成功','data'=>$user['id']));
     }
-
-    //获取用户手机号
-//    public function getPhoneNumber(){
-//        $param=$this->request->param();
-//        $appid='wx6071a4f5cfa26455';
-//        $user=Db::name('user')->where(['id'=>$param['userid']])->find();
-//        $pc= new \WXBizDataCrypt($appid,$user['sessionkey']);
-//        $errCode =$pc->decryptData($param['encryptedData'], $param['iv'], $data );
-//    }
-
-
-
-
 
 }

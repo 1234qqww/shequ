@@ -18,9 +18,14 @@ class System extends Base
             if(!file_exists($file)){
                 return $this->error('模板不存在!');
             }
-            if (strlen($_POST['imgs'])>100) {
-                $_POST['imgs'] = base64toimg($_POST['imgs']);
+
+            if(strpos($_POST['imgs'],'base64') !== false){
+                $_POST['imgs']=base64toimg($_POST['imgs']);
             }
+            if(strpos($_POST['pic_bg'],'base64') !== false){
+                $_POST['pic_bg']=base64toimg($_POST['pic_bg']);
+            }
+
             unset($_POST['configname']);
             $str="<?php \r\n return [ \r\n";
             foreach ($_POST as $k => $v) {
@@ -43,9 +48,8 @@ class System extends Base
         }
         return $this->fetch();
     }
-
-    //关于我们
-    public function wemen(){
+    //小程序设置
+    public function qudao(){
         if(request()->isAjax()){
             $file=$_SERVER['DOCUMENT_ROOT'].'/../application/extra/'.$_POST['configname'].'.php';
             if(!file_exists($file)){
@@ -71,6 +75,7 @@ class System extends Base
                 return $this->error('编辑失败!');
             }
         }
+
         return $this->fetch();
     }
 

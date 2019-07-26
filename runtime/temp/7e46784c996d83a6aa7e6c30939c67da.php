@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 <?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:86:"D:\xy\project\shequshop\public/../application/admin\view\marketing\youhuijuan_add.html";i:1562984529;}*/ ?>
+=======
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:86:"D:\xy\project\shequshop\public/../application/admin\view\marketing\youhuijuan_add.html";i:1562999214;}*/ ?>
+>>>>>>> 2a69b51e83f8261530558450787c969dff562e28
 
 
 <!DOCTYPE html>
@@ -12,7 +16,10 @@
     <link rel="stylesheet" href="/static/admin/layui/css/layui.css" media="all">
 </head>
 <body>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2a69b51e83f8261530558450787c969dff562e28
 <div class="layui-form" lay-filter="layuiadmin-form-role" id="layuiadmin-form-role" style="padding: 20px 30px 0 0;">
     <div class="layui-form-item">
         <label class="layui-form-label">优惠卷名称</label>
@@ -61,7 +68,10 @@
         <button class="layui-btn" lay-submit lay-filter="add" id="add">提交</button>
     </div>
 </div>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2a69b51e83f8261530558450787c969dff562e28
 <script src="/static/admin/layui/layui.js"></script>
 <script src="/static/admin/js/app.js"></script>
 <script>
