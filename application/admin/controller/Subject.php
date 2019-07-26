@@ -5,11 +5,9 @@ use app\admin\model\Advise;
 use app\admin\model\Goods;
 use app\admin\model\SubjectModel;
 use app\admin\model\TopicModel;
-use think\Controller;
 use think\Request;
-use think\Session;
 
-class Subject extends Controller
+class Subject extends Base
 {
 
     public function __construct(Request $request = null)
@@ -254,29 +252,6 @@ class Subject extends Controller
         $info = $file->move(ROOT_PATH.'public/static/cert/'); // 移动文件到指定目录 没有则创建
         $img = $info->getSaveName();
         exit(json_encode(array('code'=>0,'msg'=>'上传成功','url'=>$this->nowUrl().'/static/cert/'.$img)));
-    }
-    /**
-     * 前端分类接口
-     */
-    public function subjectpai(Request $request){
-        $data=$this->subject->subjectall();
-        return $data?json_encode(['code'=>0,'msg'=>'全部接口','data'=>$data]):json_encode(['code'=>1,'msg'=>'无数据','data'=>'']);
-    }
-    /**
-     * 分类下话题
-     */
-    public function topicpai(Request $request){
-        $param=$request->param();
-        $data=$this->topic->topicapi($param);
-        return $data?json_encode(['code'=>0,'msg'=>'查询成功','data'=>$data]):json_encode(['code'=>1,'msg'=>'无数据','data'=>'']);
-    }
-    /**
-     * 查看详情
-     */
-    public function topicdet(Request $request){
-        $param=$request->param();
-        $data=$this->topic->onedata($param['id']);
-        return $data?json_encode(['code'=>0,'msg'=>'查询成功','data'=>$data]):json_encode(['code'=>1,'msg'=>'无数据','data'=>'']);
     }
 
 }

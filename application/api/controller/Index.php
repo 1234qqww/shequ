@@ -55,15 +55,10 @@ class Index extends Base
                 $goods_img[$k]['path']=$url['url'].$v['path'];
             }
         }
-
-
-
         if($type==0){
             $arr=array('goods_img'=>$goods_img,'goods'=>$goods);
             return  json(array('code'=>1,'msg'=>'成功','data'=>$arr));
         }
-
-
     }
 
 

@@ -7,9 +7,6 @@ use think\Db;
 class Admin extends Common {
     //登录
     public function admin_login(array $data){
-        if(!getcaptcha('admin_login',$data['vercode'])){
-            return $this->error('验证码错误!');
-        }
         $admin=Db::name('admin')->where(array('username'=>$data['username']))->find();
         if(!$admin || $admin['password']!=hhtc_encrypt($data['password'])){
             return $this->error('用户或密码错误!');

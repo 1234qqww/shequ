@@ -113,9 +113,6 @@
     var store_id=$('#store_id').val();
     var user_id=$('#user_id').val();
     var disnate=1
-    $.post("{:url('report/readstore')}", {user_id:user_id,store_id:store_id,disnate:disnate},function (data) {
-
-    })
   })
   layui.use(['layer', 'form', 'table', 'util', 'admin', 'formSelects'], function () {
     var $ = layui.jquery;
@@ -130,10 +127,10 @@
     //监听行工具事件
     $('#demo2').click(function(){
       $.post("{:url('report/reports')}",
-              {user_id:user_id,limit:100}
-              ,function (data) {
+          {user_id:user_id,limit:100}
+          ,function (data) {
 
-              })
+          })
     });
     form.on('submit(demo1)', function (data) {
       console.log(data)
@@ -143,7 +140,7 @@
         return;
       }
       $.post("{:url('report/store')}",
-        {store_id:store_id,user_id:user_id,text:text,read:0,flag:0,disnate:1}
+        {store_id:store_id,user_id:user_id,text:text,read:0,flag:0,disnate:1,retail_id:''}
         ,function (data) {
             location.reload();
         })
@@ -166,7 +163,7 @@
         $("input[name='texts']").val(res.url);
         var text=$("input[name='texts']").val();
         $.post("{:url('report/store')}",
-                {user_id:user_id,store_id:store_id,text:text,read:0,flag:1,disnate:1}
+                {user_id:user_id,store_id:store_id,text:text,read:0,flag:1,disnate:1,retail_id:''}
                 ,function (data) {
                   location.reload();
                 })

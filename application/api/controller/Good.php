@@ -4,9 +4,10 @@
 namespace app\api\controller;
 
 
+use think\Controller;
 use think\Db;
 
-class Good extends Base
+class Good extends Controller
 {
     //商户申请状态查询
     public function good_index(){

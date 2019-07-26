@@ -2,9 +2,8 @@
 
 namespace app\admin\model;
 use think\Model;
-use think\Db;
-class ReportModel extends Model {
-    protected $table='hhtc_report';  //表名称
+class ResellerModel extends Model {
+    protected $table='hhtc_reseller';  //表名称
 
     /**
      * 分类全部数据
@@ -16,7 +15,7 @@ class ReportModel extends Model {
         if(!empty($param['key'])){
             $query = $query->where('title','like',"%{$param['key']}%");
         }
-        $data=$query->with('user')->where('reseller',$param['reseller'])->page($page)->limit($limit)->order('id','Desc')->group('user_id')->select();
+        $data=$query->with('user')->page($page)->limit($limit)->order('id','Desc')->group('user_id')->select();
         return ['data'=>$data,'count'=>count($data)];
     }
     /**
@@ -47,8 +46,6 @@ class ReportModel extends Model {
         $data['read']=isset($param['read'])?$param['read']:'';
         $data['flag']=isset($param['flag'])?$param['flag']:'';
         $data['disnate']=isset($param['disnate'])?$param['disnate']:'';
-        $data['reseller']=isset($param['reseller'])?$param['reseller']:'';
-        $data['retail_id']=isset($param['retail_id'])?$param['retail_id']:'';
         $data['created_at']=date('Y-m-d H:i:s');
         $data['updated_at']=date('Y-m-d H:i:s');
         return $this->save($data);
