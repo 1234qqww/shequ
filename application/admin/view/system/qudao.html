@@ -74,6 +74,44 @@
 <script src="__ADMIN__/layui/layui.js"></script>
 <script src="__ADMIN__/js/app.js"></script>
 <script>
+    //单图上传
+    layui.use('upload', function(){
+        var $ = layui.jquery
+            ,upload = layui.upload;
+        //添加驾驶证配图
+        //添加驾驶证配图
+        upload.render({
+            elem: '#test3'
+            ,url: "{:url('subject/update')}"
+            ,accept: 'file' //普通文件
+            ,done: function(res){
+            $('#autograph').val(res.url)
+            layer.msg('上传成功')
+        }
+    });
+        upload.render({
+            elem: '#test4'
+            ,url: "{:url('subject/update')}"
+            ,accept: 'file' //普通文件
+            ,done: function(res){
+            $('#templatecode').val(res.url)
+            layer.msg('上传成功')
+        }
+    });
+        var uploadInst = upload.render({
+            elem: '#test1'
+            ,url: "{{url('upload')}}"
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#demo1').attr('src', result); //图片链接（base64）
+                });
+            }
+            ,done: function(res){
+                $("input[name='logo']").val(res.url);
+            }
+        });
+    })
     layui.config({
         base: '__ADMIN__/' //静态资源所在路径
     }).extend({
