@@ -23,14 +23,22 @@
                             <label class="layui-form-label">AppID</label>
                             <div class="layui-input-block">
                                 <input type="hidden" name="configname" value="qudao">
-                                <textarea name="appid" class="layui-textarea">{:config('qudao.appid')}</textarea>
+                                <input name="appid" id="appid" placeholder="请配置小程序appid" type="text" class="layui-input" maxlength="20"
+                                       lay-verType="tips" lay-verify="required" value="{:config('qudao.appid')}" required/>
                             </div>
                         </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label">AppSecre</label>
                             <div class="layui-input-block">
-
-                                <textarea name="appsecret" class="layui-textarea">{:config('qudao.appsecret')}</textarea>
+                                <input name="appsecret" id="appsecret" placeholder="请配置小程序秘钥" type="text" class="layui-input" maxlength="20"
+                                       lay-verType="tips" lay-verify="required" value="{:config('qudao.appsecret')}" required/>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">mchid</label>
+                            <div class="layui-input-block">
+                                <input name="mchid" id="mchid" placeholder="请配置商户号" type="text" class="layui-input" maxlength="20"
+                                       lay-verType="tips" lay-verify="required" value="{:config('qudao.mchid')}" required/>
                             </div>
                         </div>
                         <div class="layui-input-block">
