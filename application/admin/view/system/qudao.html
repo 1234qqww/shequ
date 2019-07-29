@@ -48,6 +48,18 @@
                                        lay-verType="tips" lay-verify="required" value="{:config('qudao.secret')}" required/>
                             </div>
                         </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">双向证书</label>
+                            <button type="button" class="layui-btn" id="test3"><i class="layui-icon"></i>上传文件</button>
+                            <input type="text" hidden id="autograph" name="autograph" value="{{$info?$info->autograph:''}}">
+                            <div style="display:inline;margin-left:10px">apiclient_key.pem</div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">双向证书</label>
+                            <button type="button" class="layui-btn" id="test4"><i class="layui-icon"></i>上传文件</button>
+                            <input type="text" hidden id="templatecode" name="templatecode" value="{{$info?$info->templatecode:''}}">
+                            <div style="display:inline;margin-left:10px">apiclient_cert.pem</div>
+                        </div>
                         <div class="layui-input-block">
                             <button class="layui-btn" lay-submit lay-filter="set_website">确认保存</button>
                         </div>
