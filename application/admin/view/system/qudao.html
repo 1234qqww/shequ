@@ -41,6 +41,13 @@
                                        lay-verType="tips" lay-verify="required" value="{:config('qudao.mchid')}" required/>
                             </div>
                         </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">Secret</label>
+                            <div class="layui-input-block">
+                                <input name="secret" id="secret" placeholder="请配置商户秘钥" type="text" class="layui-input" maxlength="20"
+                                       lay-verType="tips" lay-verify="required" value="{:config('qudao.secret')}" required/>
+                            </div>
+                        </div>
                         <div class="layui-input-block">
                             <button class="layui-btn" lay-submit lay-filter="set_website">确认保存</button>
                         </div>
