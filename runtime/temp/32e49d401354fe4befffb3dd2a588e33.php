@@ -1,8 +1,15 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:82:"D:\xy\project\shequshop\public/../application/admin\view\marketing\youhuijuan.html";i:1562999724;}*/ ?>
+=======
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:82:"D:\xy\project\shequshop\public/../application/admin\view\marketing\youhuijuan.html";i:1562990535;}*/ ?>
+>>>>>>> 2fde78b8b5fb04e84606f6e939fe6f104b0539e8
+=======
 <?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:82:"D:\xy\project\shequshop\public/../application/admin\view\marketing\youhuijuan.html";i:1562990535;}*/ ?>
 =======
 <?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:82:"D:\xy\project\shequshop\public/../application/admin\view\marketing\youhuijuan.html";i:1562999724;}*/ ?>
 >>>>>>> 2a69b51e83f8261530558450787c969dff562e28
+>>>>>>> 430651ff8ce683ba4d021585dae1a8d98bfe2987
 
 
 <!DOCTYPE html>
@@ -34,6 +41,16 @@
                 <div class="layui-form-item">
                     <div class="layui-inline">
 <<<<<<< HEAD
+<<<<<<< HEAD
+                        <label class="layui-form-label">优惠卷名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="dis_name" placeholder="请输入优惠卷名称" autocomplete="off" class="layui-input">
+=======
+                        <label class="layui-form-label">用户名</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="userName" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+>>>>>>> 2fde78b8b5fb04e84606f6e939fe6f104b0539e8
+=======
                         <label class="layui-form-label">用户名</label>
                         <div class="layui-input-block">
                             <input type="text" name="userName" placeholder="请输入用户名" autocomplete="off" class="layui-input">
@@ -42,6 +59,7 @@
                         <div class="layui-input-block">
                             <input type="text" name="dis_name" placeholder="请输入优惠卷名称" autocomplete="off" class="layui-input">
 >>>>>>> 2a69b51e83f8261530558450787c969dff562e28
+>>>>>>> 430651ff8ce683ba4d021585dae1a8d98bfe2987
                         </div>
                     </div>
                     <div class="layui-inline">

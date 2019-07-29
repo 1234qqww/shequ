@@ -72,7 +72,7 @@ class Marketing extends Base
             }
             return  Db::name('goods_discount')->where($where)->order('order asc')->paginate(15);
         }
-         return $this->fetch();
+        return $this->fetch();
     }
 
     //添加优惠卷
@@ -153,12 +153,12 @@ class Marketing extends Base
     }
     //删除优惠卷
     public function youhuijuan_del(){
-            if(request()->isAjax()){
-                  $goods_discount=Db::name('goods_discount')->where(input())->update(['state'=>2]);
-                     return  $goods_discount?['code'=>1,'msg'=>'删除成功']:['code'=>0,'msg'=>'删除失败'];
+        if(request()->isAjax()){
+            $goods_discount=Db::name('goods_discount')->where(input())->update(['state'=>2]);
+            return  $goods_discount?['code'=>1,'msg'=>'删除成功']:['code'=>0,'msg'=>'删除失败'];
 
 
-            }
+        }
 
 
 

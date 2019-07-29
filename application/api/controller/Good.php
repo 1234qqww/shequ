@@ -4,14 +4,10 @@
 namespace app\api\controller;
 
 
-<<<<<<< HEAD
-use think\Controller;
-=======
 use think\Config;
->>>>>>> 2a69b51e83f8261530558450787c969dff562e28
 use think\Db;
 
-class Good extends Controller
+class Good extends Base
 {
     //商户申请状态查询
     public function good_index(){
@@ -80,7 +76,6 @@ class Good extends Controller
         }
         return json(array('code'=>1,'msg'=>'添加成功'));
     }
-
     //商家店面
     public function good_main(){
         $param=$this->request->param();
@@ -105,7 +100,9 @@ class Good extends Controller
         }elseif ($param['listnum']==2){
             $order='sales_sum desc';
         }
+
         $goods=model('goods')->selectAll($where,$page,$order);
+
         if($param['id']!=-1){
             $field='id,name,tel,pic,pic_bg';
             $good=model('good')->getFind($field,['id'=>$param['id']]);
@@ -129,8 +126,12 @@ class Good extends Controller
                 $good['pic_bg']=$url['url'].$base_congif['pic_bg'];
             }
         }
+
+
         $arr=array('goods'=>$goods,'good'=>$good);
         return  json(array('code'=>1,'msg'=>'成功','data'=>$arr));
+
+
     }
 
 

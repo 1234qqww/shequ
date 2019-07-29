@@ -45,10 +45,15 @@ class Index extends Base
         $param=$this->request->param();
         $type=$param['type'];
         $url=Config::get('host');
+        $url=Config::get('host');
+        $url=Config::get('host');
         unset($param['token']);
         if(!$param['userid']){
             return  json(array('code'=>0,'msg'=>'非法操作'));
         }
+        $goods=Db::name('goods')->where(['id'=>$param['id']])->find();
+        $goods_img=Db::name('goods_img')->where(['goods_id'=>$param['id']])->select();
+        $url=Config::get('host');
         $goods=Db::name('goods')->where(['id'=>$param['id']])->find();
         $goods_img=Db::name('goods_img')->where(['goods_id'=>$param['id']])->select();
         $url=Config::get('host');
@@ -97,7 +102,9 @@ class Index extends Base
             $arr=array('goods_img'=>$goods_img,'goods'=>$goods);
             return  json(array('code'=>1,'msg'=>'成功','data'=>$arr));
         }
+
     }
+
 
 
      //商品规格
