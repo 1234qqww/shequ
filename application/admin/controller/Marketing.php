@@ -57,12 +57,20 @@ class Marketing extends Base
     }
 
 
+<<<<<<< HEAD
     //优惠卷
+=======
+    //满额包邮
+>>>>>>> 2fde78b8b5fb04e84606f6e939fe6f104b0539e8
     public function youhuijuan(){
         if(request()->isAjax()){
             $get=input();
             $admin=session('admin');
+<<<<<<< HEAD
             $where=array('state'=>1);
+=======
+            $where=array();
+>>>>>>> 2fde78b8b5fb04e84606f6e939fe6f104b0539e8
             if($admin['role_id']!=1){
                 $where['goods_id']=session('good');
             }else{
@@ -71,12 +79,27 @@ class Marketing extends Base
             if(isset($get['dis_name']) && $get['dis_name']!=''){
                 $where['dis_name']=array('like','%'.$get['dis_name'].'%');
             }
+<<<<<<< HEAD
             return  Db::name('goods_discount')->where($where)->order('order asc')->paginate(15);
         }
+=======
+//
+
+            return  Db::name('goods_discount')->where($where)->order('order asc')->paginate(15);
+
+        }
+
+
+>>>>>>> 2fde78b8b5fb04e84606f6e939fe6f104b0539e8
          return $this->fetch();
     }
 
     //添加优惠卷
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 2fde78b8b5fb04e84606f6e939fe6f104b0539e8
     public function youhuijuan_add(){
         if (request()->isAjax()){
             $param=$this->request->param();
@@ -143,6 +166,7 @@ class Marketing extends Base
             $goods_discount=Db::name('goods_discount')->where(['id'=>$param['id']])->data($param)->update();
 
             return  $goods_discount?['code'=>1,'msg'=>'修改成功']:['code'=>0,'msg'=>'修改失败'];
+<<<<<<< HEAD
         }
 
         $goods_discount= Db::name('goods_discount')->where(input())->find();
@@ -168,4 +192,23 @@ class Marketing extends Base
 
 
 
+=======
+
+
+
+
+
+
+        }
+
+        $goods_discount= Db::name('goods_discount')->where(input())->find();
+
+        $this->assign([
+            'vo'=>$goods_discount
+        ]);
+        return $this->fetch();
+    }
+
+
+>>>>>>> 2fde78b8b5fb04e84606f6e939fe6f104b0539e8
 }

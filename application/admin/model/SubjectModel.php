@@ -2,9 +2,8 @@
 
 namespace app\admin\model;
 use think\Model;
-use think\Db;
 class SubjectModel extends Model {
-    protected $table='httc_subject';  //表名称
+    protected $table='hhtc_subject';  //表名称
 
     /**
      * 分类全部数据
@@ -16,7 +15,7 @@ class SubjectModel extends Model {
         if(!empty($param['key'])){
             $query = $query->where('title','like',"%{$param['key']}%");
         }
-        $data=$query->page($page)->limit($limit)->select();
+        $data=$query->page($page)->limit($limit)->order('id','Desc')->select();
         return ['data'=>$data,'count'=>count($data)];
     }
     /**
@@ -49,6 +48,12 @@ class SubjectModel extends Model {
      */
     public function del($id){
         return $this->where('id',$id)->delete();
+    }
+    /**
+     * 分类的全部数据
+     */
+    public function subjectall(){
+        return $this->order('id','Desc')->select();
     }
 }
 ?>

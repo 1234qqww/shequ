@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 <?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:87:"D:\xy\project\shequshop\public/../application/admin\view\marketing\youhuijuan_edit.html";i:1562999091;}*/ ?>
+=======
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:87:"D:\xy\project\shequshop\public/../application/admin\view\marketing\youhuijuan_edit.html";i:1562999065;}*/ ?>
+>>>>>>> 2fde78b8b5fb04e84606f6e939fe6f104b0539e8
 
 
 <!DOCTYPE html>
@@ -78,8 +82,15 @@
             ,laydate = layui.laydate;
         //日期范围
         laydate.render({
+<<<<<<< HEAD
             elem: '#test16',
             range:true
+=======
+            elem: '#test16'
+            , range:true
+            ,type: 'time'
+
+>>>>>>> 2fde78b8b5fb04e84606f6e939fe6f104b0539e8
         });
         form.on("select(menu_one)",function(data){
             var pid=data.value;

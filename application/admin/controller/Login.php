@@ -15,14 +15,12 @@ class Login extends Controller
             return model('admin')->admin_login(input());
         }
         if(session('admin')){
-           $admin=session('admin');
+            $admin=session('admin');
             if($admin['role_id']==1){
                 return $this->redirect(url('index/index'));
             }else{
                 return $this->redirect(url('index/indexs'));
             }
-
-
         }
         return $this->fetch(':login');
     }

@@ -12,105 +12,123 @@
   <link rel="stylesheet" href="__ADMIN__/layui/css/layui.css" media="all">
   <link rel="stylesheet" href="__ADMIN__/style/admin.css" media="all">
   <link rel="stylesheet" href="__ADMIN__/style/login.css" media="all">
+  <link href="__STATIC__/css/app.css?v=1.1.33" rel="stylesheet">
+  <link rel="stylesheet" href="__STATIC__/css/font_855362_tk5yxx1d41.css">
+<!--  <script src="__STATIC__/js/jquery-3.4.1.min.js"></script>-->
 </head>
 <body>
 
-  <div class="layadmin-user-login layadmin-user-display-show" id="LAY-user-login" style="display: none;">
-
-    <div class="layadmin-user-login-main">
-      <div class="layadmin-user-login-box layadmin-user-login-header">
-        <h2>后台登入</h2>
-        <p>{:config('base_config.site_name')}</p>
-      </div>
-      <div class="layadmin-user-login-box layadmin-user-login-body layui-form">
-        <div class="layui-form-item">
-          <label class="layadmin-user-login-icon layui-icon layui-icon-username" for="LAY-user-login-username"></label>
-          <input type="text" name="username" id="LAY-user-login-username" lay-verify="username" placeholder="用户名" class="layui-input">
-        </div>
-        <div class="layui-form-item">
-          <label class="layadmin-user-login-icon layui-icon layui-icon-password" for="LAY-user-login-password"></label>
-          <input type="password" name="password" id="LAY-user-login-password" lay-verify="password" placeholder="密码" class="layui-input">
-        </div>
-        <div class="layui-form-item">
-          <div class="layui-row">
-            <div class="layui-col-xs7">
-              <label class="layadmin-user-login-icon layui-icon layui-icon-vercode" for="LAY-user-login-vercode"></label>
-              <input type="text" name="vercode" id="LAY-user-login-vercode" lay-verify="vercode" placeholder="图形验证码" class="layui-input">
-            </div>
-            <div class="layui-col-xs5">
-              <div style="margin-left: 10px;">
-                <img src="{:url('login/getcaptcha',array('id'=>'admin_login'))}" class="layadmin-user-login-codeimg" id="LAY-user-get-vercode">
-            </div>
+<div class="user-login-login app-body">
+  <div class="login-body">
+    <div class="es-content">
+      <div class="login-box clearfix">
+        <div class="plugin pull-left">
+          <div class="plugin-info">
+            <img src="__STATIC__/image/login_bg.png" alt="">
           </div>
         </div>
-        <br>
-        <div class="layui-form-item">
-          <button class="layui-btn layui-btn-fluid" lay-submit lay-filter="LAY-user-login-submit">登 入</button>
+        <div class="login-form">
+          <p class="title font-22 es-primary-text line-height-22 bold">登录</p>
+          <form autocomplete="off" class="ivu-form ivu-form-label-right">
+            <div class="ivu-form-item ivu-form-item-required">
+              <div class="ivu-form-item-content" style="margin-left: 0px;">
+                <div class="input ivu-input-wrapper ivu-input-wrapper-default ivu-input-type">
+                  <i class="ivu-icon ivu-icon-ios-loading ivu-load-loop ivu-input-icon ivu-input-icon-validate"></i>
+                  <input name="username" type="text" placeholder="请输入登陆账号" class="ivu-input ivu-input-default ivu-input-with-prefix">
+                  <span class="ivu-input-prefix">
+											<i class="ivu-icon icon-shoujihao iconfont"></i>
+										</span>
+                </div>
+                <div class="ivu-form-item-error-tip" id="phonets"></div>
+              </div>
+            </div>
+            <div class="ivu-form-item ivu-form-item-required">
+              <div class="ivu-form-item-content" style="margin-left: 0px;">
+                <div class="input ivu-input-wrapper ivu-input-wrapper-default ivu-input-type">
+                  <i class="ivu-icon ivu-icon-ios-loading ivu-load-loop ivu-input-icon ivu-input-icon-validate"></i>
+                  <input name="password" type="password" placeholder="请输入密码" class="ivu-input ivu-input-default ivu-input-with-prefix">
+                  <span class="ivu-input-prefix">
+											<i class="ivu-icon icon-mima iconfont"></i>
+										</span>
+                </div>
+                <div class="ivu-form-item-error-tip" id="passwordts"></div>
+              </div>
+            </div>
+            <button type="button" class="login-btn ivu-btn ivu-btn-default">
+              <span>确定</span>
+            </button>
+          </form>
+
+          <!-- <p class="handle font-12 es-666-text line-height-12"> -->
+          <!-- <a href="#" class="">注册账号</a>  -->
+          <!-- <a href="#" class="pull-right">忘记密码？</a> -->
+          <!-- </p> -->
         </div>
       </div>
     </div>
-    
-    <div class="layui-trans layadmin-user-login-footer">
-      
-      <p>© 2018 {:config('base_config.site_name')}</p>
-      <p>
-        <span><a href="http://www.layui.com/admin/#get" target="_blank">获取授权</a></span>
-        <span><a href="http://www.layui.com/admin/pro/" target="_blank">在线演示</a></span>
-        <span><a href="http://www.layui.com/admin/" target="_blank">前往官网</a></span>
-      </p>
+  </div>
+  <div class="user-footer">
+    <div class="footer">
+      <div class="es-content">
+        <p class="footer-info font-12">技术支持由四川线上客信息技术开发有限公司提供</p>
+
+      </div>
     </div>
   </div>
-
-  <script src="__ADMIN__/layui/layui.js"></script>
-  <script src="__ADMIN__/js/app.js"></script>
-  <script>
+</div>
+</body>
+<script src="__ADMIN__/layui/layui.js"></script>
+<script src="__ADMIN__/js/app.js"></script>
+<script>
   layui.config({
     base: '__ADMIN__/' //静态资源所在路径
   }).extend({
     index: 'lib/index' //主入口模块
   }).use(['index', 'form'], function(){
     var $ = layui.$
-    ,setter = layui.setter
-    ,admin = layui.admin
-    ,form = layui.form
-    ,router = layui.router()
-    ,search = router.search;
-
+            ,setter = layui.setter
+            ,admin = layui.admin
+            ,form = layui.form
+            ,router = layui.router()
+            ,search = router.search;
     form.render();
-      form.verify({
-          vercode:[/^$|^[0-9]{0,4}$/, '验证码位四位数字！']//这个就是上面的排序lay-verify="sort"
-          ,username: function (value){
-              if(value.length >100){
-                  return '用户名长度过长';
-              }
-          }
-          ,password: function (value){
-              if(value.length > 12 || value.length<5){
-                  return '密码长度为6-12位';
-              }
-          }
-      });
-    //更换图形验证码
-      $('body').on('click', '#LAY-user-get-vercode', function(){
-          var othis = $(this);
-          this.src = '/admin/login/getcaptcha/id/admin_login?t='+ new Date().getTime()
-      });
-    //提交
-    form.on('submit(LAY-user-login-submit)', function(obj){
-        var result=ajax_post($,"",obj.field);
-//        console.log(result);
-          if(result.code==1){
-              layer.msg(result.msg,{icon:1},function(){
-                  location="";
-              })
-          }else{
-              var index=layer.alert(result.msg,{icon:2},function(){
-                  layer.close(index);
-                  $("#LAY-user-get-vercode").attr('src','/admin/login/getcaptcha/id/admin_login?t='+ new Date().getTime())
-              });
-          }
-    });
+    $("button").click(function(){
+      var username = $("input[name='username']").val();
+      var password = $("input[name='password']").val();
+
+      if(!password){
+        $('#passwordts').text('请输入密码')
+
+      }else{
+        $('#passwordts').text('')
+      }
+      var result=ajax_post($,"",{username:username,password:password});
+      if(result.code==1){
+        layer.msg(result.msg,{icon:1},function(){
+          location="";
+        })
+      }else{
+        var index=layer.alert(result.msg,{icon:2},function(){
+          layer.close(index);
+          $("#LAY-user-get-vercode").attr('src','/admin/login/getcaptcha/id/admin_login?t='+ new Date().getTime())
+        });
+      }
+    })
+    // form.on('submit(LAY-user-login-submit)', function(obj){
+    //   console.log(obj);
+    //   return;
+    //   var result=ajax_post($,"",obj.field);
+    //   if(result.code==1){
+    //     layer.msg(result.msg,{icon:1},function(){
+    //       location="";
+    //     })
+    //   }else{
+    //     var index=layer.alert(result.msg,{icon:2},function(){
+    //       layer.close(index);
+    //       $("#LAY-user-get-vercode").attr('src','/admin/login/getcaptcha/id/admin_login?t='+ new Date().getTime())
+    //     });
+    //   }
+    // });
   });
-  </script>
-</body>
+</script>
 </html>

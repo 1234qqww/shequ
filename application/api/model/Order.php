@@ -174,6 +174,7 @@ class Order extends Model
     $order=Db::name('order')->where($where)->select();
 
     foreach ($order as $k=>$v) {
+        $num=0;
             $order_goods=Db::name('order_goods')->where(['order_id' => $v['id']])->select();
            foreach ($order_goods as $x=>$y){
                $goods=Db::name('goods')->where(['id'=>$y['goods_id']])->find();
@@ -181,10 +182,10 @@ class Order extends Model
                $goods['total']=$y['goods_num'];
                $goods['sku_path']=$y['sku'];
                $goods['money']=$y['price'];
+               $num+=$y['goods_num'];
                $order[$k]['goods'][]=$goods;
-
-
            }
+           $order[$k]['good_nums']=$num;
             if($v['good_id'] != -1) {
                 $good = model('good')->getFind('id,name,pic',['id' => $v['good_id']]);
                 $good['pic'] = url_imgs($good['pic']);
@@ -193,10 +194,10 @@ class Order extends Model
                 $good['id'] = -1;
                 $good['name'] = '平台自营';
                 $good['pic'] = url_imgs($base['imgs']);
-
             }
             $order[$k]['good_id']=$good;
         }
+
        return $order;
     }
 

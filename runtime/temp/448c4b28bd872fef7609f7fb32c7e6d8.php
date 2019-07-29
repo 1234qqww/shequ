@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 <?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:68:"D:\xy\project\shequshop\public/../application/admin\view\\index.html";i:1563000386;}*/ ?>
+=======
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:68:"D:\xy\project\shequshop\public/../application/admin\view\\index.html";i:1562994566;}*/ ?>
+>>>>>>> 2fde78b8b5fb04e84606f6e939fe6f104b0539e8
 <!DOCTYPE html>
 <html>
 <head>
@@ -331,6 +335,7 @@
       <div class="left-bar-secendlist" id="9" style="display:none">
         <div   class="left-bar-secendlist-items" >
           <a href="<?php echo url('subject/subject'); ?>" target="rightframe">
+<<<<<<< HEAD
             <div  class="left-bar-secendlist-item" >
               <span>话题分类</span>
               <img src="/easyweb/layout/static/right_lit.png" />
@@ -348,17 +353,28 @@
       <div class="left-bar-secendlist" id="10" style="display:none">
         <div   class="left-bar-secendlist-items" >
           <a href="<?php echo url('system/qudao'); ?>" target="rightframe">
+=======
+>>>>>>> 2fde78b8b5fb04e84606f6e939fe6f104b0539e8
             <div  class="left-bar-secendlist-item" >
-              <span>小程序设置</span>
+              <span>话题分类</span>
+              <img src="/easyweb/layout/static/right_lit.png" />
+            </div>
+          </a>
+          <a href="<?php echo url('subject/topic'); ?>" target="rightframe">
+            <div  class="left-bar-secendlist-item" >
+              <span>话题</span>
               <img src="/easyweb/layout/static/right_lit.png" />
             </div>
           </a>
           <div class="line"></div>
         </div>
       </div>
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> 2fde78b8b5fb04e84606f6e939fe6f104b0539e8
     </div>
     <div class="right_bar_body" style="overflow: hidden;width: 100%;min-height:95%;display: flex;">
          <iframe id="mainContent" width="100%" height="100%" style="border: none" src="<?php echo url('home/welcome'); ?>" name="rightframe" title="rightframe"></iframe>
@@ -416,6 +432,7 @@
         }else {
           $('#8').hide();
         }
+<<<<<<< HEAD
         if(href=='subject.html' || href=='topic.html'){
           $('#9').show();
         }else{
@@ -426,6 +443,13 @@
         }else{
           $('#10').hide();
         }
+=======
+      if(href=='subject.html' || href=='topic.html'){
+        $('#9').show();
+      }else{
+        $('#9').hide();
+      }
+>>>>>>> 2fde78b8b5fb04e84606f6e939fe6f104b0539e8
 
 
 

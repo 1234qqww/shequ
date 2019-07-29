@@ -76,7 +76,6 @@ class Good extends Base
         }
         return json(array('code'=>1,'msg'=>'添加成功'));
     }
-
     //商家店面
     public function good_main(){
         $param=$this->request->param();
@@ -101,7 +100,9 @@ class Good extends Base
         }elseif ($param['listnum']==2){
             $order='sales_sum desc';
         }
+
         $goods=model('goods')->selectAll($where,$page,$order);
+
         if($param['id']!=-1){
             $field='id,name,tel,pic,pic_bg';
             $good=model('good')->getFind($field,['id'=>$param['id']]);
@@ -128,6 +129,9 @@ class Good extends Base
         $arr=array('goods'=>$goods,'good'=>$good);
         return  json(array('code'=>1,'msg'=>'成功','data'=>$arr));
     }
+
+
+
 
 
 
