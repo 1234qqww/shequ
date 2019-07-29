@@ -372,6 +372,11 @@
               <img src="/easyweb/layout/static/right_lit.png" />
             </div>
           </a>
+          <div class="line"></div>
+        </div>
+      </div>
+      <div class="left-bar-secendlist" id="11" style="display:none">
+        <div   class="left-bar-secendlist-items" >
           <a href="{:url('system/qudao')}" target="rightframe">
             <div  class="left-bar-secendlist-item" >
               <span>小程序设置</span>
@@ -448,15 +453,10 @@
       }else{
         $('#10').hide();
       }
-      if(href=='subject.html' || href=='topic.html'){
-        $('#9').show();
+      if(href=='qudao.html' ){
+        $('#11').show();
       }else{
-        $('#9').hide();
-      }
-      if(href=='qudao.html' || href=='qudao.html'){
-        $('#10').show();
-      }else{
-        $('#10').hide();
+        $('#11').hide();
       }
       //
       // $('.'+href).css({'background':'#24303C','border-radius':'3px'});
