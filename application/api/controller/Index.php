@@ -44,19 +44,14 @@ class Index extends Base
     public function goods(){
         $param=$this->request->param();
         $type=$param['type'];
-<<<<<<< HEAD
-=======
         $url=Config::get('host');
->>>>>>> 2a69b51e83f8261530558450787c969dff562e28
         unset($param['token']);
         if(!$param['userid']){
             return  json(array('code'=>0,'msg'=>'非法操作'));
         }
-<<<<<<< HEAD
         $goods=Db::name('goods')->where(['id'=>$param['id']])->find();
         $goods_img=Db::name('goods_img')->where(['goods_id'=>$param['id']])->select();
         $url=Config::get('host');
-=======
         $goods=Db::name('goods')->where(['id'=>$param['id']])->find();               //商品
         if(!preg_match("/(http|https):\/\/([\w.]+\/?)\S*/",$goods['original_img'])){
             $goods['original_img']=$url['url'].$goods['original_img'];
@@ -93,22 +88,13 @@ class Index extends Base
 
             }
         }  //查出最低优惠金额
->>>>>>> 2a69b51e83f8261530558450787c969dff562e28
         foreach ($goods_img as $k=>$v){
             if(!preg_match("/(http|https):\/\/([\w.]+\/?)\S*/",$v['path'])){
                 $goods_img[$k]['path']=$url['url'].$v['path'];
             }
         }
-<<<<<<< HEAD
         if($type==0){
             $arr=array('goods_img'=>$goods_img,'goods'=>$goods);
-            return  json(array('code'=>1,'msg'=>'成功','data'=>$arr));
-        }
-    }
-=======
-
-        if($type==0){
-            $arr=array('goods_img'=>$goods_img,'goods'=>$goods,'reduction'=>$reduction,'good'=>$good);
             return  json(array('code'=>1,'msg'=>'成功','data'=>$arr));
         }
     }
@@ -132,10 +118,7 @@ class Index extends Base
             return  json(array('code'=>0,'msg'=>'非法操作'));
         }
         $sku=model('goods_item_sku')->selectSku($param['sku'],$param['goods_id']);
->>>>>>> 2a69b51e83f8261530558450787c969dff562e28
-
         return  json(array('code'=>1,'msg'=>'','data'=>$sku));
-
     }
 
 
