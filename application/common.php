@@ -98,8 +98,6 @@ function base64toimg($code){
     return '/upload/adminimg/'.$file_name;
 }
 
-<<<<<<< HEAD
-=======
 //图片拼接绝对路径
 function url_imgs($img_path){
    $url=Config::get('host');
@@ -108,4 +106,3 @@ function url_imgs($img_path){
     }
     return $img_path;
 }
->>>>>>> 2a69b51e83f8261530558450787c969dff562e28
