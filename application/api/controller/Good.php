@@ -4,15 +4,7 @@
 namespace app\api\controller;
 
 
-<<<<<<< HEAD
 use think\Config;
-=======
-<<<<<<< HEAD
-use think\Controller;
-=======
-use think\Config;
->>>>>>> 2a69b51e83f8261530558450787c969dff562e28
->>>>>>> 430651ff8ce683ba4d021585dae1a8d98bfe2987
 use think\Db;
 
 class Good extends Base
@@ -134,12 +126,13 @@ class Good extends Base
                 $good['pic_bg']=$url['url'].$base_congif['pic_bg'];
             }
         }
+
+
         $arr=array('goods'=>$goods,'good'=>$good);
         return  json(array('code'=>1,'msg'=>'成功','data'=>$arr));
+
+
     }
-
-
-
 
 
 
