@@ -1,8 +1,15 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 <?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:68:"D:\xy\project\shequshop\public/../application/admin\view\\index.html";i:1563000386;}*/ ?>
 =======
 <?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:68:"D:\xy\project\shequshop\public/../application/admin\view\\index.html";i:1562994566;}*/ ?>
 >>>>>>> 2fde78b8b5fb04e84606f6e939fe6f104b0539e8
+=======
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:68:"D:\xy\project\shequshop\public/../application/admin\view\\index.html";i:1562994566;}*/ ?>
+=======
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:68:"D:\xy\project\shequshop\public/../application/admin\view\\index.html";i:1563000386;}*/ ?>
+>>>>>>> 2a69b51e83f8261530558450787c969dff562e28
+>>>>>>> 430651ff8ce683ba4d021585dae1a8d98bfe2987
 <!DOCTYPE html>
 <html>
 <head>
@@ -336,6 +343,10 @@
         <div   class="left-bar-secendlist-items" >
           <a href="<?php echo url('subject/subject'); ?>" target="rightframe">
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 430651ff8ce683ba4d021585dae1a8d98bfe2987
             <div  class="left-bar-secendlist-item" >
               <span>话题分类</span>
               <img src="/easyweb/layout/static/right_lit.png" />
@@ -353,8 +364,12 @@
       <div class="left-bar-secendlist" id="10" style="display:none">
         <div   class="left-bar-secendlist-items" >
           <a href="<?php echo url('system/qudao'); ?>" target="rightframe">
+<<<<<<< HEAD
 =======
 >>>>>>> 2fde78b8b5fb04e84606f6e939fe6f104b0539e8
+=======
+>>>>>>> 2a69b51e83f8261530558450787c969dff562e28
+>>>>>>> 430651ff8ce683ba4d021585dae1a8d98bfe2987
             <div  class="left-bar-secendlist-item" >
               <span>话题分类</span>
               <img src="/easyweb/layout/static/right_lit.png" />
@@ -370,11 +385,19 @@
         </div>
       </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 
 
 =======
 >>>>>>> 2fde78b8b5fb04e84606f6e939fe6f104b0539e8
+=======
+=======
+
+
+
+>>>>>>> 2a69b51e83f8261530558450787c969dff562e28
+>>>>>>> 430651ff8ce683ba4d021585dae1a8d98bfe2987
     </div>
     <div class="right_bar_body" style="overflow: hidden;width: 100%;min-height:95%;display: flex;">
          <iframe id="mainContent" width="100%" height="100%" style="border: none" src="<?php echo url('home/welcome'); ?>" name="rightframe" title="rightframe"></iframe>
@@ -433,6 +456,15 @@
           $('#8').hide();
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+      if(href=='subject.html' || href=='topic.html'){
+        $('#9').show();
+      }else{
+        $('#9').hide();
+      }
+=======
+>>>>>>> 430651ff8ce683ba4d021585dae1a8d98bfe2987
         if(href=='subject.html' || href=='topic.html'){
           $('#9').show();
         }else{
@@ -443,6 +475,7 @@
         }else{
           $('#10').hide();
         }
+<<<<<<< HEAD
 =======
       if(href=='subject.html' || href=='topic.html'){
         $('#9').show();
@@ -450,6 +483,9 @@
         $('#9').hide();
       }
 >>>>>>> 2fde78b8b5fb04e84606f6e939fe6f104b0539e8
+=======
+>>>>>>> 2a69b51e83f8261530558450787c969dff562e28
+>>>>>>> 430651ff8ce683ba4d021585dae1a8d98bfe2987
 
 
 
