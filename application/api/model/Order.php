@@ -171,7 +171,7 @@ class Order extends Model
         return   array('address'=>$address,'order'=>$data,'zongjia'=>$zongjia,'order_id'=>$order_id);
     }
     public function order_status($where){
-    $order=Db::name('order')->where($where)->select();
+    $order=Db::name('order')->where($where)->order('add_time desc')->select();
 
     foreach ($order as $k=>$v) {
         $num=0;

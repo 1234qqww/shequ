@@ -1,15 +1,4 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:68:"D:\xy\project\shequshop\public/../application/admin\view\\index.html";i:1563000386;}*/ ?>
-=======
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:68:"D:\xy\project\shequshop\public/../application/admin\view\\index.html";i:1562994566;}*/ ?>
->>>>>>> 2fde78b8b5fb04e84606f6e939fe6f104b0539e8
-=======
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:68:"D:\xy\project\shequshop\public/../application/admin\view\\index.html";i:1562994566;}*/ ?>
-=======
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:68:"D:\xy\project\shequshop\public/../application/admin\view\\index.html";i:1563000386;}*/ ?>
->>>>>>> 2a69b51e83f8261530558450787c969dff562e28
->>>>>>> 430651ff8ce683ba4d021585dae1a8d98bfe2987
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:68:"D:\xy\project\shequshop\public/../application/admin\view\\index.html";i:1564365780;}*/ ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -119,11 +108,25 @@
             <div class="left-bar-list-item-font"><span>营销</span></div>
           </div>
         </a>
+        <a href="<?php echo url('magic/magic'); ?>" target="rightframe">
+          <div  class="left-bar-list-item usedcar usedcar_banner"  >
+            <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/shangpin.png"/>
+            </div>
+            <div class="left-bar-list-item-font"><span>魔方图</span></div>
+          </div>
+        </a>
         <a href="<?php echo url('finance/finance'); ?>" target="rightframe">
           <div  class="left-bar-list-item business"  >
             <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/caiwu.png" />
             </div>
             <div class="left-bar-list-item-font"><span>财务</span></div>
+          </div>
+        </a>
+        <a href="<?php echo url('retail/retail'); ?>" target="rightframe">
+          <div  class="left-bar-list-item business"  >
+            <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/caiwu.png" />
+            </div>
+            <div class="left-bar-list-item-font"><span>分销商</span></div>
           </div>
         </a>
         <a href="<?php echo url('subject/subject'); ?>" target="rightframe">
@@ -154,6 +157,8 @@
             <div class="left-bar-list-item-font"><span>应用</span></div>
           </div>
         </a>
+<<<<<<< HEAD
+<<<<<<< HEAD
         <a href="<?php echo url('report/report'); ?>" target="rightframe">
           <div  class="left-bar-list-item user"  >
             <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/guanli.png" />
@@ -161,6 +166,10 @@
             <div class="left-bar-list-item-font"><span>通讯</span></div>
           </div>
         </a>
+=======
+>>>>>>> 2fde78b8b5fb04e84606f6e939fe6f104b0539e8
+=======
+>>>>>>> 430651ff8ce683ba4d021585dae1a8d98bfe2987
         <a href="<?php echo url('system/setting'); ?>" target="rightframe" >
           <div  class="left-bar-list-item administrators"  >
             <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/shezhi.png" />
@@ -342,11 +351,6 @@
       <div class="left-bar-secendlist" id="9" style="display:none">
         <div   class="left-bar-secendlist-items" >
           <a href="<?php echo url('subject/subject'); ?>" target="rightframe">
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 430651ff8ce683ba4d021585dae1a8d98bfe2987
             <div  class="left-bar-secendlist-item" >
               <span>话题分类</span>
               <img src="/easyweb/layout/static/right_lit.png" />
@@ -363,28 +367,49 @@
       </div>
       <div class="left-bar-secendlist" id="10" style="display:none">
         <div   class="left-bar-secendlist-items" >
-          <a href="<?php echo url('system/qudao'); ?>" target="rightframe">
 <<<<<<< HEAD
-=======
->>>>>>> 2fde78b8b5fb04e84606f6e939fe6f104b0539e8
-=======
->>>>>>> 2a69b51e83f8261530558450787c969dff562e28
->>>>>>> 430651ff8ce683ba4d021585dae1a8d98bfe2987
+<<<<<<< HEAD
+          <a href="<?php echo url('system/qudao'); ?>" target="rightframe">
             <div  class="left-bar-secendlist-item" >
-              <span>话题分类</span>
+              <span>小程序设置</span>
+=======
+=======
+>>>>>>> 430651ff8ce683ba4d021585dae1a8d98bfe2987
+          <a href="<?php echo url('retail/retail'); ?>" target="rightframe">
+            <div  class="left-bar-secendlist-item" >
+              <span>申请列表</span>
               <img src="/easyweb/layout/static/right_lit.png" />
             </div>
           </a>
-          <a href="<?php echo url('subject/topic'); ?>" target="rightframe">
+          <a href="<?php echo url('retail/reseller'); ?>" target="rightframe">
             <div  class="left-bar-secendlist-item" >
-              <span>话题</span>
+              <span>分销商</span>
+              <img src="/easyweb/layout/static/right_lit.png" />
+            </div>
+          </a>
+
+          <a href="<?php echo url('retail/broker'); ?>" target="rightframe">
+<<<<<<< HEAD
+            <div  class="left-bar-secendlist-item" >
+              <span>佣金比例</span>
+>>>>>>> 2fde78b8b5fb04e84606f6e939fe6f104b0539e8
+=======
+              <div  class="left-bar-secendlist-item" >
+                <span>佣金比例</span>
+                <img src="/easyweb/layout/static/right_lit.png" />
+              </div>
+          </a>
+          <a href="<?php echo url('system/qudao'); ?>" target="rightframe">
+            <div  class="left-bar-secendlist-item" >
+              <span>小程序设置</span>
+>>>>>>> 430651ff8ce683ba4d021585dae1a8d98bfe2987
               <img src="/easyweb/layout/static/right_lit.png" />
             </div>
           </a>
           <div class="line"></div>
         </div>
-      </div>
 <<<<<<< HEAD
+      </div>
 <<<<<<< HEAD
 
 
@@ -392,11 +417,7 @@
 =======
 >>>>>>> 2fde78b8b5fb04e84606f6e939fe6f104b0539e8
 =======
-=======
-
-
-
->>>>>>> 2a69b51e83f8261530558450787c969dff562e28
+        </div>
 >>>>>>> 430651ff8ce683ba4d021585dae1a8d98bfe2987
     </div>
     <div class="right_bar_body" style="overflow: hidden;width: 100%;min-height:95%;display: flex;">
@@ -463,7 +484,11 @@
       }else{
         $('#9').hide();
       }
-=======
+      if(href=='retail.html' || href=='reseller.html' ||  href=='broker.html'){
+        $('#10').show();
+      }else{
+        $('#10').hide();
+      }
 >>>>>>> 430651ff8ce683ba4d021585dae1a8d98bfe2987
         if(href=='subject.html' || href=='topic.html'){
           $('#9').show();
@@ -482,18 +507,22 @@
       }else{
         $('#9').hide();
       }
+      if(href=='retail.html' || href=='reseller.html' ||  href=='broker.html'){
+        $('#10').show();
+      }else{
+        $('#10').hide();
+      }
 >>>>>>> 2fde78b8b5fb04e84606f6e939fe6f104b0539e8
+
+
+
+
+
+
+
+
 =======
->>>>>>> 2a69b51e83f8261530558450787c969dff562e28
 >>>>>>> 430651ff8ce683ba4d021585dae1a8d98bfe2987
-
-
-
-
-
-
-
-
       //
       // $('.'+href).css({'background':'#24303C','border-radius':'3px'});
       // $('#'+href).find('img').show();

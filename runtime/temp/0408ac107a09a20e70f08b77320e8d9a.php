@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:68:"D:\xy\project\shequshop\public/../application/admin\view\\login.html";i:1564131455;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:68:"D:\xy\project\shequshop\public/../application/admin\view\\login.html";i:1564365591;}*/ ?>
 
 <!DOCTYPE html>
 <html>
@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="/static/admin/style/login.css" media="all">
   <link href="/static/css/app.css?v=1.1.33" rel="stylesheet">
   <link rel="stylesheet" href="/static/css/font_855362_tk5yxx1d41.css">
-<!--  <script src="/static/js/jquery-3.4.1.min.js"></script>-->
+  <script src="/static/js/jquery-3.4.1.min.js"></script>
 </head>
 <body>
 
