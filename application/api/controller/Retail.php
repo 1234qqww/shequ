@@ -7,6 +7,7 @@ use think\Request;
 use app\api\model\RetailModel;
 use app\api\model\BrokerModel;
 use app\api\model\UserModel;
+use app\api\model\CashModel;
 
 class Retail extends Controller
 {
@@ -16,6 +17,7 @@ class Retail extends Controller
         $this->retail=new RetailModel();
         $this->broker=new BrokerModel();
         $this->user=new UserModel();
+        $this->cash=new CashModel();
     }
     /**
      * 申请成为分销商
@@ -134,7 +136,8 @@ class Retail extends Controller
        if(!empty($param['backimg'])){
            $param['backimg']=$param['backimg'][0];
        }
-        $parass=$this->tencentMap_address(Txapi::CONSTANT,$param['address']);
+       $Txapi=new Txapi();
+        $parass=$this->tencentMap_address($Txapi->CONSTANT,$param['address']);
        if($parass['code']==0){
            $param['lng']=$parass['data']['lng'];
            $param['lat']=$parass['data']['lat'];
@@ -207,6 +210,16 @@ class Retail extends Controller
         $rest = httpCurlPost($url,$xml,$key_pem,$cert_pem);
         $result = xmlToArray($rest);
         return $result;
+    }
+
+    public function cash(Request $request){
+        $param=$request->param();
+        $param['type']=0;
+        $cash=$this->cash->add($param);
+        if($cash){
+            $this->retail->cash($param);
+        }
+        return $cash?json(['code'=>0,'msg'=>'审核中。。。','data'=>$cash]):json(['code'=>1,'msg'=>'提现失败','data'=>$cash]);
     }
 
 }

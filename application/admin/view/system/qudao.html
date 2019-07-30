@@ -82,7 +82,7 @@
         //添加驾驶证配图
         upload.render({
             elem: '#test3'
-            ,url: "{:url('subject/update')}"
+            ,url: "{:url('subject/updates')}"
             ,accept: 'file' //普通文件
             ,done: function(res){
             $('#autograph').val(res.url)
@@ -91,7 +91,7 @@
     });
         upload.render({
             elem: '#test4'
-            ,url: "{:url('subject/update')}"
+            ,url: "{:url('subject/updates')}"
             ,accept: 'file' //普通文件
             ,done: function(res){
             $('#templatecode').val(res.url)

@@ -253,5 +253,21 @@ class Subject extends Base
         $img = $info->getSaveName();
         exit(json_encode(array('code'=>0,'msg'=>'上传成功','url'=>$this->nowUrl().'/static/cert/'.$img)));
     }
+    /**
+     * 图片上传
+     */
+    public function updates(){
+        $file = request()->file('file'); // 获取上传的文件
+        if($file==null){
+            exit(json_encode(array('code'=>1,'msg'=>'未上传图片')));
+        }
+        // 获取文件后缀
+        $temp = explode(".", $_FILES["file"]["name"]);
+        $extension = end($temp);
+        // 判断文件是否合法
+        $info = $file->move(ROOT_PATH.'public/static/cert/'); // 移动文件到指定目录 没有则创建
+        $img = $info->getSaveName();
+        exit(json_encode(array('code'=>0,'msg'=>'上传成功','url'=>$img)));
+    }
 
 }

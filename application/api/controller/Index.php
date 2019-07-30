@@ -86,9 +86,9 @@ class Index extends Base
                 $reduction=$goods_discount[0]['reduction'];
             }
             for ($i=0;$i<$num;$i++){
-                         if($reduction>$goods_discount[$i]['reduction']){
-                             $reduction= $goods_discount[$i]['reduction'];
-                         }
+                 if($reduction>$goods_discount[$i]['reduction']){
+                     $reduction= $goods_discount[$i]['reduction'];
+                 }
 
             }
         }  //查出最低优惠金额
