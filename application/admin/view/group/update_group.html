@@ -113,15 +113,19 @@
             </div>
         </div>
         <div class="layui-form-item">
+            <label class="layui-form-label">开团周期</label>
+            <div class="layui-input-block">
+                <input name="times" id="times" placeholder="请输入开团周期/日" type="text" class="layui-input"
+                       lay-verType="tips" lay-verify="required" value="{$group?$group->times:''}" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
             <label class="layui-form-label">是否开团</label>
             <div class="layui-input-block">
-                <input type="checkbox" checked="" name="open" id="open" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF">
+                <input type="checkbox" {$group->regiment==1?'checked':''} name="open" id="open" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF">
                 <input type="text" hidden id="regiment" name="regiment" value="{$group?$group->regiment:''}">
             </div>
         </div>
-
-
-
     </form>
 </div>
 <script>

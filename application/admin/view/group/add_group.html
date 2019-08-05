@@ -90,6 +90,8 @@
                 <button type="button" class="layui-btn" id="images"><i class="layui-icon"></i>选择商品</button>
             </div>
             <input type="hidden" id="goods_id">
+            <input type="type" id="goods_name">
+
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">拼团价格</label>
@@ -109,6 +111,13 @@
             <label class="layui-form-label">开团人数</label>
             <div class="layui-input-block">
                 <input name="num" id="num" placeholder="请输入开团人数" type="text" class="layui-input"
+                       lay-verType="tips" lay-verify="required" value="" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">拼团周期</label>
+            <div class="layui-input-block">
+                <input name="times" id="times" placeholder="请输入拼团周期" type="text" class="layui-input"
                        lay-verType="tips" lay-verify="required" value="" required/>
             </div>
         </div>
@@ -171,7 +180,9 @@
                     var index = parent.layer.getFrameIndex()
                     var form = layer.getChildFrame('form', index);
                     var sid = form.find('#gid').val()
+                    var goods_name = form.find('#goods_name').val()
                     $('#goods_id').val(sid)
+                    $('#goods_name').val(goods_name)
                     layer.closeAll();
                 }
                 ,btn2: function(){

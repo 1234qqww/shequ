@@ -4,8 +4,10 @@ namespace app\admin\controller;
 use app\admin\model\Advise;
 use app\admin\model\Goods;
 use app\admin\model\SubjectModel;
+use app\admin\model\Admin;
 use app\admin\model\TopicModel;
 use think\Request;
+use think\Session;
 
 class Subject extends Base
 {
@@ -16,6 +18,7 @@ class Subject extends Base
         $this->subject=new SubjectModel();
         $this->topic=new TopicModel();
         $this->goods=new Goods();
+        $this->admin=new Admin();
     }
 
     /**

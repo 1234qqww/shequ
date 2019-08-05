@@ -61,7 +61,6 @@ class Index extends Base
         if(!preg_match("/(http|https):\/\/([\w.]+\/?)\S*/",$goods['original_img'])){
             $goods['original_img']=$url['url'].$goods['original_img'];
         }
-
         $goods_img=Db::name('goods_img')->where(['goods_id'=>$param['id']])->select();    //查询商品相册
         $goods_discount=Db::name('goods_discount')->where(['goods_id'=>$goods['good_id'],'state'=>1,'total'=>array('neq',0)])->select();   //查询该商家是否发放优惠卷
 

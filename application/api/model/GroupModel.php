@@ -17,9 +17,15 @@ class GroupModel extends Model {
     public function goods(){
         return $this->hasOne('Goods','id','goods_id');
     }
+
+    /**
+     * 通过商品id来获取团购商品
+     */
+
     public function groupshop($goods_id){
         return $this->with('goods')->where('goods_id',$goods_id)->find();
     }
+
 
 }
 ?>

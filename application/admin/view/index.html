@@ -421,6 +421,8 @@
       var domain=$(this).attr('href');
       var i = domain.lastIndexOf('/');
       var href = domain.substr(i+1);
+      var href=href.substring(0,href.indexOf('?'))
+      console.log(href);
 
       if(href == 'setting.html' || href=='wemen.html'){
         $('#1').show();

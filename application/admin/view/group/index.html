@@ -88,9 +88,10 @@
               return '';
             }
         }},
-        {field: 'price', title: '拼团价格',align:"center"},
+        {field: 'price', title: '拼团优惠',align:"center"},
         {field: 'strikenum', title: '成交数量',align:"center"},
         {field: 'num', title: '开团人数',align:"center"},
+        {field: 'times', title: '开团周期',align:"center"},
         {field: 'regiment', title: '是否开启',align:"center",templet:function(e){
               if(e.regiment==1){
                 return '开启'
@@ -120,17 +121,18 @@
           var strikenum = form.find('#strikenum').val()
           var num = form.find('#num').val()
           var regiment = form.find('#regiment').val()
+          var times = form.find('#times').val()
           if(!regiment){
             regiment=1;
           }
-          if(!goods_id || !price || !strikenum || !num || ! regiment){
+          if(!goods_id || !price || !strikenum || !num || ! regiment || !times){
             alert('缺少参数!');
             return;
           }
           layer.load(2);
           $.post(
                   "{:url('group/add')}",
-                  {goods_id: goods_id,price:price,strikenum:strikenum,num:num,regiment:regiment},
+                  {goods_id: goods_id,price:price,strikenum:strikenum,num:num,regiment:regiment,times:times},
                   function(res){
                     console.log(1);
                     layer.closeAll('loading');
@@ -184,17 +186,18 @@
             var strikenum = form.find('#strikenum').val()
             var num = form.find('#num').val()
             var regiment = form.find('#regiment').val()
+            var times = form.find('#times').val()
             if(!regiment){
               regiment=1;
             }
-            if(!goods_id || !price || !strikenum || !num || ! regiment){
+            if(!goods_id || !price || !strikenum || !num || ! regiment || !times){
               alert('缺少参数!');
               return;
             }
             layer.load(2);
             $.post(
                     "{:url('group/group_edit')}?id="+id,
-                    {goods_id: goods_id,price:price,strikenum:strikenum,num:num,regiment:regiment},
+                    {goods_id: goods_id,price:price,strikenum:strikenum,num:num,regiment:regiment,times:times},
                     function(res){
                       layer.closeAll('loading');
                       if (res.code == 0) {

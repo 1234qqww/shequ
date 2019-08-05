@@ -2,6 +2,8 @@
 
 namespace app\admin\model;
 use think\Model;
+use think\Session;
+
 class GroupModel extends Model {
     protected $table='hhtc_group';  //表名称
 
@@ -38,6 +40,7 @@ class GroupModel extends Model {
         $data['strikenum']=isset($param['strikenum'])?$param['strikenum']:'';
         $data['num']=isset($param['num'])?$param['num']:'';
         $data['regiment']=isset($param['regiment'])?$param['regiment']:'';
+        $data['times']=isset($param['times'])?$param['times']:'';
         $data['created_at']=date('Y-m-d H:i:s');
         $data['updated_at']=date('Y-m-d H:i:s');
         return $this->save($data);
@@ -67,6 +70,9 @@ class GroupModel extends Model {
         if(isset($param['regiment'])){
             $data['regiment'] = $param['regiment'];
         }
+        if(isset($param['times'])){
+            $data['times'] = $param['times'];
+        }
         $data['updated_at']=date('Y-m-d H:i:s');;
         return $this->where('id',$param['id'])->update($data);
     }
@@ -76,6 +82,14 @@ class GroupModel extends Model {
     public function del($id){
         return $this->where('id',$id)->delete();
     }
+    /**
+     * 查看团购商品是否存在
+     */
+    public function existence($goods_id){
+        return $this->where('goods_id',$goods_id)->find();
+    }
+
+
 
 }
 ?>

@@ -20,7 +20,8 @@
         "topthink/framework": "5.0.*",
         "topthink/think-captcha": "1.*",
         "workerman/workerman-for-win": "^3.5",
-        "topthink/think-worker": "1.*"
+        "topthink/think-worker": "1.*",
+        "topthink/think-queue": "1.1.4"
     },
     "autoload": {
         "psr-4": {

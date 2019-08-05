@@ -18,6 +18,7 @@ class Retail extends Base
         $this->broker=new BrokerModel();
         $this->user=new UserModel();
         $this->cash=new CashModel();
+        $this->subject=new Subject();
     }
 
     public function retail(){
@@ -169,6 +170,7 @@ class Retail extends Base
     public function cashadopt(Request $request){
         $param=$request->param();
         $cash=$this->cash->onedata($param['id']);
+
         $retail=$this->retail->onedata($cash->retail_id);
         $user=$this->user->oneData($retail->user_id);
         $nonce_str=$this->createNonceStr();
@@ -177,12 +179,8 @@ class Retail extends Base
         $spbill_create_ip='127.0.0.1';
         $txapi=new Txapi();
 
-//        $cash->money
         $dat=$this->transferAccounts($txapi->appid,$txapi->mchid,$user->openid,$nonce_str,$desc,$partner_trade_no,0.01,$spbill_create_ip,$txapi->secret,$txapi->autograph,$txapi->templatecode);
-        echo "<pre>";
-        print_r($dat);
-        echo "</pre>";
-        die();
+//         $dat=$this->initiatingPayment(0.01,12346,$user->openid,$txapi->appid,$txapi->mchid,$txapi->secret,url('admin/retail/cashreject'),0.01,'支付','');
         $param['type']=1;
         $data=$this->cash->adopt($param);
         return $data?['code'=>0,'msg'=>'申请通过','data'=>$data]:['code'=>1,'msg'=>'失败','data'=>$data];
@@ -296,10 +294,6 @@ class Retail extends Base
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
         $tmpInfo = curl_exec($ch);
-        echo ROOT_PATH.'/public/static/cert/'. $cert_pem;
-        echo ROOT_PATH.'/public/static/cert/'. $key_pem;
-        dump($tmpInfo);
-        die();
         //返回api的json对象
         //关闭URL请求
         curl_close($ch);
@@ -327,7 +321,7 @@ class Retail extends Base
      */
     function initiatingPayment($amountmoney, $ordernumber,$openid,$appid,$mch_id,$mer_secret,$notify_url,$body,$attach)
     {
-        $noncestr = createNonceStr(); //随机字符串
+        $noncestr = $this->createNonceStr(); //随机字符串
         $ordercode = $ordernumber;//商户订单号
         $totamount = $amountmoney;//金额
 //    $attach = json_encode(['ordercode' => $ordercode]);
@@ -342,16 +336,17 @@ class Retail extends Base
             'timeStamp' => $timeStamp,
             'out_trade_no' => $ordercode,
             'total_fee' => intval($totamount * 100),
-            'spbill_create_ip' => getIp(),
+            'spbill_create_ip' => '127.0.0.1',
             'notify_url' => $notify_url,
             'trade_type' => 'JSAPI'
         ];
         //签名
         $data['sign'] = $this->autograph($data,$mer_secret);
-        $result = creatPay($data);
-        $rest = xmlToArray($result);
+
+       $result = $this->creatPay($data);
+        $rest = $this->xmlToArray($result);
         if(!isset($rest['prepay_id'])){
-            return state(3,'获取prepay_id失败',$rest);
+            return json(['code'=>2,'msg'=>'支付错误','']);
         }
         $prepay_id = $rest['prepay_id'];
         $parameters = array(
@@ -361,7 +356,40 @@ class Retail extends Base
             'package' => 'prepay_id=' . $prepay_id, //数据包
             'signType' => 'MD5'//签名方式
         );
-        $sign = autograph($parameters,$mer_secret);
+        $sign = $this->autograph($parameters,$mer_secret);
         return ['prepay_id' => 'prepay_id=' . $prepay_id, 'timeStamp' => $timeStamp, 'noncestr' => $noncestr, 'sign' => $sign, 'sign_type' => 'MD5'];
     }
+    /**
+     * 创建支付
+     */
+    function creatPay($data)
+    {
+        $url = 'https://api.mch.weixin.qq.com/pay/unifiedorder';
+        $xml =$this-> arrayToXml($data);
+        $result = $this-> curlPost($url, $xml);
+//      print_r(htmlspecialchars($xml));
+        //$val = $this->doPageXmlToArray($result);
+        return $result;
+    }
+
+    /**
+     * 日志
+     */
+    public function mylog($msg,$file_dir='',$is_default_dir = true) {
+        if($is_default_dir){
+            $common_dir_path = '..'.DS.'runtime/log'.DS.'log';
+            if(empty($file_dir)){
+                $file_dir = $common_dir_path.DS.date('Ym').DS.date('Y-m-d').'.log';
+            }else{
+                $file_dir = $common_dir_path.$file_dir;
+            }
+        }
+        $dir = dirname($file_dir);
+        if(!is_dir($dir)){
+            mkdir($dir,0777,true);
+        }
+        $now_time = date('Y-m-d H:i:s',time());
+        file_put_contents($file_dir,'['.$now_time.']'."\n".'log_msg:'.$msg."\n",FILE_APPEND);
+    }
+
 }
