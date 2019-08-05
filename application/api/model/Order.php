@@ -45,6 +45,69 @@ class Order extends Model
         }
         $goods['price_num']=$total_amount+$shipping_money;
         $goods['shop_price_num']=$goods['shop_price_num']+$shipping_money-$marketing;
+        $goods['dissolution']=0;
+        if($goods['good_id']!=-1){
+            $good=Db::name('good')->field('id,name,pic')->where(['id'=>$goods['good_id']])->find();
+        }else{
+            $base=Config::get('base_config');
+            $good['name']='平台自营';
+            $good['pic']=$base['imgs'];
+        }
+        if(!preg_match("/(http|https):\/\/([\w.]+\/?)\S*/",$good['pic'])){
+            $good['pic']=$url['url'].$good['pic'];
+        }
+
+        $order=$this->order_add($user_id,$address,$goods['shop_price_num'],$marketing,$shipping_money,$goods['prom_type'],$goods['good_id'],$total_amount, $goods['price_num'],'');
+        $this->order_good($order,$goods_id,$sum,$goods['sku']['attr_path'],$price,$goods['good_id']);
+        return  array('good'=>$good,'goods'=>$goods,'marketing'=>$marketing,'address'=>$address,'order'=>$order);
+
+    }
+
+    /**
+     * 团购订单
+     */
+    //订单生成
+    public function grouporders($goods_id,$user_id,$sum,$sku,$prom,$group_id){
+        if($group_id=='undefined'){
+            $group_id=0;
+        }
+        $field='id,address_id';
+        $url=Config::get('host');
+        $address=model('user')->user_find(['id'=>$user_id],$field);                  //收货地址
+        $goods=model('goods')->goodsFind(['id'=>$goods_id], true);                  //商品基本信息
+        if($prom==2){
+            $group=Db::name('group')->where('goods_id',$goods['id'])->find();
+            $goods['shop_price']=$goods['shop_price']-$group['price'];
+        }
+        $price=$goods['shop_price'];
+        $goods['shop_price_num']=$goods['shop_price']*$sum;                    //计算商品总价
+        $goods_marketing =Db::name('goods_marketing')->where(['good_id'=>$goods['good_id']])->find();    //商户减免
+        $marketing=0;
+        $shipping_money=0;
+        $goods['num']=$sum;
+        if($sku!='undefined'){
+            $goods['sku']=model('goods_item_sku')->selectSku($sku,$goods_id);            //查询商品sku
+            $goods['shop_price_num']=$goods['sku']['sku_shop_price']*$sum;
+            $price=$goods['sku']['sku_shop_price'];
+        }else{
+            $goods['sku']=0;
+        }
+        $total_amount=$goods['shop_price_num'];
+        if($goods_marketing!=null){
+            $content=json_decode($goods_marketing['content'],true);//商店优惠
+            ksort($content);
+            foreach ($content as $k=>$v){
+                if($goods['shop_price_num']>=$k){
+                    $marketing=$v;
+                }
+            }
+        }
+        if($goods['is_free_shipping']==0){
+            $shipping_money=$goods['shipping_money'];
+        }
+        $goods['price_num']=$total_amount+$shipping_money;
+        $goods['shop_price_num']=$goods['shop_price_num']+$shipping_money-$marketing;
+        $goods['dissolution']=0;
 
         if($goods['good_id']!=-1){
             $good=Db::name('good')->field('id,name,pic')->where(['id'=>$goods['good_id']])->find();
@@ -57,14 +120,14 @@ class Order extends Model
             $good['pic']=$url['url'].$good['pic'];
         }
 
-        $order=$this->order_add($user_id,$address,$goods['shop_price_num'],$marketing,$shipping_money,$goods['prom_type'],$goods['good_id'],$total_amount, $goods['price_num']);
+        $order=$this->order_add($user_id,$address,$goods['shop_price_num'],$marketing,$shipping_money,$goods['prom_type'],$goods['good_id'],$total_amount, $goods['price_num'],$group_id);
         $this->order_good($order,$goods_id,$sum,$goods['sku']['attr_path'],$price,$goods['good_id']);
         return  array('good'=>$good,'goods'=>$goods,'marketing'=>$marketing,'address'=>$address,'order'=>$order);
 
     }
 
 
-    function order_add($user_id,$address,$shop_price_num,$marketing,$shipping_money,$prom_type,$good_id,$total_amount,$price_num){
+    function order_add($user_id,$address,$shop_price_num,$marketing,$shipping_money,$prom_type,$good_id,$total_amount,$price_num,$group_id){
         $address_id=0;
         if(!empty($address)){
            $address_id=$address['addressid'];
@@ -80,7 +143,8 @@ class Order extends Model
             'total_amount'=>$price_num,                           //订单总价
             'add_time'=>date('Y-m-d H:i:s'),                 //下单时间
             'order_prom_type'=>$prom_type,                    //订单类型
-            'good_id'=>$good_id
+            'good_id'=>$good_id,
+            'group_id'=>$group_id
         );
         $i=Db::name('order')->insertGetId($data);
         return $i;
@@ -174,7 +238,7 @@ class Order extends Model
     $order=Db::name('order')->where($where)->order('add_time desc')->select();
 
     foreach ($order as $k=>$v) {
-        $num=0;
+            $num=0;
             $order_goods=Db::name('order_goods')->where(['order_id' => $v['id']])->select();
            foreach ($order_goods as $x=>$y){
                $goods=Db::name('goods')->where(['id'=>$y['goods_id']])->find();
@@ -250,4 +314,49 @@ class Order extends Model
           }
         return $newArr;
     }
+    /**
+     * 通过订单id查询已支付的团购订单
+     */
+    public function grouporder($order_id){
+        return $this->with('user')->where('dissolution',0)->where('group_id',0)->where('id',$order_id)->where('order_status',0)->where('pay_status',1)->where('order_prom_type',2)->find();
+    }
+    /**
+     * 通过订单编号查询团购人员
+     */
+    public function groupuser($group_id){
+        return $this->with('user')->where('order_status',0)->where('pay_status',1)->where('order_prom_type',2)->where('group_id',$group_id)->select();
+    }
+    /**
+     * 关联用户表
+     */
+    public function user(){
+        return $this->hasOne('UserModel','id','user_id');
+    }
+    /**
+     * 查询未开团的团购订单
+     */
+    public function regiment(){
+        return $this->where('pay_status',1)->where('order_status',0)->where('order_prom_type',2)->where('group_id',0)->select();
+    }
+    /**
+     * 通过id来查询订单
+     */
+    public function onedata($id){
+        return $this->where('id',$id)->find();
+    }
+
+    /**
+     * 团购解散后修改团购订单状态
+     */
+    public function dissolution($id){
+        return $this->where('id',$id)->update(['dissolution'=>2]);
+    }
+    /**
+     * 通过订单号来查询参加拼团的用户
+     */
+    public function hand($order_sn){
+        return  $this->where('group_id',$order_sn)->select();
+
+    }
+
 }

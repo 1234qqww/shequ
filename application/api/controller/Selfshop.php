@@ -49,25 +49,28 @@ class Selfshop extends Controller
         $shelfshop=$this->selfshop->ifs($param);
         $ids=json_decode($shelfshop->ids);
         $good=[];
-        foreach($ids as $k=>$val){
-            $where=[];
-            $order=[];
-            $time=[];
-            if(isset($param['prom_type']) && $param['prom_type']!=''){
-                $where=['prom_type'=>$param['prom_type']];
-            }
-
-            $goods=Db::name('goods')->where('id',$val)->where($where)->order('id asc')->find();
-            if(!empty($goods)){
-                if(!preg_match("/(http|https):\/\/([\w.]+\/?)\S*/",$goods['original_img'])){
-                    $goods['original_img']=$this->subject->nowUrl(). $goods['original_img'];
+        if($ids){
+            foreach($ids as $k=>$val){
+                $where=[];
+                $order=[];
+                $time=[];
+                if(isset($param['prom_type']) && $param['prom_type']!=''){
+                    $where=['prom_type'=>$param['prom_type']];
                 }
-                $good[$k]=$goods;
-            }else{
-                $good=[];
-            }
 
+                $goods=Db::name('goods')->where('id',$val)->where($where)->order('id asc')->find();
+                if(!empty($goods)){
+                    if(!preg_match("/(http|https):\/\/([\w.]+\/?)\S*/",$goods['original_img'])){
+                        $goods['original_img']=$this->subject->nowUrl(). $goods['original_img'];
+                    }
+                    $good[$k]=$goods;
+                }else{
+                    $good=[];
+                }
+
+            }
         }
+
         if(isset($param['time']) ){
             $last_names = array_column($good,'on_time');
             array_multisort($last_names,SORT_DESC,$good);
@@ -104,7 +107,7 @@ class Selfshop extends Controller
         $pic_list=json_decode($magic->magic,true);
         $this->MergePictures($pic_list);
     }
-    public function ff(){
+    public function magics(){
         $magic=$this->magic->onedata();
         return $magic?json(['code'=>0,'msg'=>'魔方图','data'=>$magic->magic_img]):json(['code'=>1,'msg'=>'无数据','data'=>'']);
     }

@@ -7,6 +7,7 @@ use think\Request;
 use app\api\model\RetailModel;
 use app\api\model\BrokerModel;
 use app\api\model\UserModel;
+use app\api\model\CashModel;
 
 class Retail extends Controller
 {
@@ -16,6 +17,7 @@ class Retail extends Controller
         $this->retail=new RetailModel();
         $this->broker=new BrokerModel();
         $this->user=new UserModel();
+        $this->cash=new CashModel();
     }
     /**
      * 申请成为分销商
@@ -27,8 +29,9 @@ class Retail extends Controller
         if($data){
             return json_encode(['code'=>'0','msg'=>'已申请','data'=>$data]);
         }
-        $appid=trim(Txapi::appid);
-        $secret=trim(Txapi::appsecret);
+        $txpai=new Txapi();
+        $appid=trim($txpai->appid);
+        $secret=trim($txpai->appsecret);
         $path=ROOT_PATH.'public/static/code/';
         if (is_dir($path)){
             $filePath=$path;
@@ -134,7 +137,8 @@ class Retail extends Controller
        if(!empty($param['backimg'])){
            $param['backimg']=$param['backimg'][0];
        }
-        $parass=$this->tencentMap_address(Txapi::CONSTANT,$param['address']);
+       $Txapi=new Txapi();
+        $parass=$this->tencentMap_address($Txapi->CONSTANT,$param['address']);
        if($parass['code']==0){
            $param['lng']=$parass['data']['lng'];
            $param['lat']=$parass['data']['lat'];
@@ -208,5 +212,110 @@ class Retail extends Controller
         $result = xmlToArray($rest);
         return $result;
     }
+
+    public function cash(Request $request){
+        $param=$request->param();
+        $param['type']=0;
+        $cash=$this->cash->add($param);
+        if($cash){
+            $this->retail->cash($param);
+        }
+        return $cash?json(['code'=>0,'msg'=>'审核中。。。','data'=>$cash]):json(['code'=>1,'msg'=>'提现失败','data'=>$cash]);
+    }
+    /**
+     * 团购失败后退款
+     */
+    function refund($appid,$mch_id,$nonce,$ordernumber,$ordernumbers,$amount,$secret,$key_pem,$cert_pem){
+        $data = [
+            'appid' =>$appid,
+            'mch_id'=> $mch_id,
+            'nonce_str' => $nonce,
+            'out_trade_no' => $ordernumber, //随机字符串,
+            'out_refund_no' => $ordernumbers,
+            'total_fee'=> intval($amount * 100),
+            'refund_fee' =>  intval($amount * 100),
+        ];
+        $data['sign'] =$this-> autograph($data,$secret);
+        $url ="https://api.mch.weixin.qq.com/secapi/pay/refund";
+        $xml = $this->arrayToXml($data);
+        $rest = $this->httpCurlPost($url,$xml,$key_pem,$cert_pem);
+        $result = $this->xmlToArray($rest);
+        return $result;
+    }
+    /**
+     * @param $data
+     * @return string
+     * 生成签名
+     */
+    function autograph($data,$mer_secret)
+    {
+        $str = '';
+        $data = array_filter($data);
+        ksort($data);
+        foreach ($data as $key => $value) {
+            $str .= $key . '=' . $value . '&';
+        }
+        $str .= 'key=' . $mer_secret;
+        return strtoupper(md5($str));
+    }
+    /**
+     * @param $arr
+     * @return string
+     * 数组转xml
+     */
+    function arrayToXml($arr)
+    {
+        $xml = "<xml>";
+        foreach ($arr as $key => $val) {
+            if (is_array($val)) {
+                $xml .= "<" . $key . ">" . arrayToXml($val) . "</" . $key . ">";
+            } else {
+                $xml .= "<" . $key . ">" . $val . "</" . $key . ">";
+            }
+        }
+        $xml .= "</xml>";
+        return $xml;
+    }
+    /**
+     * 退款双向证书curl
+     */
+    function  httpCurlPost($url,$xml,$key_pem,$cert_pem){
+        $ch = curl_init();
+        // 设置URL和相应的选项
+        curl_setopt($ch, CURLOPT_ENCODING, '');                     //设置header头中的编码类型
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);             //返回原生的（Raw）内容
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);            //禁止验证ssl证书
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 0);                        //header头是否设置
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_SSLCERT, ROOT_PATH.'/public/static/cert/'. $cert_pem);
+        curl_setopt($ch, CURLOPT_SSLKEY, ROOT_PATH.'/public/static/cert/'. $key_pem);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
+        $tmpInfo = curl_exec($ch);
+        //返回api的json对象
+        //关闭URL请求
+        curl_close($ch);
+        return $tmpInfo;    //返回json对象
+    }
+    /**
+     * @param $xml
+     * @return mixed
+     * xml转数组
+     */
+    function xmlToArray($xml)
+    {
+        //禁止引用外部xml实体
+        libxml_disable_entity_loader(true);
+
+        $xmlstring = simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA);
+
+        $val = json_decode(json_encode($xmlstring), true);
+
+        return $val;
+    }
+
+
 
 }

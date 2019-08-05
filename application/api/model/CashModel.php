@@ -2,10 +2,8 @@
 
 namespace app\api\model;
 use think\Model;
-use think\Request;
-
-class RetailModel extends Model {
-    protected $table='hhtc_retail';  //表名称
+class CashModel extends Model {
+    protected $table='hhtc_cash';  //表名称
 
     /**
      * 申请列表
@@ -23,24 +21,6 @@ class RetailModel extends Model {
             );
         }
         $data=$query->with('user')->with('fuser')->where('apply',0)->page($page)->limit($limit)->order('id','Desc')->group('user_id')->select();
-        return ['data'=>$data,'count'=>count($data)];
-    }
-    /**
-     * 分销商列表
-     */
-    public function resellerlists($param){
-        $page = empty($param['page'])?0:$param['page'];
-        $limit = empty($param['limit'])?20:$param['limit'];
-        $query=$this;
-        if(!empty($param['key'])){
-            $key = $param['key'];
-            $query = $query->hasWhere(
-                'user',function($query) use ($key){
-                $query->where('userName','like',"%{$key}%");
-            }
-            );
-        }
-        $data=$query->with('user')->with('fuser')->where('apply',1)->page($page)->limit($limit)->order('id','Desc')->group('user_id')->select();
         return ['data'=>$data,'count'=>count($data)];
     }
     /**
@@ -62,35 +42,12 @@ class RetailModel extends Model {
         return $this->hasOne('app\admin\model\UserModel','id','user_id');
     }
     /**
-     * 推荐人
-     */
-    public function fuser(){
-        return $this->hasOne('UserModel','id','fid');
-    }
-
-    /**
-     * 查看是否是分销商
-     */
-    public function sel($param){
-        return $this->with('user')->with('fuser')->where('user_id',$param['user_id'])->find();
-    }
-    /**
-     * 申请成为分销商
+     * 申请提现记录
      */
     public function add($param){
         $data['money']=isset($param['money'])?$param['money']:'';
-        $data['shopname']=isset($param['shopname'])?$param['shopname']:'';
-        $data['headimg']=isset($param['headimg'])?$param['headimg']:'';
-        $data['backimg']=isset($param['backimg'])?$param['backimg']:'';
-        $data['phone']=isset($param['phone'])?$param['phone']:'';
-        $data['user_id']=isset($param['user_id'])?$param['user_id']:'';
-        $data['address']=isset($param['address'])?$param['address']:'';
-        $data['fid']=isset($param['fid'])?$param['fid']:'';
-        $data['code']=isset($param['code'])?$param['code']:'';
-        $data['apply']=isset($param['apply'])?$param['apply']:'';
-        $data['lng']=isset($param['lng'])?$param['lng']:'';
-        $data['lat']=isset($param['lat'])?$param['lat']:'';
-        $data['range']=isset($param['range'])?$param['range']:'';
+        $data['retail_id']=isset($param['retail_id'])?$param['retail_id']:'';
+        $data['type']=isset($param['type'])?$param['type']:'';
         $data['created_at']=date('Y-m-d H:i:s');
         $data['updated_at']=date('Y-m-d H:i:s');
         return $this->save($data);
@@ -155,12 +112,7 @@ class RetailModel extends Model {
         return $this->where('id',$id)->find();
     }
     /**
-     * 提现后减少账户金额
+     *
      */
-    public function cash($param){
-        $finds=$this->where('id',$param['retail_id'])->find();
-        $money=$finds->money-$param['money'];
-        return $this->where('id',$param['retail_id'])->update(['money'=>$money]);
-    }
 }
 ?>

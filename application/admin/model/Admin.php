@@ -271,6 +271,12 @@ class Admin extends Common {
         return $this->success('修改成功!');
 
     }
+    /**
+     * 查看管理员详情
+     */
+    public function admindet($id){
+        return  Db::name('admin')->where('admin_id',$id)->find();
+    }
 
 
 

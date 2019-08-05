@@ -68,28 +68,4 @@ class Commodity extends Base
         }
         return  json(array('code'=>1,'msg'=>'查询成功','data'=>$category));
     }
-//    /**
-//     * 查看分类下的商品
-//     */
-//    public function shopdet(Request $request){
-//        $param=$request->param();
-//        unset($param['token']);
-//        $data=[];
-//        foreach(json_decode($param['goods_category_id']) as $k=>$val){
-//            $where=['goods_category_id'=>$val];
-//            $category=Db::name('goods')->where($where)->order('id asc')->select();
-//            foreach($category as $k=>$val){
-//                if(!preg_match("/(http|https):\/\/([\w.]+\/?)\S*/",$val['original_img'])){
-//                    $category[$k]['original_img']=$this->subject->nowUrl(). $val['original_img'];
-//                }
-//            }
-//            $data[$k]=$category;
-//        }
-//
-//        return  json(array('code'=>1,'msg'=>'查询成功','data'=>$data));
-//    }
-
-
-
-
 }

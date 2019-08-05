@@ -4,18 +4,28 @@ namespace app\admin\controller;
 use app\admin\model\Advise;
 use app\admin\model\Goods;
 use app\admin\model\SubjectModel;
+use app\admin\model\Admin;
 use app\admin\model\TopicModel;
 use think\Request;
+use think\Session;
 
 class Subject extends Base
 {
 
     public function __construct(Request $request = null)
     {
+<<<<<<< HEAD
     parent::__construct($request);
     $this->subject=new SubjectModel();
     $this->topic=new TopicModel();
     $this->goods=new Goods();
+=======
+        parent::__construct($request);
+        $this->subject=new SubjectModel();
+        $this->topic=new TopicModel();
+        $this->goods=new Goods();
+        $this->admin=new Admin();
+>>>>>>> 43df7391692b089190042cef4edfed3de77c63a1
     }
 
     /**
@@ -253,6 +263,22 @@ class Subject extends Base
         $info = $file->move(ROOT_PATH.'public/static/cert/'); // 移动文件到指定目录 没有则创建
         $img = $info->getSaveName();
         exit(json_encode(array('code'=>0,'msg'=>'上传成功','url'=>$this->nowUrl().'/static/cert/'.$img)));
+    }
+    /**
+     * 图片上传
+     */
+    public function updates(){
+        $file = request()->file('file'); // 获取上传的文件
+        if($file==null){
+            exit(json_encode(array('code'=>1,'msg'=>'未上传图片')));
+        }
+        // 获取文件后缀
+        $temp = explode(".", $_FILES["file"]["name"]);
+        $extension = end($temp);
+        // 判断文件是否合法
+        $info = $file->move(ROOT_PATH.'public/static/cert/'); // 移动文件到指定目录 没有则创建
+        $img = $info->getSaveName();
+        exit(json_encode(array('code'=>0,'msg'=>'上传成功','url'=>$img)));
     }
 
 }

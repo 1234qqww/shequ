@@ -14,6 +14,10 @@ class Txapi extends Model
        $qudao=Config::get("qudao");
         $this->appid=$qudao['appid'];
         $this->appsecret=$qudao['appsecret'];
+        $this->mchid=$qudao['mchid'];
+        $this->secret=$qudao['secret'];
+        $this->autograph=$qudao['autograph'];
+        $this->templatecode=$qudao['templatecode'];
         $this->CONSTANT='ZS4BZ-V743I-2XGGL-52DY5-VDY2V-FJFRI';
     }
 

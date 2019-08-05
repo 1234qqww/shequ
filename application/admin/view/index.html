@@ -72,7 +72,7 @@
             <div class="left-bar-list-item-font"><span>首页</span></div>
           </div>
         </a>
-        <a href="{:url('good/good')}" target="rightframe">
+        <a href="{:url('good/good')}?id=1" target="rightframe">
           <div  class="left-bar-list-item usedcar usedcar_banner"  >
             <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/shanghu.png"/>
             </div>
@@ -98,6 +98,13 @@
             <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/dingdan.png"/>
             </div>
             <div class="left-bar-list-item-font"><span>订单</span></div>
+          </div>
+        </a>
+        <a href="{:url('group/group')}" target="rightframe">
+          <div  class="left-bar-list-item "  >
+            <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/dingdan.png"/>
+            </div>
+            <div class="left-bar-list-item-font"><span>拼团</span></div>
           </div>
         </a>
         <a href="{:url('marketing/marketing')}" target="rightframe">
@@ -396,6 +403,23 @@
               <img src="/easyweb/layout/static/right_lit.png" />
             </div>
           </a>
+          <a href="{:url('retail/cash')}" target="rightframe">
+            <div  class="left-bar-secendlist-item" >
+              <span>提现申请</span>
+              <img src="/easyweb/layout/static/right_lit.png" />
+            </div>
+          </a>
+          <a href="{:url('retail/cashrecord')}" target="rightframe">
+            <div  class="left-bar-secendlist-item" >
+              <span>提现记录</span>
+              <img src="/easyweb/layout/static/right_lit.png" />
+            </div>
+          </a>
+          <div class="line"></div>
+        </div>
+      </div>
+      <div class="left-bar-secendlist" id="11" style="display:none">
+        <div   class="left-bar-secendlist-items" >
           <a href="{:url('system/qudao')}" target="rightframe">
             <div  class="left-bar-secendlist-item" >
               <span>小程序设置</span>
@@ -420,6 +444,9 @@
       var domain=$(this).attr('href');
       var i = domain.lastIndexOf('/');
       var href = domain.substr(i+1);
+      console.log(href);
+      var href=href.substring(0,href.indexOf('?'))
+      console.log(href);
 
       if(href == 'setting.html' || href=='wemen.html'){
         $('#1').show();
@@ -466,20 +493,15 @@
       }else{
         $('#9').hide();
       }
-      if(href=='retail.html' || href=='reseller.html' ||  href=='broker.html'){
+      if(href=='retail.html' || href=='reseller.html' ||  href=='broker.html' ||  href=='cash.html' ||  href=='cashrecord.html'){
         $('#10').show();
       }else{
         $('#10').hide();
       }
-      if(href=='subject.html' || href=='topic.html'){
-        $('#9').show();
+      if(href=='qudao.html' ){
+        $('#11').show();
       }else{
-        $('#9').hide();
-      }
-      if(href=='qudao.html' || href=='qudao.html'){
-        $('#10').show();
-      }else{
-        $('#10').hide();
+        $('#11').hide();
       }
       // $('.'+href).css({'background':'#24303C','border-radius':'3px'});
       // $('#'+href).find('img').show();

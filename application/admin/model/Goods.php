@@ -5,6 +5,7 @@ namespace app\admin\model;
 
 use think\Db;
 use think\Model;
+use think\Session;
 
 class Goods extends Model
 {
@@ -37,15 +38,48 @@ class Goods extends Model
         if(!empty($param['key'])){
             $query = $query->where('goods_name','like',"%{$param['key']}%");
         }
-
         $data=$query->where('is_on_sale',1)->page($page)->limit($limit)->select();
         return ['data'=>$data,'count'=>count($data)];
     }
+
     /**
      * 商品详情
      */
     public function onedata($id){
         return $this->where('id',$id)->find();
+    }
+    /**
+     * 普通商品
+     */
+    public function groupshops($param){
+        $page = empty($param['page'])?0:$param['page'];
+        $limit = empty($param['limit'])?20:$param['limit'];
+        $query=$this;
+        if(!empty($param['key'])){
+            $query = $query->where('goods_name','like',"%{$param['key']}%");
+        }
+        echo "<pre>";
+        print_r($param);
+        echo "</pre>";
+        die();
+        if(!empty($param['goodid'])){
+            $query=$query->where('good_id',$param['goodid']);
+        }
+
+        $data=$query->where('is_on_sale',1)->where('prom_type',0)->page($page)->limit($limit)->select();
+        return ['data'=>$data,'count'=>count($data)];
+    }
+    /**
+     * 修改为拼团商品
+     */
+    public function eidtgroup($id){
+        return $this->where('id',$id)->update(['prom_type'=>2]);
+    }
+    /**
+     * 修改为普通商品
+     */
+    public function shopgroup($id){
+        return $this->where('id',$id)->update(['prom_type'=>0]);
     }
 
 

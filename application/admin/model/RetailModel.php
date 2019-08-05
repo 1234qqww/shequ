@@ -125,28 +125,18 @@ class RetailModel extends Model {
         return $this->with('user')->where('fid',$param['user_id'])->select();
     }
     /**
-     * 企业转账到零钱
+     * 分销商详情
      */
-    function transferAccounts($mch_appid,$mchid,$openid,$nonce_str,$desc,$partner_trade_no,$amount,$spbill_create_ip,$secret,$key_pem,$cert_pem){
-        $data = [
-            'mch_appid' =>$mch_appid,
-            'mchid'=> $mchid,
-            'openid' => $openid,
-            'nonce_str' => $nonce_str, //随机字符串,
-            'desc' => $desc,
-            'check_name'=>'NO_CHECK',
-            'partner_trade_no' => $partner_trade_no,
-            'amount' => intval($amount * 100),
-            'spbill_create_ip' => $spbill_create_ip,
-        ];
-        //签名
-        $data['sign'] = autograph($data,$secret);
-        $url = "https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers";
-        $xml = arrayToXml($data);
-        $rest = httpCurlPost($url,$xml,$key_pem,$cert_pem);
-        $result = xmlToArray($rest);
-        return $result;
+    public function oneData($id){
+        return $this->where('id',$id)->find();
     }
+    /**
+     * 提现申请驳回后退回金额
+     */
+    public function moneys($money,$id){
+        return $this->where('id',$id)->update(['money'=>$money]);
+    }
+
 
 }
 ?>

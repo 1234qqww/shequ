@@ -157,7 +157,7 @@ class Subject extends Controller
     public function goods_id(){
         $param=$this->request->param();
         unset($param['token']);
-        $url=Config::get('host');
+//        $url=Config::get('host');
         $data=Db::name('goods')->where(['id'=>$param['id']])->find();
         if(!preg_match("/(http|https):\/\/([\w.]+\/?)\S*/",$data['original_img'])){
             $data['original_img']=$this->nowUrl().$data['original_img'];
