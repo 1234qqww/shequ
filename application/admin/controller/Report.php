@@ -41,7 +41,7 @@ class Report extends Base
                         }
                     }
                 }else{
-                    if($data[$k]['h']=12) {
+                    if($data[$k]['h']>12) {
                         $data[$k]['time'] = '下午 '.date('H:i', strtotime($val['created_at']));
                     }else{
                         $data[$k]['time'] = '上午 '.date('H:i', strtotime($val['created_at']));
