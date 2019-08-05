@@ -22,8 +22,12 @@ class Base extends Auth
             $param=$this->request->param();
 
             if(isset($param['merchantid'])){
+                echo 1;
+                die();
                 session('merchantid',$param['merchantid']);
             }else{
+                echo 2;
+                die();
                 session('merchantid',-1);
             }
         }
