@@ -14,18 +14,11 @@ class Subject extends Base
 
     public function __construct(Request $request = null)
     {
-<<<<<<< HEAD
-    parent::__construct($request);
-    $this->subject=new SubjectModel();
-    $this->topic=new TopicModel();
-    $this->goods=new Goods();
-=======
         parent::__construct($request);
         $this->subject=new SubjectModel();
         $this->topic=new TopicModel();
         $this->goods=new Goods();
         $this->admin=new Admin();
->>>>>>> 43df7391692b089190042cef4edfed3de77c63a1
     }
 
     /**

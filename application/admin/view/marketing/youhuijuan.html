@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,20 +30,7 @@
                     <div class="layui-inline">
                         <label class="layui-form-label">优惠卷名称</label>
                         <div class="layui-input-block">
-<<<<<<< HEAD
-                            <input type="text" name="dis_name" placeholder="请输入优惠卷名称" autocomplete="off" class="layui-input">
-                        <label class="layui-form-label">用户名</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="userName" placeholder="请输入用户名" autocomplete="off" class="layui-input">
-                        <label class="layui-form-label">用户名</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="userName" placeholder="请输入用户名" autocomplete="off" class="layui-input">
-                        <label class="layui-form-label">优惠卷名称</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="dis_name" placeholder="请输入优惠卷名称" autocomplete="off" class="layui-input">
-=======
                             <input type="text" name="name" placeholder="请输入优惠卷名称" autocomplete="off" class="layui-input">
->>>>>>> 3994f6d3d07288b46f78095c00cec763d72ffe9a
                         </div>
                     </div>
                     <div class="layui-inline">
@@ -66,8 +55,6 @@
         </div>
     </div>
 </div>
-        </div>
-    </div>
 <script src="__ADMIN__/layui/layui.js"></script>
 <script src="__ADMIN__/js/app.js"></script>
 <script>
@@ -83,13 +70,13 @@
             , laydate = layui.laydate
             , hhtc = layui.hhtc;
         var cols = [[
-                {field: 'id', width: 40, title: 'ID', sort: true}
+            {field: 'id', width: 40, title: 'ID', sort: true}
             , {field: 'dis_name', align: 'center', title: '优惠卷名称'}
             , {field: 'order', align: 'center', title: '排序'}
             , {field: 'satisfy', align: 'center', title: '使用限制'}
             , {field: 'reduction', align: 'center', title: '优惠金额'}
             , {align: 'center', title: '使用时间',toolbar: '#atime'}
-             ,{title: '操作', width: 200, align: 'center', fixed: 'right', toolbar: '#action'}
+            ,{title: '操作', width: 200, align: 'center', fixed: 'right', toolbar: '#action'}
 
         ]];
         //加载数据
