@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:68:"D:\xy\project\shequshop\public/../application/admin\view\\login.html";i:1564365591;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:68:"D:\xy\project\shequshop\public/../application/admin\view\\login.html";i:1564730678;}*/ ?>
 
 <!DOCTYPE html>
 <html>
@@ -19,7 +19,7 @@
 </head>
 <body>
 
-<div class="user-login-login app-body">
+<div class="user-login-login app-body" >
   <div class="login-body">
     <div class="es-content">
       <div class="login-box clearfix">

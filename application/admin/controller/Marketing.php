@@ -5,9 +5,22 @@ namespace app\admin\controller;
 
 
 use think\Db;
+use think\Request;
 
 class Marketing extends Base
 {
+    public function __construct(Request $request = null)
+    {
+        parent::__construct($request);
+        $admin=session('admin');
+        if($admin['role_id']!=1){
+            $this->good_id=session('good');
+        }else{
+            $this->good_id=-1;        //超级管理员添加商品商户id为-1
+        }
+
+    }
+
     //营销
     public function marketing(){
         if(request()->isAjax()){
@@ -51,6 +64,7 @@ class Marketing extends Base
         $goods_marketing=Db::name('goods_marketing')->where(['good_id'=>$good_id])->find();
         $content=json_decode($goods_marketing['content'],true);
         $this->assign(['content'=>$content]);
+
 
         return $this->fetch();
     }
@@ -98,8 +112,6 @@ class Marketing extends Base
                 return json(['code'=>0,'msg'=>'请选择使用时间限制']);
             }
             $one=explode('-',$param['time'],4);
-
-
 //            $param['start_time']=strtotime($one[0].'-'.$one[1].'-'.$one[2]);
             $param['start_time']=$one[0].'-'.$one[1].'-'.$one[2];
 
@@ -111,12 +123,8 @@ class Marketing extends Base
             return  $goods_discount?['code'=>1,'msg'=>'添加成功']:['code'=>0,'msg'=>'添加失败'];
 
         }
-
-
         return $this->fetch();
     }
-
-
     //编辑优惠卷
     public function youhuijuan_edit(){
         if(request()->isAjax()){
@@ -159,9 +167,34 @@ class Marketing extends Base
 
 
         }
-
-
-
     }
+
+    //秒杀
+    public function seckill(){
+        if(request()->isAjax()){
+
+       return Db::name('good_seckill')
+                ->alias('s')
+                ->join('goods g','s.goods_id=g.id')
+                ->field('s.id,s.goods_id,s.good_id,s.discount,s.quantity,s.quantitys,s.purchase,s.start_time,s.end_time,g.id,g.goods_name,g.original_img')
+                ->where(['s.good_id'=>$this->good_id])
+                ->paginate(15);
+        }
+        return $this->fetch();
+    }
+
+
+    public function seckill_add(){
+
+        if(request()->isAjax()){
+             $param=$this->request->param();
+             $merchantid=session('merchantid');
+
+             dump($merchantid);die();
+
+        }
+        return $this->fetch();
+    }
+
 
 }

@@ -1,0 +1,230 @@
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:86:"D:\xy\project\shequshop\public/../application/admin\view\order\order_wait_payment.html";i:1564473934;}*/ ?>
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layuiAdmin 角色管理</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/static/admin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/static/admin/style/admin.css" media="all">
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">订单号</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="order_sn" placeholder="请输入订单号" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">收货人</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="consignee" placeholder="请输入收货人" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">下单时间</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="add_time" readonly class="layui-input" id="times" placeholder=" - ">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn layui-btn-normal" lay-submit lay-filter="search">
+                            <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <table id="list" lay-filter="list"></table>
+            <script type="text/html" id="address">
+                {{d.consignee}}:{{d.mobile}}
+            </script>
+            <script type="text/html" id="">
+                {{#  if(d.display == 0){ }}
+                <button class="layui-btn layui-btn-danger layui-btn-xs">隐藏</button>
+                {{#  } else { }}
+                <button class="layui-btn layui-btn-xs">显示</button>
+                {{#  } }}
+            </script>
+            <script type="text/html" id="order_status">
+                {{#  if(d.order_status === 0){ }}
+                待付款
+                {{#  } }}
+                {{#  if(d.order_status ===1){ }}
+                待完成
+                {{#  } }}
+                {{#  if(d.order_status ===2){ }}
+                已完成
+                {{#  } }}
+                {{#  if(d.order_status ===3){ }}
+                退款
+                {{#  } }}
+            </script>
+            <script type="text/html" id="shipping_status">
+                {{#  if(d.shipping_status === 0){ }}
+                未发货
+                {{#  } }}
+                {{#  if(d.shipping_status ===1){ }}
+                已发货
+                {{#  } }}
+                {{#  if(d.shipping_status ===2){ }}
+                已签收
+                {{#  } }}
+            </script>
+            <script type="text/html" id="order_prom_type">
+                {{#  if(d.order_prom_type === 0){ }}
+                普通订单
+                {{#  } }}
+                {{#  if(d.order_prom_type ===1){ }}
+                秒杀订单
+                {{#  } }}
+                {{#  if(d.order_prom_type ===2){ }}
+                拼团订单
+                {{#  } }}
+            </script>
+            <script type="text/html" id="action">
+                <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-search"></i>查看</a>
+            </script>
+        </div>
+    </div>
+</div>
+<script src="/static/admin/layui/layui.js"></script>
+<script src="/static/admin/js/app.js"></script>
+<script>
+    layui.config({
+        base: '/static/admin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+        ,hhtc: 'hhtc'
+    }).use(['index', 'table','laydate','hhtc'], function(){
+        var $ = layui.$
+            ,form = layui.form
+            ,table = layui.table
+            ,laydate= layui.laydate
+            ,hhtc=layui.hhtc;
+        laydate.render({
+            elem: '#times'
+            ,range: true
+        });
+        var cols=[[
+            {field: 'id', width: 80, title: 'ID', sort: true}
+            ,{field: 'order_sn',align: 'center', title: '订单号'}
+            ,{field: 'imgs',align: 'center', title: '收货人',toolbar: '#address'}
+            ,{field: 'total_amount',align: 'center', title: '总金额'}
+            ,{field: 'order_amount',align: 'center', title: '应付金额'}
+            ,{align: 'center', title: '订单状态',toolbar: '#order_status'}
+            ,{align: 'center', title: '发货状态',toolbar: '#shipping_status'}
+            ,{field: 'pay_name',align: 'center', title: '支付方式'}
+            ,{field: 'add_time',align: 'center', title: '下单时间', sort: true}
+            ,{align: 'center', title: '订单类型',toolbar: '#order_prom_type'}
+            ,{title: '操作', width: 150, align: 'center', fixed: 'right', toolbar: '#action'}
+        ]];
+        //加载数据
+        base_table(table,'list','/admin/order/order_wait_payment',cols);
+        form.on('submit(search)', function(data){
+            var field = data.field;
+            //执行重载
+            table.reload('list', {
+                where: field
+            });
+        });
+
+        table.on('tool(list)',function(obj){
+            var data=obj.data;
+            if(obj.event=='del'){
+                layer.confirm('确定删除此轮播图？', function(index){
+                    var post_json={id:data.id};
+                    hhtc.ajax('<?php echo url("banner/del_banner"); ?>',post_json,function(res){
+                        if(res.code==1){
+                            layer.msg(res.msg,{icon:1},function(){
+                                table.reload('list');
+                                layer.close(index);
+                            })
+                        }else{
+                            layer.alert(res.msg,{icon:2});
+                        }
+                    })
+                });
+            }else if(obj.event=='edit'){
+                layer.open({
+                    type: 2
+                    ,content: '/admin/order/edit_order/id/'+data.id
+                    ,area: ['100%', '100%']
+                });
+            }else if(obj.event='showimg'){
+                layer.open({
+                    type: 1,
+                    title: false,
+                    closeBtn: 1,
+                    shadeClose: true,
+                    area:['768px','304px'],
+                    content: '<img width="100%" src="'+data.imgs+'">'
+                });
+            }
+        })
+        //事件
+        var active = {
+            add: function(){
+                layer.open({
+
+                    type: 2
+                    ,title: '添加轮播图'
+                    ,content: "<?php echo url('banner/add_banner'); ?>"
+                    ,area: ['100%', '100%']
+                    ,btn: ['确定', '取消']
+                    ,yes: function(index, layero){
+                        var iframeWindow = window['layui-layer-iframe'+ index]
+                            ,submit = layero.find('iframe').contents().find("#add");
+                        //监听提交
+                        iframeWindow.layui.form.on('submit(add)', function(data){
+                            var field = data.field; //获取提交的字段
+                            hhtc.ajax("<?php echo url('banner/add_banner'); ?>",data.field,function(res){
+
+
+                                if(res.code==1){
+                                    layer.msg(res.msg,{icon:1},function(){
+                                        table.reload('list');
+                                        layer.close(index); //关闭弹层
+                                    })
+                                }else{
+                                    layer.alert(res.msg,{icon:2});
+                                }
+                            })
+                        });
+                        submit.trigger('click');
+                    }
+                });
+            },
+            upload:function(){
+                hhtc.upload_one(function(img){
+                    layer.msg('图片路径为:'+img)
+                });
+            },
+            uploads:function(){
+                hhtc.upload_more(function(img){
+                    var str='选择了'+img.length+'张图片;路径分别为:<br>';
+                    for(i=0;i<img.length;i++){
+                        str+=img[i]+'<br>';
+                    }
+                    layer.alert(str)
+                });
+            }
+        }
+        $('.layui-btn.layuiadmin-btn-admin').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+
+</script>
+</body>
+</html>
+

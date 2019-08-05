@@ -201,6 +201,44 @@ class Order extends Model
        return $order;
     }
 
+    public function order_details($id){
+
+        $order=Db::name('order')->where(['id'=>$id])->find();
+        $address=Db::name('user_address')->where(['addressid'=>$order['user_address']])->find();
+
+        $order_goods=Db::name('order_goods')->where(['order_id' => $order['id']])->select();
+        foreach ($order_goods as $x=>$y){
+            $goods=Db::name('goods')->field('id,original_img,goods_name')->where(['id'=>$y['goods_id']])->find();
+               $y['original_img']=url_imgs($goods['original_img']);
+               $y['goods_name']=$goods['goods_name'];
+            $order['order_goods'][]=$y;
+        }
+        if($order['good_id'] != -1) {
+            $good = model('good')->getFind('id,name,pic',['id' => $order['good_id']]);
+            $good['pic'] = url_imgs($good['pic']);
+        }else {
+            $base = Config::get('base_config');
+            $good['id'] = -1;
+            $good['name'] = '平台自营';
+            $good['pic'] = url_imgs($base['imgs']);
+        }
+        return array('good'=>$good,'order'=>$order,'address'=>$address);
+
+    }
+    public function order_refund_index($id){
+        $order=Db::name('order')->where(['id'=>$id])->find();
+        $order_goods=Db::name('order_goods')->where(['order_id' => $order['id']])->select();
+        foreach ($order_goods as $x=>$y){
+            $goods=Db::name('goods')->field('id,original_img,goods_name')->where(['id'=>$y['goods_id']])->find();
+            $y['original_img']=url_imgs($goods['original_img']);
+            $y['goods_name']=$goods['goods_name'];
+            $order['order_goods'][]=$y;
+        }
+        $reason=Db::name('refund_reason')->select();
+        $state=Db::name('refund_state')->select();
+        return array('order'=>$order,'reason'=>$reason,'state'=>$state);
+    }
+
 
 
 

@@ -31,6 +31,9 @@ class Txapi extends Model
 // 执行url会话
         $data = curl_exec($ch);
         $map = json_decode($data);
+        if($map['status']!=0){
+            return json(['code'=>0,'msg'=>'请输入正确的地址']);
+        }
         $location = $map->result->location;
        return $location;
 //        echo "经度:".$location->lng."<br/>";// 经度

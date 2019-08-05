@@ -80,7 +80,7 @@
                         <div class="left-bar-list-item-font"><span>商铺</span></div>
                     </div>
                 </a>
-                <a href="{:url('commodity/commodity')}" target="rightframe">
+                <a href="{:url('commodity/commodity')}?merchantid={$good.id}" target="rightframe">
                     <div  class="left-bar-list-item usedcar usedcar_banner"  >
                         <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/shangpin.png"/>
                         </div>
@@ -195,30 +195,25 @@
         </div>
             <div class="left-bar-secendlist" id="5" style="display:none">
                 <div   class="left-bar-secendlist-items" >
-                    <a href="{:url('commodity/commodity')}" target="rightframe">
+                    <a href="{:url('commodity/commodity')}?merchantid={$good.id}" target="rightframe">
                         <div  class="left-bar-secendlist-item" id="commodity">
                             <span>销售中</span>
                             <img src="/easyweb/layout/static/right_lit.png" />
                         </div>
                     </a>
-                    <a href="{:url('commodity/commodity_out')}" target="rightframe">
+                    <a href="{:url('commodity/commodity_out')}?merchantid={$good.id}" target="rightframe">
                         <div  class="left-bar-secendlist-item" id="commodity_out">
                             <span>已售罄</span>
                             <img src="/easyweb/layout/static/right_lit.png" />
                         </div>
                     </a>
-                    <a href="{:url('commodity/commodity_del')}" target="rightframe">
+                    <a href="{:url('commodity/commodity_del')}?merchantid={$good.id}" target="rightframe">
                         <div  class="left-bar-secendlist-item" id="commodity_del">
                             <span>回收站</span>
                             <img src="/easyweb/layout/static/right_lit.png" />
                         </div>
                     </a>
-                    <a href="{:url('commodity/commodity_category')}" target="rightframe">
-                        <div  class="left-bar-secendlist-item" id="commodity_category">
-                            <span>商品分类</span>
-                            <img src="/easyweb/layout/static/right_lit.png" />
-                        </div>
-                    </a>
+
                     <a href="{:url('commodity/commodity_biaoqian')}" target="rightframe">
                         <div  class="left-bar-secendlist-item" id="commodity_biaoqian">
                             <span>商品标签</span>
@@ -266,6 +261,10 @@
 
             var i = domain.lastIndexOf('/');
             var href = domain.substr(i+1);
+            if(href.indexOf('?')!=-1){
+                var href=href.substring(0,href.indexOf('?'))
+            }
+
 
             if(href == 'setting.html' || href=='wemen.html'){
                 $('#1').show();

@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:69:"D:\xy\project\shequshop\public/../application/admin\view\\indexs.html";i:1562568153;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:69:"D:\xy\project\shequshop\public/../application/admin\view\\indexs.html";i:1564982655;}*/ ?>
 
 <!DOCTYPE html>
 <html>
@@ -81,7 +81,7 @@
                         <div class="left-bar-list-item-font"><span>商铺</span></div>
                     </div>
                 </a>
-                <a href="<?php echo url('commodity/commodity'); ?>" target="rightframe">
+                <a href="<?php echo url('commodity/commodity'); ?>?merchantid=<?php echo $good['id']; ?>" target="rightframe">
                     <div  class="left-bar-list-item usedcar usedcar_banner"  >
                         <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/shangpin.png"/>
                         </div>
@@ -108,6 +108,13 @@
                         <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/guanli.png" />
                         </div>
                         <div class="left-bar-list-item-font"><span>管理</span></div>
+                    </div>
+                </a>
+                <a href="<?php echo url('report/report'); ?>" target="rightframe">
+                    <div  class="left-bar-list-item user"  >
+                        <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/guanli.png" />
+                        </div>
+                        <div class="left-bar-list-item-font"><span>通讯</span></div>
                     </div>
                 </a>
                 <a href="<?php echo url('system/setting'); ?>" target="rightframe" >
@@ -189,30 +196,25 @@
         </div>
             <div class="left-bar-secendlist" id="5" style="display:none">
                 <div   class="left-bar-secendlist-items" >
-                    <a href="<?php echo url('commodity/commodity'); ?>" target="rightframe">
+                    <a href="<?php echo url('commodity/commodity'); ?>?merchantid=<?php echo $good['id']; ?>" target="rightframe">
                         <div  class="left-bar-secendlist-item" id="commodity">
                             <span>销售中</span>
                             <img src="/easyweb/layout/static/right_lit.png" />
                         </div>
                     </a>
-                    <a href="<?php echo url('commodity/commodity_out'); ?>" target="rightframe">
+                    <a href="<?php echo url('commodity/commodity_out'); ?>?merchantid=<?php echo $good['id']; ?>" target="rightframe">
                         <div  class="left-bar-secendlist-item" id="commodity_out">
                             <span>已售罄</span>
                             <img src="/easyweb/layout/static/right_lit.png" />
                         </div>
                     </a>
-                    <a href="<?php echo url('commodity/commodity_del'); ?>" target="rightframe">
+                    <a href="<?php echo url('commodity/commodity_del'); ?>?merchantid=<?php echo $good['id']; ?>" target="rightframe">
                         <div  class="left-bar-secendlist-item" id="commodity_del">
                             <span>回收站</span>
                             <img src="/easyweb/layout/static/right_lit.png" />
                         </div>
                     </a>
-                    <a href="<?php echo url('commodity/commodity_category'); ?>" target="rightframe">
-                        <div  class="left-bar-secendlist-item" id="commodity_category">
-                            <span>商品分类</span>
-                            <img src="/easyweb/layout/static/right_lit.png" />
-                        </div>
-                    </a>
+
                     <a href="<?php echo url('commodity/commodity_biaoqian'); ?>" target="rightframe">
                         <div  class="left-bar-secendlist-item" id="commodity_biaoqian">
                             <span>商品标签</span>
@@ -260,6 +262,10 @@
 
             var i = domain.lastIndexOf('/');
             var href = domain.substr(i+1);
+            if(href.indexOf('?')!=-1){
+                var href=href.substring(0,href.indexOf('?'))
+            }
+
 
             if(href == 'setting.html' || href=='wemen.html'){
                 $('#1').show();

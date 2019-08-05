@@ -15,19 +15,27 @@ class Commodity extends Base
     public function commodity(){
         if(request()->isAjax()){
 
+
             $admin=session('admin');
+            $merchantid=session('merchantid');
             $get=input();
             $where['store_count']= array('neq',0);
             $where['state']= 1;
-            if($admin['role_id']!=1){               //超级管理员权限
+
+            if($merchantid!=-1 ){               //超级管理员权限
                 $where['good_id']= session('good');
+            }else{
+                $where['good_id']= -1;
             }
+
             if(isset($get['goods_name']) && $get['goods_name']!=''){
                 $where['goods_name']=array('like','%'.$get['goods_name'].'%');
             }
 
+
             return model('goods')->goods($where);
         }
+
         return $this->fetch();
     }
 
@@ -203,8 +211,9 @@ class Commodity extends Base
                 }
                 $ret['shipping_money']=$param['shipping_money'];
             }
+
             if(!empty($param['store_count'])){
-                if(!preg_match(   "/^[1-9]\d*$/",$param['shipping_money'])){   //库存
+                if(!preg_match(   "/^[1-9]\d*$/",$param['store_count'])){   //库存
                     return json(array('code'=>0,'msg'=>'请输入正确的库存数量'));
                 }
                 $ret['store_count']=$param['store_count'];
@@ -645,6 +654,13 @@ class Commodity extends Base
         }
         return json(array('code'=>1,'msg'=>'恢复成功'));
 
+    }
+    public function imageUrl($content) {
+
+        $url = "http://".$_SERVER['SERVER_NAME'];
+        $pregRule = "/<[img|IMG].*?src=[\'|\"](.*?(?:[\.jpg|\.jpeg|\.png|\.gif|\.bmp]))[\'|\"].*?[\/]?>/";
+        $content = preg_replace($pregRule, '<img src="'.$url.'${1}" style="max-width:100%">', $content);
+        return $content;
     }
 
 
