@@ -40,21 +40,14 @@ class Goodshop extends Base
                 return json(array('code'=>0,'msg'=>'修改失败'));
             }
             return json(array('code'=>1,'msg'=>'修改成功'));
-
-
         }
-
-
-
         $id=session('good');
-       $good=Db::name('good')->where(['id'=>$id])->find();
+        $good=Db::name('good')->where(['id'=>$id])->find();
         $this->assign([
             'good'=>$good
         ]);
         return $this->fetch();
     }
-
-
     //优惠卷
     public function good_coupon(){
 

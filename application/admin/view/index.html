@@ -93,7 +93,7 @@
             <div class="left-bar-list-item-font"><span>商品</span></div>
           </div>
         </a>
-        <a href="{:url('order/order')}" target="rightframe">
+        <a href="{:url('order/order_list')}" target="rightframe">
           <div  class="left-bar-list-item usedcar usedcar_banner"  >
             <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/dingdan.png"/>
             </div>
@@ -135,7 +135,7 @@
             <div class="left-bar-list-item-font"><span>话题</span></div>
           </div>
         </a>
-        <a href="{:url('banner/banner')}" target="rightframe">
+        <a href="{:url('banner/slide')}" target="rightframe">
           <div  class="left-bar-list-item user"  >
             <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/guanli.png" />
             </div>
@@ -184,6 +184,25 @@
           <a href="{:url('banner/slide')}" target="rightframe">
             <div  class="left-bar-secendlist-item" id="usedcar_banner">
               <span>轮播图管理</span>
+              <img src="/easyweb/layout/static/right_lit.png" />
+            </div>
+          </a>
+
+          <a href="{:url('banner/wuliu')}" target="rightframe">
+            <div  class="left-bar-secendlist-item" >
+              <span>物流管理</span>
+              <img src="/easyweb/layout/static/right_lit.png" />
+            </div>
+          </a>
+          <a href="{:url('banner/refund_state')}" target="rightframe">
+            <div  class="left-bar-secendlist-item" >
+              <span>退款状态</span>
+              <img src="/easyweb/layout/static/right_lit.png" />
+            </div>
+          </a>
+          <a href="{:url('banner/refund_reason')}" target="rightframe">
+            <div  class="left-bar-secendlist-item" >
+              <span>退款原因</span>
               <img src="/easyweb/layout/static/right_lit.png" />
             </div>
           </a>
@@ -281,7 +300,7 @@
           </a>
           <a href="{:url('order/order_order_close')}" target="rightframe">
             <div  class="left-bar-secendlist-item" >
-              <span>已关闭</span>
+              <span>退款</span>
               <img src="/easyweb/layout/static/right_lit.png" />
             </div>
           </a>
@@ -308,9 +327,15 @@
               <img src="/easyweb/layout/static/right_lit.png" />
             </div>
           </a>
+<<<<<<< HEAD
           <a href="{:url('group/group')}" target="rightframe">
             <div  class="left-bar-secendlist-item" >
               <span>拼团</span>
+=======
+          <a href="{:url('marketing/seckill')}" target="rightframe">
+            <div  class="left-bar-secendlist-item" >
+              <span>抢购管理</span>
+>>>>>>> 3994f6d3d07288b46f78095c00cec763d72ffe9a
               <img src="/easyweb/layout/static/right_lit.png" />
             </div>
           </a>
@@ -371,7 +396,6 @@
               <img src="/easyweb/layout/static/right_lit.png" />
             </div>
           </a>
-
           <a href="{:url('retail/broker')}" target="rightframe">
             <div  class="left-bar-secendlist-item" >
               <span>佣金比例</span>
@@ -410,7 +434,6 @@
     </div>
   </div>
 </div>
-
 </body>
 <script>
 </script>
@@ -428,7 +451,7 @@
       }else {
         $('#1').hide();
       }
-      if(href == 'slide.html' ){
+      if(href == 'slide.html' || href=='wuliu.html' || href=='refund_reason.html' || href=='refund_state.html'){
         $('#2').show();
       }else {
         $('#2').hide();
@@ -453,7 +476,11 @@
       }else{
         $('#6').hide();
       }
+<<<<<<< HEAD
       if(href=='marketing.html' || href=='youhuijuan.html' || href=='group.html'){
+=======
+      if(href=='marketing.html' || href=='youhuijuan.html' || href=='seckill.html'){
+>>>>>>> 3994f6d3d07288b46f78095c00cec763d72ffe9a
         $('#7').show();
       }else {
         $('#7').hide();
@@ -478,7 +505,6 @@
       }else{
         $('#11').hide();
       }
-      //
       // $('.'+href).css({'background':'#24303C','border-radius':'3px'});
       // $('#'+href).find('img').show();
       // $('#'+href).css({'background':'#e9eaf0'});

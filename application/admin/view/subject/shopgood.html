@@ -97,6 +97,8 @@
             </div>.
             <form id="modelUserForm" lay-filter="modelUserForm" class="layui-form model-form">
                 <input type="hidden"  id="gid" value="">
+                <input type="hidden"  id="goods_name" value="">
+
             </form>
             <input type="hidden" value="{$goods_id}" id="goods_id">
 
@@ -157,7 +159,8 @@
             }
         });
         table.on('radio(userTable)', function(obj){
-            $('#gid').val(obj.data.id)
+            $('#gid').val(obj.data.id);
+            $('#goods_name').val(obj.data.goods_name)
         });
         // 搜索
         $('#btnSearch').click(function () {

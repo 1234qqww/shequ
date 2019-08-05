@@ -1,15 +1,4 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:86:"D:\xy\project\shequshop\public/../application/admin\view\marketing\youhuijuan_add.html";i:1562999214;}*/ ?>
-=======
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:86:"D:\xy\project\shequshop\public/../application/admin\view\marketing\youhuijuan_add.html";i:1562984529;}*/ ?>
->>>>>>> 2fde78b8b5fb04e84606f6e939fe6f104b0539e8
-=======
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:86:"D:\xy\project\shequshop\public/../application/admin\view\marketing\youhuijuan_add.html";i:1562984529;}*/ ?>
-=======
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:86:"D:\xy\project\shequshop\public/../application/admin\view\marketing\youhuijuan_add.html";i:1562999214;}*/ ?>
->>>>>>> 2a69b51e83f8261530558450787c969dff562e28
->>>>>>> 430651ff8ce683ba4d021585dae1a8d98bfe2987
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:86:"D:\xy\project\shequshop\public/../application/admin\view\marketing\youhuijuan_add.html";i:1564362602;}*/ ?>
 
 
 <!DOCTYPE html>
@@ -23,16 +12,6 @@
     <link rel="stylesheet" href="/static/admin/layui/css/layui.css" media="all">
 </head>
 <body>
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
->>>>>>> 2fde78b8b5fb04e84606f6e939fe6f104b0539e8
-=======
-
-=======
->>>>>>> 2a69b51e83f8261530558450787c969dff562e28
->>>>>>> 430651ff8ce683ba4d021585dae1a8d98bfe2987
 <div class="layui-form" lay-filter="layuiadmin-form-role" id="layuiadmin-form-role" style="padding: 20px 30px 0 0;">
     <div class="layui-form-item">
         <label class="layui-form-label">优惠卷名称</label>

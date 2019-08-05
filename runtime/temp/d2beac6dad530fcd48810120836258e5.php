@@ -1,15 +1,4 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:87:"D:\xy\project\shequshop\public/../application/admin\view\marketing\youhuijuan_edit.html";i:1562999091;}*/ ?>
-=======
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:87:"D:\xy\project\shequshop\public/../application/admin\view\marketing\youhuijuan_edit.html";i:1562999065;}*/ ?>
->>>>>>> 2fde78b8b5fb04e84606f6e939fe6f104b0539e8
-=======
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:87:"D:\xy\project\shequshop\public/../application/admin\view\marketing\youhuijuan_edit.html";i:1562999065;}*/ ?>
-=======
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:87:"D:\xy\project\shequshop\public/../application/admin\view\marketing\youhuijuan_edit.html";i:1562999091;}*/ ?>
->>>>>>> 2a69b51e83f8261530558450787c969dff562e28
->>>>>>> 430651ff8ce683ba4d021585dae1a8d98bfe2987
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:87:"D:\xy\project\shequshop\public/../application/admin\view\marketing\youhuijuan_edit.html";i:1564131000;}*/ ?>
 
 
 <!DOCTYPE html>
@@ -89,25 +78,8 @@
             ,laydate = layui.laydate;
         //日期范围
         laydate.render({
-<<<<<<< HEAD
-<<<<<<< HEAD
             elem: '#test16',
             range:true
-=======
-=======
->>>>>>> 430651ff8ce683ba4d021585dae1a8d98bfe2987
-            elem: '#test16'
-            , range:true
-            ,type: 'time'
-
-<<<<<<< HEAD
->>>>>>> 2fde78b8b5fb04e84606f6e939fe6f104b0539e8
-=======
-=======
-            elem: '#test16',
-            range:true
->>>>>>> 2a69b51e83f8261530558450787c969dff562e28
->>>>>>> 430651ff8ce683ba4d021585dae1a8d98bfe2987
         });
         form.on("select(menu_one)",function(data){
             var pid=data.value;

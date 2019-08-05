@@ -9,14 +9,25 @@ class Base extends Auth
     public function _initialize(){
         parent::_initialize();
         //初始化
-//        if(!session('admin')){
-//            $this->redirect('Login/login');
-//        }
+        if(!session('admin')){
+            $this->redirect('Login/login');
+        }
         //构造方法检查权限是否够使用功能
 //        model('admin')->check_role(session('admin'));
 //        if(!model('admin')->check_menu(strtolower(Request::instance()->controller()),strtolower(Request::instance()->action()))){
 //            return $this->error('尚未获得权限!');
 //        }
+
+        if(!request()->isAjax()){
+            $param=$this->request->param();
+
+            if(isset($param['merchantid'])){
+                session('merchantid',$param['merchantid']);
+            }else{
+                session('merchantid',-1);
+            }
+        }
+
     }
 
 //    public  function  return_table($data,$count,$message=''){

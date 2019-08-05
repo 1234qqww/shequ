@@ -278,5 +278,24 @@ class Admin extends Common {
         return  Db::name('admin')->where('admin_id',$id)->find();
     }
 
+
+
+    public function  index_class_details(){
+
+        $xinxi_class=Db::name('xinxi_class')->where(['parent_id'=>input('id')])->select();
+        foreach ($xinxi_class as $k=>$v){
+            $a= Db::name('xinxi')->where(['class_id'=>$v['id']])->select();
+            foreach ($a as $x=>$y){
+                $a[$x]['showcase']=url_imgs($y['showcase']);
+                $a[$x]['add_time'] =substr($y['add_time'],0,10);
+            }
+            $xinxi_class[$k]['xinxi'][]=$a;
+
+        }
+
+        return json(array('code' =>1, 'msg' => '成功','data'=>$xinxi_class));
+
+    }
+
 }
 ?>

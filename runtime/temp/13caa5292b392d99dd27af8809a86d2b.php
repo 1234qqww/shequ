@@ -1,6 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:75:"D:\xy\project\shequshop\public/../application/admin\view\subject\topic.html";i:1562836233;}*/ ?>
-
-
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:75:"D:\xy\project\shequshop\public/../application/admin\view\subject\topic.html";i:1564131455;}*/ ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -99,8 +97,31 @@
       cellMinWidth: 100,
       cols: [[
         {field: 'id',align:"center",title:"id"},
-        {field: 'title', title: '名称',align:"center"},
-        {field: 'created_at', title: '添加时间',align:"center"},
+        {field: 'head', title: '标题',align:"center"},
+        {field: 'picture', title: '图片',align:"center",templet:function(e){
+            if(e.picture) {
+              return '<img src="' + e.picture + '" alt="" style="width:50px;height:50px">'
+            }
+        }},
+        {field: 'image', title: '视屏',align:"center"},
+        {field: 'author', title: '作者',align:"center"},
+        {field: 'headimg', title: '头像',align:"center",templet:function(e){
+            if(e.headimg) {
+              return '<img src="' + e.headimg + '" alt="" style="width:50px;height:50px">'
+            }
+          }},
+        {field: 'content', title: '内容',align:"center"},
+        {field: 'browse', title: '浏览量',align:"center"},
+        {field: 'goods_id', title: '商品名称',align:"center",templet:function(e){
+            if(e.shop) {
+              return e.shop.goods_name
+            }
+          }},
+        {field: 'sid', title: '话题分类',align:"center",templet:function(e){
+            if(e.subject) {
+              return e.subject.title
+            }
+          }},
         {align: 'center', toolbar: '#tableBar', title: '操作', minWidth: 200}
       ]]
     });
@@ -109,7 +130,7 @@
       layer.open({
         type: 2 //此处以iframe举例
         ,title: '添加'
-        ,area: ['40%', '40%']
+        ,area: ['100%', '100%']
         ,shade: 0.2
         ,maxmin: true
         ,content:"<?php echo url('subject/add_topic'); ?>"
@@ -117,16 +138,24 @@
         ,yes: function(){
           var index = parent.layer.getFrameIndex()
           var form = layer.getChildFrame('form', index);
-          var title = form.find('#title').val()
-          console.log(title)
-          if(!title){
-            alert('缺少参数!');
+          form.find('#getContent').click();
+          var head = form.find('#head').val()
+          var picture = form.find('#picture').val()
+          var image = form.find('#image').val()
+          var author = form.find('#author').val()
+          var content = form.find('#content').val()
+          var browse = form.find('#browse').val()
+          var goods_id = form.find('#goods_id').val()
+          var sid = form.find('#sid').val()
+          var headimg = form.find('#headimg').val()
+          if(!head || !picture || !author || !content ||!browse || !goods_id || !goods_id || !sid || !headimg){
+            layer.msg('缺少参数!',{icon: 2})
             return;
           }
           layer.load(2);
           $.post(
-                  "<?php echo url('subject/add'); ?>",
-                  {title: title},
+                  "<?php echo url('subject/topic_add'); ?>",
+                  {head: head,picture:picture,image:image,author:author,content:content,browse:browse,goods_id:goods_id,sid:sid,headimg:headimg},
                   function(res){
                     console.log(1);
                     layer.closeAll('loading');
@@ -167,23 +196,33 @@
         layer.open({
           type: 2 //此处以iframe举例
           ,title: '修改'
-          ,area: ['40%', '40%']
+          ,area: ['100%', '100%']
           ,shade: 0.2
           ,maxmin: true
-          ,content: "<?php echo url('subject/add_subject'); ?>?id="+id
+          ,content: "<?php echo url('subject/update_topic'); ?>?id="+id
           ,btn: ['保存关闭', '取消'] //只是为了演示
           ,yes: function(){
             var index = parent.layer.getFrameIndex()
             var form = layer.getChildFrame('form', index);
-            var title = form.find('#title').val();
-            if(!title){
-              alert('缺少参数!');
+            form.find('#getContent').click();
+            var head = form.find('#head').val()
+
+            var picture = form.find('#picture').val()
+            var image = form.find('#image').val()
+            var author = form.find('#author').val()
+            var content = form.find('#content').val()
+            var browse = form.find('#browse').val()
+            var goods_id = form.find('#goods_id').val()
+            var sid = form.find('#sid').val()
+            var headimg = form.find('#headimg').val()
+            if(!head || !picture || !author || !content ||!browse || !goods_id || !goods_id || !sid || !headimg){
+              alert('请填写完整')
               return;
             }
             layer.load(2);
             $.post(
-                    "<?php echo url('subject/edit'); ?>?id="+id,
-                    {title: title},
+                    "<?php echo url('subject/topic_edit'); ?>?id="+id,
+                    {head: head,picture:picture,image:image,author:author,content:content,browse:browse,goods_id:goods_id,sid:sid,headimg:headimg},
                     function(res){
                       layer.closeAll('loading');
                       if (res.code == 0) {
@@ -199,7 +238,6 @@
           ,btn2: function(){
             layer.closeAll();
           }
-
           ,zIndex: layer.zIndex //重点1
           ,success: function(layero){
             layer.setTop(layero); //重点2
@@ -210,9 +248,8 @@
       }else if(obj.event === 'del') {
         layer.confirm('真的删除吗?', function(index){
           var id = data.id;
-          //console.log(id)
           $.ajax({
-            url: "<?php echo url('subject/del'); ?>?id="+id,
+            url: "<?php echo url('subject/topic_del'); ?>?id="+id,
             type: 'delete',
             data: {id:id},
             dataType: 'json',

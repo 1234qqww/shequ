@@ -45,18 +45,24 @@ class Index extends Base
         $param=$this->request->param();
         $type=$param['type'];
         $url=Config::get('host');
+<<<<<<< HEAD
+=======
         $url=Config::get('host');
         $url=Config::get('host');
+>>>>>>> 43df7391692b089190042cef4edfed3de77c63a1
         unset($param['token']);
         if(!$param['userid']){
             return  json(array('code'=>0,'msg'=>'非法操作'));
         }
+<<<<<<< HEAD
+=======
         $goods=Db::name('goods')->where(['id'=>$param['id']])->find();
         $goods_img=Db::name('goods_img')->where(['goods_id'=>$param['id']])->select();
         $url=Config::get('host');
         $goods=Db::name('goods')->where(['id'=>$param['id']])->find();
         $goods_img=Db::name('goods_img')->where(['goods_id'=>$param['id']])->select();
         $url=Config::get('host');
+>>>>>>> 43df7391692b089190042cef4edfed3de77c63a1
         $goods=Db::name('goods')->where(['id'=>$param['id']])->find();               //商品
         if(!preg_match("/(http|https):\/\/([\w.]+\/?)\S*/",$goods['original_img'])){
             $goods['original_img']=$url['url'].$goods['original_img'];
@@ -96,13 +102,19 @@ class Index extends Base
                 $goods_img[$k]['path']=$url['url'].$v['path'];
             }
         }
+<<<<<<< HEAD
+
+=======
+>>>>>>> 43df7391692b089190042cef4edfed3de77c63a1
         if($type==0){
-            $arr=array('goods_img'=>$goods_img,'goods'=>$goods);
+            $arr=array('goods_img'=>$goods_img,'goods'=>$goods,'reduction'=>$reduction,'good'=>$good);
             return  json(array('code'=>1,'msg'=>'成功','data'=>$arr));
         }
+<<<<<<< HEAD
+=======
 
+>>>>>>> 43df7391692b089190042cef4edfed3de77c63a1
     }
-
 
 
      //商品规格
@@ -123,7 +135,12 @@ class Index extends Base
             return  json(array('code'=>0,'msg'=>'非法操作'));
         }
         $sku=model('goods_item_sku')->selectSku($param['sku'],$param['goods_id']);
+<<<<<<< HEAD
+
+=======
+>>>>>>> 43df7391692b089190042cef4edfed3de77c63a1
         return  json(array('code'=>1,'msg'=>'','data'=>$sku));
+
     }
 
 

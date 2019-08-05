@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:76:"D:\xy\project\shequshop\public/../application/admin\view\system\setting.html";i:1563255769;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:76:"D:\xy\project\shequshop\public/../application/admin\view\system\setting.html";i:1564131000;}*/ ?>
 
 
 <!DOCTYPE html>

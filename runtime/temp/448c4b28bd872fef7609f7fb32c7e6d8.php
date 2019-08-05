@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:68:"D:\xy\project\shequshop\public/../application/admin\view\\index.html";i:1564365780;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:68:"D:\xy\project\shequshop\public/../application/admin\view\\index.html";i:1564648972;}*/ ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -94,7 +94,7 @@
             <div class="left-bar-list-item-font"><span>商品</span></div>
           </div>
         </a>
-        <a href="<?php echo url('order/order'); ?>" target="rightframe">
+        <a href="<?php echo url('order/order_list'); ?>" target="rightframe">
           <div  class="left-bar-list-item usedcar usedcar_banner"  >
             <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/dingdan.png"/>
             </div>
@@ -136,7 +136,7 @@
             <div class="left-bar-list-item-font"><span>话题</span></div>
           </div>
         </a>
-        <a href="<?php echo url('banner/banner'); ?>" target="rightframe">
+        <a href="<?php echo url('banner/slide'); ?>" target="rightframe">
           <div  class="left-bar-list-item user"  >
             <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/guanli.png" />
             </div>
@@ -157,19 +157,6 @@
             <div class="left-bar-list-item-font"><span>应用</span></div>
           </div>
         </a>
-<<<<<<< HEAD
-<<<<<<< HEAD
-        <a href="<?php echo url('report/report'); ?>" target="rightframe">
-          <div  class="left-bar-list-item user"  >
-            <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/guanli.png" />
-            </div>
-            <div class="left-bar-list-item-font"><span>通讯</span></div>
-          </div>
-        </a>
-=======
->>>>>>> 2fde78b8b5fb04e84606f6e939fe6f104b0539e8
-=======
->>>>>>> 430651ff8ce683ba4d021585dae1a8d98bfe2987
         <a href="<?php echo url('system/setting'); ?>" target="rightframe" >
           <div  class="left-bar-list-item administrators"  >
             <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/shezhi.png" />
@@ -198,6 +185,25 @@
           <a href="<?php echo url('banner/slide'); ?>" target="rightframe">
             <div  class="left-bar-secendlist-item" id="usedcar_banner">
               <span>轮播图管理</span>
+              <img src="/easyweb/layout/static/right_lit.png" />
+            </div>
+          </a>
+
+          <a href="<?php echo url('banner/wuliu'); ?>" target="rightframe">
+            <div  class="left-bar-secendlist-item" >
+              <span>物流管理</span>
+              <img src="/easyweb/layout/static/right_lit.png" />
+            </div>
+          </a>
+          <a href="<?php echo url('banner/refund_state'); ?>" target="rightframe">
+            <div  class="left-bar-secendlist-item" >
+              <span>退款状态</span>
+              <img src="/easyweb/layout/static/right_lit.png" />
+            </div>
+          </a>
+          <a href="<?php echo url('banner/refund_reason'); ?>" target="rightframe">
+            <div  class="left-bar-secendlist-item" >
+              <span>退款原因</span>
               <img src="/easyweb/layout/static/right_lit.png" />
             </div>
           </a>
@@ -295,7 +301,7 @@
           </a>
           <a href="<?php echo url('order/order_order_close'); ?>" target="rightframe">
             <div  class="left-bar-secendlist-item" >
-              <span>已关闭</span>
+              <span>退款</span>
               <img src="/easyweb/layout/static/right_lit.png" />
             </div>
           </a>
@@ -319,6 +325,12 @@
           <a href="<?php echo url('marketing/youhuijuan'); ?>" target="rightframe">
             <div  class="left-bar-secendlist-item" >
               <span>优惠卷</span>
+              <img src="/easyweb/layout/static/right_lit.png" />
+            </div>
+          </a>
+          <a href="<?php echo url('marketing/seckill'); ?>" target="rightframe">
+            <div  class="left-bar-secendlist-item" >
+              <span>抢购管理</span>
               <img src="/easyweb/layout/static/right_lit.png" />
             </div>
           </a>
@@ -367,14 +379,6 @@
       </div>
       <div class="left-bar-secendlist" id="10" style="display:none">
         <div   class="left-bar-secendlist-items" >
-<<<<<<< HEAD
-<<<<<<< HEAD
-          <a href="<?php echo url('system/qudao'); ?>" target="rightframe">
-            <div  class="left-bar-secendlist-item" >
-              <span>小程序设置</span>
-=======
-=======
->>>>>>> 430651ff8ce683ba4d021585dae1a8d98bfe2987
           <a href="<?php echo url('retail/retail'); ?>" target="rightframe">
             <div  class="left-bar-secendlist-item" >
               <span>申请列表</span>
@@ -387,98 +391,77 @@
               <img src="/easyweb/layout/static/right_lit.png" />
             </div>
           </a>
-
           <a href="<?php echo url('retail/broker'); ?>" target="rightframe">
-<<<<<<< HEAD
             <div  class="left-bar-secendlist-item" >
               <span>佣金比例</span>
->>>>>>> 2fde78b8b5fb04e84606f6e939fe6f104b0539e8
-=======
-              <div  class="left-bar-secendlist-item" >
-                <span>佣金比例</span>
-                <img src="/easyweb/layout/static/right_lit.png" />
-              </div>
+              <img src="/easyweb/layout/static/right_lit.png" />
+            </div>
           </a>
           <a href="<?php echo url('system/qudao'); ?>" target="rightframe">
             <div  class="left-bar-secendlist-item" >
               <span>小程序设置</span>
->>>>>>> 430651ff8ce683ba4d021585dae1a8d98bfe2987
               <img src="/easyweb/layout/static/right_lit.png" />
             </div>
           </a>
           <div class="line"></div>
         </div>
-<<<<<<< HEAD
       </div>
-<<<<<<< HEAD
-
-
-
-=======
->>>>>>> 2fde78b8b5fb04e84606f6e939fe6f104b0539e8
-=======
-        </div>
->>>>>>> 430651ff8ce683ba4d021585dae1a8d98bfe2987
     </div>
     <div class="right_bar_body" style="overflow: hidden;width: 100%;min-height:95%;display: flex;">
-         <iframe id="mainContent" width="100%" height="100%" style="border: none" src="<?php echo url('home/welcome'); ?>" name="rightframe" title="rightframe"></iframe>
+      <iframe id="mainContent" width="100%" height="100%" style="border: none" src="<?php echo url('home/welcome'); ?>" name="rightframe" title="rightframe"></iframe>
     </div>
   </div>
 </div>
-
 </body>
 <script>
 </script>
 <script>
   $(function () {
     $('a').click(function () {
-        var domain=$(this).attr('href');
-        var i = domain.lastIndexOf('/');
-        var href = domain.substr(i+1);
+      var domain=$(this).attr('href');
+      var i = domain.lastIndexOf('/');
+      var href = domain.substr(i+1);
 
-        if(href == 'setting.html' || href=='wemen.html'){
-           $('#1').show();
-        }else {
-          $('#1').hide();
-        }
-        if(href == 'slide.html' ){
-          $('#2').show();
-        }else {
-          $('#2').hide();
-        }
-        if(href=='good.html' || href == 'good_listadd.html' || href == 'good_tixian.html'){
-          $('#3').show();
-        }else {
-          $('#3').hide();
-        }
-        if(href=='user.html'){
-          $('#4').show();
-        }else {
-          $('#4').hide();
-        }
-        if(href=='commodity.html' || href=='commodity_out.html' || href=='commodity_del.html' || href=='commodity_category.html' ||href=='commodity_biaoqian.html'){
-          $('#5').show();
-        }else{
-          $('#5').hide();
-        }
-        if(href=='order.html' || href=='order_list.html' || href=='order_order_close.html' || href=='order_order_end.html' ||href=='order_wait_payment.html' ||href=='order_wait.html' ){
-          $('#6').show();
-        }else{
-          $('#6').hide();
-        }
-        if(href=='marketing.html' || href=='youhuijuan.html'){
-          $('#7').show();
-        }else {
-          $('#7').hide();
-        }
-        if(href=='finance.html'){
-          $('#8').show();
-        }else {
-          $('#8').hide();
-        }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
+      if(href == 'setting.html' || href=='wemen.html'){
+        $('#1').show();
+      }else {
+        $('#1').hide();
+      }
+      if(href == 'slide.html' || href=='wuliu.html' || href=='refund_reason.html' || href=='refund_state.html'){
+        $('#2').show();
+      }else {
+        $('#2').hide();
+      }
+      if(href=='good.html' || href == 'good_listadd.html' || href == 'good_tixian.html'){
+        $('#3').show();
+      }else {
+        $('#3').hide();
+      }
+      if(href=='user.html'){
+        $('#4').show();
+      }else {
+        $('#4').hide();
+      }
+      if(href=='commodity.html' || href=='commodity_out.html' || href=='commodity_del.html' || href=='commodity_category.html' ||href=='commodity_biaoqian.html'){
+        $('#5').show();
+      }else{
+        $('#5').hide();
+      }
+      if(href=='order.html' || href=='order_list.html' || href=='order_order_close.html' || href=='order_order_end.html' ||href=='order_wait_payment.html' ||href=='order_wait.html' ){
+        $('#6').show();
+      }else{
+        $('#6').hide();
+      }
+      if(href=='marketing.html' || href=='youhuijuan.html' || href=='seckill.html'){
+        $('#7').show();
+      }else {
+        $('#7').hide();
+      }
+      if(href=='finance.html'){
+        $('#8').show();
+      }else {
+        $('#8').hide();
+      }
       if(href=='subject.html' || href=='topic.html'){
         $('#9').show();
       }else{
@@ -489,41 +472,16 @@
       }else{
         $('#10').hide();
       }
->>>>>>> 430651ff8ce683ba4d021585dae1a8d98bfe2987
-        if(href=='subject.html' || href=='topic.html'){
-          $('#9').show();
-        }else{
-          $('#9').hide();
-        }
-        if(href=='qudao.html' || href=='qudao.html'){
-          $('#10').show();
-        }else{
-          $('#10').hide();
-        }
-<<<<<<< HEAD
-=======
       if(href=='subject.html' || href=='topic.html'){
         $('#9').show();
       }else{
         $('#9').hide();
       }
-      if(href=='retail.html' || href=='reseller.html' ||  href=='broker.html'){
+      if(href=='qudao.html' || href=='qudao.html'){
         $('#10').show();
       }else{
         $('#10').hide();
       }
->>>>>>> 2fde78b8b5fb04e84606f6e939fe6f104b0539e8
-
-
-
-
-
-
-
-
-=======
->>>>>>> 430651ff8ce683ba4d021585dae1a8d98bfe2987
-      //
       // $('.'+href).css({'background':'#24303C','border-radius':'3px'});
       // $('#'+href).find('img').show();
       // $('#'+href).css({'background':'#e9eaf0'});
@@ -557,14 +515,14 @@
             layer.alert('两次密码输入不一致',{icon:2});
             return;
           }
-       var result=ajax_post($,'<?php echo url("home/edit_pwd"); ?>',field);
-        if(result.code==1){
-          layer.msg(result.msg,{icon:1},function(){
-            location.reload();
-          })
-        }else{
-          layer.alert(result.msg,{icon:2});
-        }
+          var result=ajax_post($,'<?php echo url("home/edit_pwd"); ?>',field);
+          if(result.code==1){
+            layer.msg(result.msg,{icon:1},function(){
+              location.reload();
+            })
+          }else{
+            layer.alert(result.msg,{icon:2});
+          }
         });
         submit.trigger('click');
       }

@@ -14,11 +14,18 @@ class Subject extends Base
 
     public function __construct(Request $request = null)
     {
+<<<<<<< HEAD
+    parent::__construct($request);
+    $this->subject=new SubjectModel();
+    $this->topic=new TopicModel();
+    $this->goods=new Goods();
+=======
         parent::__construct($request);
         $this->subject=new SubjectModel();
         $this->topic=new TopicModel();
         $this->goods=new Goods();
         $this->admin=new Admin();
+>>>>>>> 43df7391692b089190042cef4edfed3de77c63a1
     }
 
     /**
@@ -55,6 +62,7 @@ class Subject extends Base
         $param=$request->param();
         $add=$this->subject->add($param);
         return $add?['code'=>0,'msg'=>'添加成功','data'=>$add]:['code'=>1,'msg'=>'添加失败','data'=>''];
+
     }
     /**
      * 修改分类名称
