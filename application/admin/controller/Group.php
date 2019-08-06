@@ -31,12 +31,16 @@ class Group extends Base
      * 拼团商品列表
      */
     public function lists(Request $request){
-        echo "<pre>";
-        print_r(Session::get());
-        echo "</pre>";
-        die();
         $param=$request->param();
         $data=$this->group->lists($param);
+        if(session('merchantid')!=-1){
+            foreach($data['data'] as $k=>$val){
+                $goods= $this->goods->onedata($val->goods_id);
+                if($goods->good_id!=session('merchantid')){
+                    unset($data['data'][$k]);
+                }
+            }
+        }
         return $data?['code'=>0,'msg'=>'拼团列表','data'=>$data['data'],'count'=>$data['count']]:['code'=>1,'msg'=>'无数据','',];
     }
     /**
@@ -49,7 +53,6 @@ class Group extends Base
      * 商品列表
      */
     public function shopgood(Request $request){
-
         $param=$request->param();
         if(isset($param['goods_id'])){
             $this->assign('goods_id',$param['goods_id']);
@@ -60,23 +63,8 @@ class Group extends Base
     }
     public function shopgoodlist(Request $request){
         $param=$request->param();
-
-        $dat=session('admin');
-        echo $dat;
-//        echo "<pre>";
-//        print_r($dat);
-//        echo "</pre>";
-        die();
-        if($dat['admin_id']){
-            $admin=$this->admin->admindet($dat['admin_id']);
-            echo "<pre>";
-            print_r($admin);
-            echo "</pre>";
-            die();
-            if($admin['role_id']!=1){
-                $param['goodid']=$admin['goodid'];
-            }
-        }
+        $dat=Session::get();
+        $param['goodid']=$dat['merchantid'];
         $data=$this->goods->groupshops($param);
         foreach($data['data'] as $k=>$val){
             if($val->id==$param['goods_id']){
@@ -119,6 +107,8 @@ class Group extends Base
      * 删除商品
      */
     public function group_del($id){
+        $group=$this->group->oneData($id);
+        $this->goods->shopgroup($group->goods_id);
         $data=$this->group->del($id);
         return $data?['code'=>0,'msg'=>'删除成功','data'=>$data]:['code'=>1,'msg'=>'删除失败','data'=>''];
     }

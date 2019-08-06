@@ -41,5 +41,19 @@ class Index extends Base
         ]);
         return $this->fetch(":indexs");
     }
+    public function gs(){
+        $param = $this->request->param();
+
+        if (is_numeric($param['merchantid']) ||  $param['merchantid']=='indexs') {
+
+            if(is_numeric($param['merchantid'])){
+                session('merchantid', $param['merchantid']);
+            }else{
+                session('merchantid', session('good'));
+            }
+        } else {
+            session('merchantid', -1);
+        }
+    }
 
 }

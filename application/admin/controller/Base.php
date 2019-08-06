@@ -18,19 +18,18 @@ class Base extends Auth
 //            return $this->error('尚未获得权限!');
 //        }
 
-        if(!request()->isAjax()){
-            $param=$this->request->param();
-
-            if(isset($param['merchantid'])){
-                echo 1;
-                die();
-                session('merchantid',$param['merchantid']);
-            }else{
-                echo 2;
-                die();
-                session('merchantid',-1);
-            }
-        }
+//        if(!request()->isAjax()){
+//            $param=$this->request->param();
+//            echo "<pre>";
+//            print_r($param);
+//            echo "</pre>";
+//
+//            if(isset($param['merchantid'])){
+//                session('merchantid',$param['merchantid']);
+//            }else{
+//                session('merchantid',-1);
+//            }
+//        }
 
     }
 

@@ -81,7 +81,12 @@ class Goods extends Model
             $goods['original_img']=$url['url'].$goods['original_img'];
         }
         return $goods;
-
+    }
+    /**
+     * 通过id查询商品
+     */
+    public function oneData($id){
+        return $this->where('id',$id)->find();
     }
 
 

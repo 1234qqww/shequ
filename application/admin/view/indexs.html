@@ -235,34 +235,20 @@
         </div>
     </div>
 </div>
-<!-- 加载动画，移除位置在common.js中 -->
-<!--<div class="page-loading">-->
-<!--  <div class="ball-loader">-->
-<!--        <span>-->
-<!--            <img src="/layout/static/test.jpg" alt="">-->
-<!--        </span>-->
-<!--    <span>-->
-<!--            <img src="/layout/static/test.jpg" alt="">-->
-<!--        </span>-->
-<!--    <span>-->
-<!--            <img src="/layout/static/test.jpg" alt="">-->
-<!--        </span>-->
-<!--    <span>-->
-<!--            <img src="/layout/static/test.jpg" alt="">-->
-<!--        </span>-->
-<!--  </div>-->
-<!--</div>-->
 </body>
 <script>
-    // var domain = document.location.href;
-    // var i = domain.lastIndexOf('/');
-    // if(href == 'usedcar' || href =='usedcar_banner'){
-    //   $('#2').show();
-    // }
+
 </script>
 <script>
+
     $(function () {
+
         $('a').click(function () {
+            var h=window.location.href;
+            var s=h.substring(h.lastIndexOf('/')+1,h.indexOf('.html'));
+            $.post("{:url('gs')}",{merchantid:s},function(e){
+            });
+
             var domain=$(this).attr('href');
 
             var i = domain.lastIndexOf('/');
@@ -270,8 +256,6 @@
             if(href.indexOf('?')!=-1){
                 var href=href.substring(0,href.indexOf('?'))
             }
-
-
             if(href == 'setting.html' || href=='wemen.html'){
                 $('#1').show();
             }else {

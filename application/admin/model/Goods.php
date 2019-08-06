@@ -24,9 +24,7 @@ class Goods extends Model
 
     //删除商品
     public function del_commodity($id,$state){
-
       return  Db::name('goods')->where($id)->data(['state'=>$state])->update();
-
     }
     /**
      * 全部数据
@@ -58,14 +56,9 @@ class Goods extends Model
         if(!empty($param['key'])){
             $query = $query->where('goods_name','like',"%{$param['key']}%");
         }
-        echo "<pre>";
-        print_r($param);
-        echo "</pre>";
-        die();
         if(!empty($param['goodid'])){
             $query=$query->where('good_id',$param['goodid']);
         }
-
         $data=$query->where('is_on_sale',1)->where('prom_type',0)->page($page)->limit($limit)->select();
         return ['data'=>$data,'count'=>count($data)];
     }
