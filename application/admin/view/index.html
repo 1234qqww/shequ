@@ -121,6 +121,13 @@
             <div class="left-bar-list-item-font"><span>财务</span></div>
           </div>
         </a>
+        <a href="{:url('integralclass/integralclass')}" target="rightframe">
+          <div  class="left-bar-list-item business"  >
+            <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/caiwu.png" />
+            </div>
+            <div class="left-bar-list-item-font"><span>积分</span></div>
+          </div>
+        </a>
         <a href="{:url('retail/retail')}" target="rightframe">
           <div  class="left-bar-list-item business"  >
             <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/caiwu.png" />
@@ -428,6 +435,17 @@
           <div class="line"></div>
         </div>
       </div>
+      <div class="left-bar-secendlist" id="12" style="display:none">
+        <div   class="left-bar-secendlist-items" >
+          <a href="{:url('integralclass/integralclass')}" target="rightframe">
+            <div  class="left-bar-secendlist-item" >
+              <span>积分分类</span>
+              <img src="/easyweb/layout/static/right_lit.png" />
+            </div>
+          </a>
+          <div class="line"></div>
+        </div>
+      </div>
     </div>
     <div class="right_bar_body" style="overflow: hidden;width: 100%;min-height:95%;display: flex;">
       <iframe id="mainContent" width="100%" height="100%" style="border: none" src="{:url('home/welcome')}" name="rightframe" title="rightframe"></iframe>
@@ -507,6 +525,11 @@
         $('#11').show();
       }else{
         $('#11').hide();
+      }
+      if(href=='integralclass.html' ){
+        $('#12').show();
+      }else{
+        $('#12').hide();
       }
       // $('.'+href).css({'background':'#24303C','border-radius':'3px'});
       // $('#'+href).find('img').show();

@@ -29,12 +29,18 @@ class Group extends Base
     }
     public function group(){
         $data=$this->group->lists();
+        $dat=[];
         foreach($data as $k=>$val){
             if(!preg_match("/(http|https):\/\/([\w.]+\/?)\S*/",$val['goods']['original_img'])){
                 $data[$k]['goods']['original_img']=$this->subject->nowUrl(). $val['goods']['original_img'];
             }
+            $goods=$this->goods->oneData($val->goods_id);
+            if($goods->prom_type==2){
+                $dat[]=$val;
+            }
+
         }
-        return $data?json(['code'=>0,'msg'=>'团购商品列表','data'=>$data]):json(['code'=>1,'msg'=>'无数据','data'=>'']);
+        return $dat?json(['code'=>0,'msg'=>'团购商品列表','data'=>$dat]):json(['code'=>1,'msg'=>'无数据','data'=>'']);
     }
     /**
      * 通过商品查询拼团id 后端

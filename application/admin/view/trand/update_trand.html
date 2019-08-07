@@ -1,0 +1,176 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>添加分类</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/easyweb/assets/libs/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/static/admin/style/admin.css" media="all">
+    <script type="text/javascript" src="__STATIC__/admin/layui/layui.js"></script>
+    <script type="text/javascript" src="/easyweb/assets//js/common.js?v=304"></script>
+    <script type="text/javascript" src="/easyweb/assets/libs/jquery/jquery-3.2.1.min.js"></script>
+    <script src="/static/js/jquery.js"></script>
+    <style>
+        .control-label {
+            position: relative;
+            height: 42px;
+            line-height: 42px;
+            border-bottom: 1px solid #f6f6f6;
+            color: #333;
+            border-radius: 2px 2px 0 0;
+            font-size: 14px;
+        }
+        .controls input{
+            height: 28px;
+            line-height: 28px;
+            padding: 0 10px;
+            font-size: 12px;
+            border-radius: 2px;
+            cursor: pointer;
+            white-space: nowrap;
+            text-align: center;
+            margin-right: 20px;
+            border: 1px solid #e6e6e6;
+        }
+        .table-bordered {
+            border: 1px solid #eceeef;
+        }
+        .table {
+            width: 100%;
+            max-width: 100%;
+            margin-bottom: 1rem;
+        }
+        table {
+            border-collapse: collapse;
+            background-color: transparent;
+        }
+        .table-bordered thead td, .table-bordered thead th {
+            border-bottom-width: 2px;
+        }
+        .table thead th {
+            vertical-align: bottom;
+            border-bottom: 2px solid #eceeef;
+        }
+        .table-bordered td, .table-bordered th {
+            border: 1px solid #eceeef;
+        }
+        .table tr{
+            line-height: 30px;
+        }
+        .table td, .table th {
+            padding: .55rem;
+            vertical-align: top;
+            border-top: 1px solid #eceeef;
+        }
+        th {
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-form" lay-filter="layuiadmin-form-role" id="layuiadmin-form-role" style="padding: 20px 30px 0 0;">
+    <form id="modelUserForm" lay-filter="modelUserForm" class="layui-form model-form">
+        <input name="userId" type="hidden"/>
+        <div class="layui-form-item">
+            <label class="layui-form-label">动态</label>
+            <div class="layui-input-block">
+                <input name="trand" id="trand" placeholder="请输入积分分类" type="text" class="layui-input" maxlength="20"
+                       lay-verType="tips" lay-verify="required" value="{$info?$info->trand:''}" required/>
+                <input type="hidden" value="{$info?$info->id:''}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">配图</label>
+            <div class="layui-input-block">
+                <button type="button" class="layui-btn" id="test2" style="margin-bottom:20px"><i class="layui-icon"></i>配图</button>
+                <blockquote class="layui-elem-quote layui-quote-nm" style="width:700px">
+                    预览图：
+                    <div class="layui-upload-list" id="demo2">
+                        {foreach name="$info['images']" item="value" key="key"}
+                        <img style="width: 120px; height: 120px" data-url="{$value}" src="{$value}" alt="" class="layui-upload-img images shop-image">
+                        <img class="del-image" style="cursor:pointer;position: relative;left: -35px;top: -40px;width: 25px; height: 25px;" src="__STATIC__/image/del.png">
+                        {/foreach}
+                    </div>
+                </blockquote>
+            </div>
+            <input type="hidden" id="images" value="">
+
+
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">阅读量</label>
+            <div class="layui-input-block">
+                <input name="read" id="read" placeholder="请输入阅读量" type="text" class="layui-input" maxlength="20"
+                       lay-verType="tips" lay-verify="required" value="{$info?$info->read:''}" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">点赞量</label>
+            <div class="layui-input-block">
+                <input name="thumbs" id="thumbs" placeholder="请输入点赞量" type="text" class="layui-input" maxlength="20"
+                       lay-verType="tips" lay-verify="required" value="{$info?$info->thumbs:''}" required/>
+            </div>
+        </div>
+
+    </form>
+</div>
+<script>
+    layui.use(['layer', 'form', 'table', 'util', 'admin', 'formSelects'], function () {
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var form = layui.form;
+        var table = layui.table;
+        var util = layui.util;
+        var admin = layui.admin;
+        var formSelects = layui.formSelects;
+
+        //监听指定开关
+        form.on('switch(switchTest)', function(data){
+            if(this.checked){
+                $(this).val(1);
+            }else{
+                $(this).val(0);
+            }
+        });
+
+
+    });
+    incon = "__STATIC__/image/del.png"
+    layui.use('upload', function(){
+        var $ = layui.jquery
+            ,upload = layui.upload;
+        //添加驾驶证配图
+        //添加驾驶证配图
+        var uploadInst = upload.render({
+            elem: '#test2'
+            ,url: '{:url("subject/update")}'
+            , multiple: true
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#demo2').attr('src', result); //图片链接（base64）
+                });
+            }
+            ,done: function(res){
+                $('#demo2').append('<img style="width: 120px; height: 120px" data-url="'+res.url+'" src="' + res.url + '" alt="" class="layui-upload-img images shop-image"><img class="del-image" style="cursor:pointer;position: relative;left: -35px;top: -40px;width: 25px; height: 25px;" src='+ incon +'>')
+                var image = [];
+                $('form').find('.shop-image').each(function(){
+                    image.push($(this).attr('data-url'))
+                });
+                $('#images').val(image);
+            }
+        });
+    })
+    $('body').on('click', '.del-image', function(){
+        let par = $(this).prev()
+        par.remove()
+        $(this).remove();
+
+    })
+</script>
+</body>
+</html>

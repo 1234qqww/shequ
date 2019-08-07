@@ -33,10 +33,24 @@ class Group extends Base
     public function lists(Request $request){
         $param=$request->param();
         $data=$this->group->lists($param);
+
         if(session('merchantid')!=-1){
             foreach($data['data'] as $k=>$val){
                 $goods= $this->goods->onedata($val->goods_id);
                 if($goods->good_id!=session('merchantid')){
+                    unset($data['data'][$k]);
+                }
+                if($goods->prom_type!=2){
+                    unset($data['data'][$k]);
+                }
+            }
+        }else{
+            foreach($data['data'] as $k=>$val){
+                $goods= $this->goods->onedata($val->goods_id);
+                if($goods->good_id!=session('merchantid')){
+                    unset($data['data'][$k]);
+                }
+                if($goods->prom_type!=2){
                     unset($data['data'][$k]);
                 }
             }

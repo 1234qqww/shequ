@@ -1,9 +1,9 @@
 <?php
 
-namespace app\api\model;
+namespace app\admin\model;
 use think\Model;
-class SubjectModel extends Model {
-    protected $table='hhtc_subject';  //表名称
+class IntegralClassModel extends Model {
+    protected $table='hhtc_integralclass';  //表名称
 
     /**
      * 分类全部数据
@@ -13,16 +13,16 @@ class SubjectModel extends Model {
         $limit = empty($param['limit'])?20:$param['limit'];
         $query=$this;
         if(!empty($param['key'])){
-            $query = $query->where('title','like',"%{$param['key']}%");
+            $query = $query->where('integralclass','like',"%{$param['key']}%");
         }
         $data=$query->page($page)->limit($limit)->order('id','Desc')->select();
         return ['data'=>$data,'count'=>count($data)];
     }
     /**
-     * 添加话题分类
+     * 添加积分分类
      */
     public function add($param){
-        $data['title']=isset($param['title'])?$param['title']:'';
+        $data['integralclass']=isset($param['integralclass'])?$param['integralclass']:'';
         $data['created_at']=date('Y-m-d H:i:s');
         $data['updated_at']=date('Y-m-d H:i:s');
         return $this->save($data);
@@ -37,10 +37,10 @@ class SubjectModel extends Model {
      * 修改分类
      */
     public function edit($param){
-        if(!empty($param['title'])){
-            $data['title'] = $param['title'];
+        if(!empty($param['integralclass'])){
+            $data['integralclass'] = $param['integralclass'];
         }
-        $data['updated_at']=date('Y-m-d H:i:s');
+        $data['updated_at']=date('Y-m-d H:i:s');;
         return $this->where('id',$param['id'])->update($data);
     }
     /**
@@ -53,7 +53,7 @@ class SubjectModel extends Model {
      * 分类的全部数据
      */
     public function subjectall(){
-        return $this->select();
+        return $this->order('id','Desc')->select();
     }
 }
 ?>

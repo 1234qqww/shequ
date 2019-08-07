@@ -27,4 +27,7 @@ class Good extends Model
     public function getFind($field,$where){
      return   Db::name('good')->field($field)->where($where)->find();
     }
+    public function oneData($id){
+        return Db::name('good')->where('id',$id)->find();
+    }
 }

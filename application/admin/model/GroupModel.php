@@ -22,9 +22,6 @@ class GroupModel extends Model {
             }
             );
         }
-//        if(session('merchantid')!=-1){
-//            $query=$query->where('goods_id',session('merchantid'));
-//        }
         $data=$query->with('good')->page($page)->limit($limit)->order('id','Desc')->select();
         return ['data'=>$data,'count'=>count($data)];
     }
