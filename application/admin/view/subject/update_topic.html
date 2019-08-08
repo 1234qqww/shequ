@@ -128,7 +128,7 @@
             <div class="layui-input-block">
                 <button type="button" class="layui-btn" id="picker"><i class="layui-icon"></i>选择文件</button>
                 <button type="button" class="layui-btn" id="ctlBtn">开始上传</button>
-                <input type="hidden" value="{$topic?$topic->image:''}" id="image">
+                <input type="text" value="{$topic?$topic->image:''}" id="image" style="border:0px;background:#f5f5f5" disabled>
             </div>
         </div>
         <div class="layui-form-item layui-form-text">
@@ -150,7 +150,9 @@
             <label class="layui-form-label">商品链接</label>
             <div class="layui-input-block">
                 <button type="button" class="layui-btn" id="images"><i class="layui-icon"></i>修改商品链接</button>
+                <input type="text" id="goods" value="{$goods?$goods->goods_name:''}" style="border:0px;background:#f5f5f5;width:40%" disabled>
             </div>
+
             <input type="hidden" id="goods_id" value="{$topic?$topic->goods_id:''}">
         </div>
         <div class="layui-form-item">
@@ -329,6 +331,8 @@
                     var index = parent.layer.getFrameIndex()
                     var form = layer.getChildFrame('form', index);
                     var sid = form.find('#gid').val()
+                    var goods_name = form.find('#goods_name').val();
+                    $('#goods').val(goods_name)
                     if(!sid){
                         layer.msg('请选择商品链接')
                     }else{

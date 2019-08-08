@@ -105,7 +105,9 @@ class Group extends Base
      */
     public function update_group($id){
         $group=$this->group->oneData($id);
+        $goods=$this->goods->onedata($group->goods_id);
         $this->assign('group',$group);
+        $this->assign('goods',$goods->goods_name);
         return $this->fetch('update_group');
     }
     public function group_edit(Request $request,$id){

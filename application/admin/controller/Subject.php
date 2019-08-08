@@ -129,9 +129,11 @@ class Subject extends Base
     public function update_topic(Request $request){
         $param=$request->param();
         $topic=$this->topic->onedata($param['id']);
+        $goods=$this->goods->onedata($topic->goods_id);
         $subject=$this->subject->subjectall();
         $this->assign('subject',$subject);
         $this->assign('topic',$topic);
+        $this->assign('goods',$goods);
         return $this->fetch('update_topic');
     }
     /**

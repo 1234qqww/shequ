@@ -34,16 +34,16 @@
   <div class="layui-card"  style="padding:40px 0">
     <form class="layui-form" style="max-width: 700px"  action="" onsubmit="return false;" id="deploy">
       <div class="layui-form-item" style="margin-top:30px">
-      <label class="layui-form-label">佣金比例</label>
+      <label class="layui-form-label">管理员比例</label>
       <div class="layui-input-block">
-        <input type="text" name="broker" id="broker" placeholder="发送消息" class="layui-input"
+        <input type="text" name="broker" id="broker" placeholder="抽成比例" class="layui-input"
                lay-verify="required" value="{$info?$info->broker:''}" style="width:80%" required/>
 
         <input type="hidden" value="{$info?$info->id:''}" id="broder_id">
       </div>
     </div>
       <div class="layui-form-item" style="margin-top:30px">
-        <label class="layui-form-label">抽成</label>
+        <label class="layui-form-label">分销商比例</label>
         <div class="layui-input-block">
           <input type="text" name="percent" id="percent" placeholder="抽成比例" class="layui-input"
                  lay-verify="required" value="{$info?$info->percent:''}" style="width:80%" required/>

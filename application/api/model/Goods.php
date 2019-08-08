@@ -88,6 +88,24 @@ class Goods extends Model
     public function oneData($id){
         return $this->where('id',$id)->find();
     }
+    /**
+     * 通过id查询商品
+     */
+    public function one($id){
+        return $this->where('id',$id)->where('prom_type',2)->find();
+    }
+    /**
+     * 店铺内的拼团商品
+     */
+    public function oneDatas($id,$good_id){
+        return $this->where('id',$id)->where('good_id',$good_id)->find();
+    }
+//    /**
+//     *
+//     */
+//    public function goods(){
+//        return $this->hasOne('Goods','id','goods_id');
+//    }
 
 
 }

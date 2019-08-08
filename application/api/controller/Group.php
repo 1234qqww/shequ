@@ -4,6 +4,8 @@ namespace app\api\controller;
 use app\api\controller\Queue;
 use app\api\model\GroupModel;
 use app\api\model\GroupregimentModel;
+use app\api\model\RetailModel;
+use app\api\model\SelfshopModel;
 use app\common\model\Txapi;
 use think\Request;
 use app\api\model\UserModel;
@@ -24,21 +26,35 @@ class Group extends Base
         $this->ordergood= new Ordergood();
         $this->order= new Order();
         $this->retail= new Retail();
+        $this->retailmodel= new RetailModel();
         $this->groupregiment= new GroupregimentModel();
+        $this->selfshop= new SelfshopModel();
         $this->queue=new  Queue(10);
     }
-    public function group(){
-        $data=$this->group->lists();
+    public function group(Request $request){
+        $param=$request->param();
+        $data=$this->group->lists($param);
         $dat=[];
-        foreach($data as $k=>$val){
-            if(!preg_match("/(http|https):\/\/([\w.]+\/?)\S*/",$val['goods']['original_img'])){
-                $data[$k]['goods']['original_img']=$this->subject->nowUrl(). $val['goods']['original_img'];
+        if(empty($param['retail_id'])){
+            foreach($data as $k=>$val){
+                if(!preg_match("/(http|https):\/\/([\w.]+\/?)\S*/",$val['goods']['original_img'])){
+                    $data[$k]['goods']['original_img']=$this->subject->nowUrl(). $val['goods']['original_img'];
+                }
+                    $goods=$this->goods->oneData($val->goods_id);
+                    if($goods->prom_type==2){
+                        $dat[]=$val;
+                    }
             }
-            $goods=$this->goods->oneData($val->goods_id);
-            if($goods->prom_type==2){
-                $dat[]=$val;
+        }else{
+            $ifs=$this->selfshop->ifs($param);
+            $ids=json_decode($ifs->ids);
+            foreach($ids as $k=>$val){
+                $good=$this->goods->one($val);
+                if($good){
+                    $datas=$this->group->groupshop($val);
+                    $dat[]=$datas;
+                }
             }
-
         }
         return $dat?json(['code'=>0,'msg'=>'团购商品列表','data'=>$dat]):json(['code'=>1,'msg'=>'无数据','data'=>'']);
     }
