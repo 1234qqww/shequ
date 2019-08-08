@@ -30,28 +30,23 @@ class Order extends Base
             return json(array('code' => 0, 'msg' => '非法操作'));
         }
 
-        if($param['group_id']=='undefined'){
-            $groups=$this->group->groupshop($param['goods_id']);
-            if($groups->regiment==0){
-                return json(array('code' => 2, 'msg' => '团购商品已下架'));
-            }
-        }
+
 
         if($param['prom_type']==2){
+            if($param['group_id']=='undefined'){
+                $groups=$this->group->groupshop($param['goods_id']);
+                if($groups->regiment==0){
+                    return json(array('code' => 2, 'msg' => '团购商品已下架'));
+                }
+            }
             $group=$this->group->shopnums($param['goods_id']);
-//            if($param['group_id']!='undefined'){
-//                foreach($group as $k=>$val){
-//                    if($val['user_id']==$param['userid']){
-//                        return json(['code'=>2,'msg'=>'您已参见该团购','data'=>'']);
-//                    }
-//                }
-//            }
-
-//            if($param['group_id']!='undefined'){
-//                echo 1;
-//            }else{
-//                echo 2;
-//            }
+            if($param['group_id']!='undefined'){
+                foreach($group as $k=>$val){
+                    if($val['user_id']==$param['userid']){
+                        return json(['code'=>2,'msg'=>'您已参见该团购','data'=>'']);
+                    }
+                }
+            }
             $order= model('order')->grouporders($param['goods_id'], $param['userid'], $param['num'], $param['skuid'],2,$param['group_id']);
             $groupshop=$this->group->groupshop($param['goods_id']);
             /**
