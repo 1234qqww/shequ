@@ -14,9 +14,7 @@ use think\Session;
 
 class Group extends Base
 {
-    public function __construct(Request $request = null)
-    {
-        parent::__construct($request);
+    public function _initialize(){
         $this->retail=new RetailModel();
         $this->broker=new BrokerModel();
         $this->user=new UserModel();

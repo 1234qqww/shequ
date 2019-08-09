@@ -1,50 +1,44 @@
 <?php
 namespace app\api\controller;
 use app\api\model\CollectModel;
+use app\api\model\FootprintModel;
 use app\api\model\Goods;
 use think\Request;
 
-class Collect extends Base
+class Footprint extends Base
 {
-    public function __construct(Request $request = null)
+    private  $footprint;
+    public function _initialize()
     {
-        parent::__construct($request);
-        $this->collect=new CollectModel();
-        $this->goods=new Goods();
+       $this->footprint= new FootprintModel();
     }
-    public function collect(Request $request){
+    public function footprint(Request $request){
         $param=$request->param();
-        $data=$this->collect->ifcollect($param);
-        return $data?json(['code'=>0,'msg'=>'收藏','data'=>$data]):json(['code'=>1,'msg'=>'未收藏','data'=>'']);
+        $data=$this->footprint->iffootprint($param);
+        return $data?json(['code'=>0,'msg'=>'浏览','data'=>$data]):json(['code'=>1,'msg'=>'未浏览','data'=>'']);
     }
     /**
-     * 收藏商品
+     * 浏览商品
      */
-    public function addCollect(Request $request){
+    public function addfootprint(Request $request){
         $param=$request->param();
-        $collect=$this->collect->ifcollect($param);
-        if(!$collect){
-            $data=$this->collect->add($param);
-            return $data?json(['code'=>0,'msg'=>'已收藏','data'=>$data]):json(['code'=>1,'msg'=>'未收藏','data'=>'']);
-        }else{
-            return json(['code'=>0,'msg'=>'请勿多次收藏','data'=>'']);
-        }
-
+        $data=$this->footprint->add($param);
+        return $data?json(['code'=>0,'msg'=>'已浏览','data'=>$data]):json(['code'=>1,'msg'=>'未浏览','data'=>'']);
     }
     /**
      * 取消收藏
      */
     public function delCollect(Request $request){
         $param=$request->param();
-        $data=$this->collect->del($param);
+        $data=$this->footprint->del($param);
         return $data?json(['code'=>0,'msg'=>'取消收藏','data'=>$data]):json(['code'=>1,'msg'=>'操作失败','data'=>'']);
     }
     /**
-     * 查看某用户所有收藏的商品
+     * 查看某用户所有浏览过的商品
      */
     public function userCollect(Request $request){
         $param=$request->param();
-        $data=$this->collect->selUser($param['user_id']);
+        $data=$this->footprint->selUser($param['user_id']);
         return $data?json(['code'=>0,'msg'=>'收藏的商品','data'=>$data]):json(['code'=>1,'msg'=>'无数据','data'=>'']);
     }
     /**

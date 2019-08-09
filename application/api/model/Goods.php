@@ -100,12 +100,12 @@ class Goods extends Model
     public function oneDatas($id,$good_id){
         return $this->where('id',$id)->where('good_id',$good_id)->find();
     }
-//    /**
-//     *
-//     */
-//    public function goods(){
-//        return $this->hasOne('Goods','id','goods_id');
-//    }
+    /**
+     * 查询商户的商品
+     */
+    public function goodgroup($good_id){
+       return $this->where('prom_type',2)->where('good_id',$good_id)->where('is_on_sale',1)->select();
+    }
 
 
 }

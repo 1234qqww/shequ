@@ -113,7 +113,7 @@ class Index extends Base
                 return  json(array('code'=>1,'msg'=>'成功','data'=>$arr));
                 break;
             case 2:
-                $arr=array('goods_img'=>$goods_img,'goods'=>$goods,'reduction'=>$reduction,'good'=>$good,'type'=>1);
+                $arr=array('goods_img'=>$goods_img,'goods'=>$goods,'reduction'=>$reduction,'good'=>$good,'type'=>0);
                 return  json(array('code'=>1,'msg'=>'成功','data'=>$arr));
                 break;
             default:

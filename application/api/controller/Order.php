@@ -7,12 +7,15 @@ include_once 'KdApiSearchDemo.php';
 
 
 use app\api\model\Ordergood;
+use app\api\controller\Group;
 use think\Config;
 use think\Db;
 use think\Request;
 
 class Order extends Base
 {
+    private $group;
+    private $ordergood;
     public function __construct(Request $request = null)
     {
         parent::__construct($request);
@@ -100,6 +103,7 @@ class Order extends Base
             return json(array('code' => 0, 'msg' => '非法操作'));
         }
         $where['user_id']=$param['userid'];
+
         if($param['status']==1){
            $where['order_status']=0;            //待付款   订单状态待付款  支付状态未支付 发货状态未发货
             $where['pay_status']=0;

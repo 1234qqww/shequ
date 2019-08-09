@@ -102,20 +102,33 @@ class Report extends Controller
     public function allnews(Request $request){
         $param=$request->param();
         $allnews=$this->report->allnews($param,0);
-        foreach($allnews as $k=>$val){
-            $allnews[$k]=$this->report->last($val->user_id,$val->retail->id,1);
-            $allnews[$k]['newnums']=$val->count;
+        if($allnews){
+            foreach($allnews as $k=>$val){
+                $allnews[$k]=$this->report->last($val->user_id,$val->retail->id,1);
+                $allnews[$k]['newnums']=$val->count;
+            }
         }
+
         $allstores=$this->report->allstore($param,0);
-        foreach($allstores  as $k=>&$val){
-            $allstores[$k]=$this->report->storelast($val->user_id,$val->goods->id,0);
-            $allstores[$k]['newnums']=$val->count;
+        if($allstores){
+            foreach($allstores  as $k=>&$val){
+                $allstores[$k]=$this->report->storelast($val->user_id,$val->goods->id,0);
+                $allstores[$k]['newnums']=$val->count;
+            }
         }
         $data=array(
             'allnews'=>$allnews,
             'allstore'=>$allstores
         );
         return $data?json_encode(['code'=>0,'msg'=>'全部消息','data'=>$data]):json_encode(['code'=>1,'msg'=>'无数据','']);
+    }
+    /**
+     * 用户所有的未读消息
+     */
+    public function readreport(Request $request){
+        $param=$request->param();
+        $data=$this->report->readreport($param);
+        return $data?json_encode(['code'=>0,'msg'=>'未读消息','data'=>$data]):json_encode(['code'=>1,'msg'=>'没数据','data'=>0]);
     }
 
 }

@@ -248,6 +248,7 @@ class Order extends Model
                $goods['money']=$y['price'];
                $num+=$y['goods_num'];
                $order[$k]['goods'][]=$goods;
+               //查看拼团人数
            }
            $order[$k]['good_nums']=$num;
             if($v['good_id'] != -1) {

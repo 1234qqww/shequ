@@ -11,7 +11,7 @@ use think\Request;
 use app\api\model\UserModel;
 use app\api\model\Goods;
 use app\api\model\Ordergood;
-use app\api\model\Order;
+use app\api\model\Order as Orders;
 
 
 class Group extends Base
@@ -24,7 +24,7 @@ class Group extends Base
         $this->group=new GroupModel();
         $this->subject= new Subject();
         $this->ordergood= new Ordergood();
-        $this->order= new Order();
+        $this->order= new Orders();
         $this->retail= new Retail();
         $this->retailmodel= new RetailModel();
         $this->groupregiment= new GroupregimentModel();
@@ -47,14 +47,19 @@ class Group extends Base
             }
         }else{
             $ifs=$this->selfshop->ifs($param);
-            $ids=json_decode($ifs->ids);
-            foreach($ids as $k=>$val){
-                $good=$this->goods->one($val);
-                if($good){
-                    $datas=$this->group->groupshop($val);
-                    $dat[]=$datas;
+            if($ifs){
+                $ids=json_decode($ifs->ids);
+                foreach($ids as $k=>$val){
+                    $good=$this->goods->one($val);
+                    if($good){
+                        $datas=$this->group->groupshop($val);
+                        $dat[]=$datas;
+                    }
                 }
+            }else{
+                $dat[]='';
             }
+
         }
         return $dat?json(['code'=>0,'msg'=>'团购商品列表','data'=>$dat]):json(['code'=>1,'msg'=>'无数据','data'=>'']);
     }
@@ -121,6 +126,18 @@ class Group extends Base
             }
         }
         return $orders;
+    }
+    /**
+     * 查询商户的拼团商品
+     */
+    public function goodgroup(Request $request){
+        $param=$request->param();
+        $goods=$this->goods->goodgroup($param['good_id']);
+        $data=[];
+        foreach($goods as $k=>$val){
+            $data[] = $this->group->groupshop($val->id);
+        }
+        return $data?json(['code'=>0,'msg'=>'拼团列表','data'=>$data]):json(['code'=>1,'msg'=>'无数据','data'=>'']);
     }
     /**
      * @param int $length
