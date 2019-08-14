@@ -21,6 +21,7 @@ class Order extends Base
         parent::__construct($request);
         $this->group=new Group();
         $this->ordergood=new Ordergood();
+        $this->order=new \app\api\model\Order();
     }
 
 
@@ -50,7 +51,7 @@ class Order extends Base
                     }
                 }
             }
-            $order= model('order')->grouporders($param['goods_id'], $param['userid'], $param['num'], $param['skuid'],2,$param['group_id']);
+            $order= model('order')->grouporders($param['goods_id'], $param['userid'], $param['num'], $param['skuid'],2,$param['group_id'],$param['retail_id']);
             $groupshop=$this->group->groupshop($param['goods_id']);
             /**
              * 支付完成后把订单改未待发货
@@ -61,7 +62,7 @@ class Order extends Base
                 }
             }
         }else{
-            $order= model('order')->orders($param['goods_id'], $param['userid'], $param['num'], $param['skuid']);
+            $order= model('order')->orders($param['goods_id'], $param['userid'], $param['num'], $param['skuid'],$param['retail_id']);
         }
         return json(array('code'=>1,'msg'=>'成功','data'=>$order));
     }
@@ -103,7 +104,7 @@ class Order extends Base
             return json(array('code' => 0, 'msg' => '非法操作'));
         }
         $where['user_id']=$param['userid'];
-
+        $where['order_prom_type']=$param['prom_type'];
         if($param['status']==1){
            $where['order_status']=0;            //待付款   订单状态待付款  支付状态未支付 发货状态未发货
             $where['pay_status']=0;
@@ -122,6 +123,24 @@ class Order extends Base
             $where['order_status']=array('in','3,4');;            //退款/售后   订单状态售后
         }
         $order=model('order')->order_status($where);
+//        foreach($order as $ks=>$val){
+//            if($val['order_status']==0 && $val['order_prom_type']==2){
+//                    $orders=$this->order->hand($val['order_sn']);
+//                    $ordergood= $this->ordergood->regiment($val['id']);
+//                    $group=$this->group->groupshop($ordergood->goods_id);
+//                    if($group){
+//                        $ds=$group->num-count($orders)-1;
+//                        $order[$ks]['times']=round((time()+$group->times*3600*24-strtotime($val['add_time']))/3600);
+//                        if( $order[$ks]['times']<0){
+//                            $order[$ks]['times']=0;
+//                        }else{
+//                            $order[$ks]['num']=$ds;
+//                        }
+//
+//                    }
+//
+//            }
+//        }
         return json(array('code'=>1,'msg'=>'成功','data'=>$order));
     }
 

@@ -12,7 +12,7 @@ use think\Paginator;
 class Order extends Model
 {
     //订单生成
-    public function orders($goods_id,$user_id,$sum,$sku){
+    public function orders($goods_id,$user_id,$sum,$sku,$retail_id){
         $field='id,address_id';
         $url=Config::get('host');
         $address=model('user')->user_find(['id'=>$user_id],$field);                  //收货地址
@@ -21,6 +21,11 @@ class Order extends Model
         $goods['shop_price_num']=$goods['shop_price']*$sum;                    //计算商品总价
         $goods_marketing =Db::name('goods_marketing')->where(['good_id'=>$goods['good_id']])->find();    //商户减免
         $marketing=0;
+        if(empty($retail_id)){
+            $goods['judge']=1;
+        }else{
+            $goods['judge']=0;
+        }
         $shipping_money=0;
         $goods['num']=$sum;
         if($sku!='undefined'){
@@ -57,7 +62,7 @@ class Order extends Model
             $good['pic']=$url['url'].$good['pic'];
         }
 
-        $order=$this->order_add($user_id,$address,$goods['shop_price_num'],$marketing,$shipping_money,$goods['prom_type'],$goods['good_id'],$total_amount, $goods['price_num'],'');
+        $order=$this->order_add($user_id,$address,$goods['shop_price_num'],$marketing,$shipping_money,$goods['prom_type'],$goods['good_id'],$total_amount, $goods['price_num'],'',$goods['judge']);
         $this->order_good($order,$goods_id,$sum,$goods['sku']['attr_path'],$price,$goods['good_id']);
         return  array('good'=>$good,'goods'=>$goods,'marketing'=>$marketing,'address'=>$address,'order'=>$order);
 
@@ -67,7 +72,7 @@ class Order extends Model
      * 团购订单
      */
     //订单生成
-    public function grouporders($goods_id,$user_id,$sum,$sku,$prom,$group_id){
+    public function grouporders($goods_id,$user_id,$sum,$sku,$prom,$group_id,$retail_id){
         if($group_id=='undefined'){
             $group_id=0;
         }
@@ -78,6 +83,12 @@ class Order extends Model
         if($prom==2){
             $group=Db::name('group')->where('goods_id',$goods['id'])->find();
             $goods['shop_price']=$goods['shop_price']-$group['price'];
+        }
+        //判断商品在哪购买
+        if(empty($retail_id)){
+            $goods['judge']=1;
+        }else{
+            $goods['judge']=0;
         }
         $price=$goods['shop_price'];
         $goods['shop_price_num']=$goods['shop_price']*$sum;                    //计算商品总价
@@ -119,15 +130,13 @@ class Order extends Model
         if(!preg_match("/(http|https):\/\/([\w.]+\/?)\S*/",$good['pic'])){
             $good['pic']=$url['url'].$good['pic'];
         }
-
-        $order=$this->order_add($user_id,$address,$goods['shop_price_num'],$marketing,$shipping_money,$goods['prom_type'],$goods['good_id'],$total_amount, $goods['price_num'],$group_id);
+        $order=$this->order_add($user_id,$address,$goods['shop_price_num'],$marketing,$shipping_money,$goods['prom_type'],$goods['good_id'],$total_amount, $goods['price_num'],$group_id,$goods['judge']);
         $this->order_good($order,$goods_id,$sum,$goods['sku']['attr_path'],$price,$goods['good_id']);
         return  array('good'=>$good,'goods'=>$goods,'marketing'=>$marketing,'address'=>$address,'order'=>$order);
-
     }
 
 
-    function order_add($user_id,$address,$shop_price_num,$marketing,$shipping_money,$prom_type,$good_id,$total_amount,$price_num,$group_id){
+    function order_add($user_id,$address,$shop_price_num,$marketing,$shipping_money,$prom_type,$good_id,$total_amount,$price_num,$group_id,$judge){
         $address_id=0;
         if(!empty($address)){
            $address_id=$address['addressid'];
@@ -144,7 +153,8 @@ class Order extends Model
             'add_time'=>date('Y-m-d H:i:s'),                 //下单时间
             'order_prom_type'=>$prom_type,                    //订单类型
             'good_id'=>$good_id,
-            'group_id'=>$group_id
+            'group_id'=>$group_id,
+            'judge'=>$judge
         );
         $i=Db::name('order')->insertGetId($data);
         return $i;
@@ -319,7 +329,7 @@ class Order extends Model
      * 通过订单id查询已支付的团购订单
      */
     public function grouporder($order_id){
-        return $this->with('user')->where('dissolution',0)->where('group_id',0)->where('id',$order_id)->where('order_status',0)->where('pay_status',1)->where('order_prom_type',2)->find();
+        return $this->with('user')->where('dissolution',0)->where('group_id',0)->where('id',$order_id)->where('order_status',1)->where('pay_status',1)->where('order_prom_type',2)->find();
     }
     /**
      * 通过订单编号查询团购人员
@@ -357,7 +367,6 @@ class Order extends Model
      */
     public function hand($order_sn){
         return  $this->where('group_id',$order_sn)->select();
-
     }
 
 }

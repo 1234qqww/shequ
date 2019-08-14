@@ -49,11 +49,13 @@ class Group extends Base
             $ifs=$this->selfshop->ifs($param);
             if($ifs){
                 $ids=json_decode($ifs->ids);
-                foreach($ids as $k=>$val){
-                    $good=$this->goods->one($val);
-                    if($good){
-                        $datas=$this->group->groupshop($val);
-                        $dat[]=$datas;
+                if($ids){
+                    foreach($ids as $k=>$val){
+                        $good=$this->goods->one($val);
+                        if($good){
+                            $datas=$this->group->groupshop($val);
+                            $dat[]=$datas;
+                        }
                     }
                 }
             }else{

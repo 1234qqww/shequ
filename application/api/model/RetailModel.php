@@ -91,6 +91,8 @@ class RetailModel extends Model {
         $data['lng']=isset($param['lng'])?$param['lng']:'';
         $data['lat']=isset($param['lat'])?$param['lat']:'';
         $data['range']=isset($param['range'])?$param['range']:'';
+        $data['alipay']=isset($param['alipay'])?$param['alipay']:'';
+        $data['names']=isset($param['names'])?$param['names']:'';
         $data['created_at']=date('Y-m-d H:i:s');
         $data['updated_at']=date('Y-m-d H:i:s');
         return $this->save($data);
@@ -122,6 +124,12 @@ class RetailModel extends Model {
         }
         if(!empty($param['range'])){
             $data['range'] = $param['range'];
+        }
+        if(!empty($param['names'])){
+            $data['names'] = $param['names'];
+        }
+        if(!empty($param['alipay'])){
+            $data['alipay'] = $param['alipay'];
         }
         $data['updated_at'] = date('Y-m-d H:i:s');
         return $this->where('user_id',$param['user_id'])->update($data);
