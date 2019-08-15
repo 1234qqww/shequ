@@ -15,6 +15,12 @@ class FootprintModel extends Model {
         return $this->where('user_id',$param['user_id'])->where('goods_id',$param['goods_id'])->find();
     }
     /**
+     * 查看商品是否存在
+     */
+    public function goods($goods_id){
+        return $this->where('goods_id',$goods_id)->find();
+    }
+    /**
      * 用户收藏商品
      */
     public function add($param){

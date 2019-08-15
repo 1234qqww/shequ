@@ -22,11 +22,16 @@ class Footprint extends Base
      */
     public function addfootprint(Request $request){
         $param=$request->param();
-        $data=$this->footprint->add($param);
-        return $data?json(['code'=>0,'msg'=>'已浏览','data'=>$data]):json(['code'=>1,'msg'=>'未浏览','data'=>'']);
+        $dat=$this->footprint->goods($param['goods_id']);
+        if($dat){
+            return $dat?json(['code'=>0,'msg'=>'已浏览','data'=>$dat]):json(['code'=>1,'msg'=>'未浏览','data'=>'']);
+        }else{
+            $data=$this->footprint->add($param);
+            return $data?json(['code'=>0,'msg'=>'已浏览','data'=>$data]):json(['code'=>1,'msg'=>'未浏览','data'=>'']);
+        }
     }
     /**
-     * 取消收藏
+     * 取消浏览
      */
     public function delCollect(Request $request){
         $param=$request->param();
@@ -52,9 +57,6 @@ class Footprint extends Base
             $data[]=$this->goods->oneData($val['goods_id']);
         }
         return $data?json(['code'=>0,'msg'=>'商品','data'=>$data]):json(['code'=>1,'msg'=>'无数据','data'=>'']);
-
-
-
     }
 
 
