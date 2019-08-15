@@ -315,6 +315,71 @@ class Retail extends Controller
 
         return $val;
     }
+    /**
+     * 小程序支付
+     */
+    function initiatingPayment($amountmoney,$ordernumber,$openid,$appid,$mch_id,$mer_secret,$notify_url,$body,$attach)
+    {
+        $noncestr = $this->createNonceStr(); //随机字符串
+        $ordercode = $ordernumber;//商户订单号
+        $totamount = $amountmoney;//金额
+        $attach = json_encode(['ordercode' => $ordercode]);
+        $timeStamp = '' . time() . '';
+        $data = [
+            'openid' => $openid,
+            'appid' => $appid,
+            'mch_id' => $mch_id,
+            'nonce_str' => $noncestr, //随机字符串,
+            'body' => $body,
+            'attach' => $attach,
+            'timeStamp' => $timeStamp,
+            'out_trade_no' => $ordercode,
+            'total_fee' => intval($totamount * 100),
+            'spbill_create_ip' => '127.0.0.1',
+            'notify_url' => $notify_url,
+            'trade_type' => 'JSAPI'
+        ];
+        //签名
+        $data['sign'] = $this->autograph($data,$mer_secret);
+
+        $result = $this->creatPay($data);
+        $rest = $this->xmlToArray($result);
+        if(!isset($rest['prepay_id'])){
+            return json(['code'=>2,'msg'=>'支付错误','']);
+        }
+        $prepay_id = $rest['prepay_id'];
+        $parameters = array(
+            'appId' => $appid, //小程序ID
+            'timeStamp' => $timeStamp, //时间戳
+            'nonceStr' => $noncestr, //随机串
+            'package' => 'prepay_id=' . $prepay_id, //数据包
+            'signType' => 'MD5'//签名方式
+        );
+        $sign = $this->autograph($parameters,$mer_secret);
+        return ['prepay_id' => 'prepay_id=' . $prepay_id, 'timeStamp' => $timeStamp, 'noncestr' => $noncestr, 'sign' => $sign, 'sign_type' => 'MD5'];
+    }
+    function createNonceStr($length = 16)
+    {
+        $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        $str = '';
+        for ($i = 0; $i < $length; $i++) {
+            $str .= substr($chars, mt_rand(0, strlen($chars) - 1), 1);
+        }
+        return $str;
+    }
+    /**
+     * 创建支付
+     */
+    function creatPay($data)
+    {
+        $url = 'https://api.mch.weixin.qq.com/pay/unifiedorder';
+        $xml =$this-> arrayToXml($data);
+        $result = $this-> curlPost($url, $xml);
+//      print_r(htmlspecialchars($xml));
+        //$val = $this->doPageXmlToArray($result);
+        return $result;
+    }
+
 
 
 
