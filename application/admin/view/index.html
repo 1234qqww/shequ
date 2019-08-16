@@ -100,7 +100,7 @@
             <div class="left-bar-list-item-font"><span>订单</span></div>
           </div>
         </a>
-        <a href="{:url('marketing/marketing')}?id=1" target="rightframe">
+        <a href="{:url('marketing/marketing')}" target="rightframe">
           <div  class="left-bar-list-item usedcar usedcar_banner"  >
             <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/yingxiao.png"/>
             </div>
@@ -114,18 +114,11 @@
             <div class="left-bar-list-item-font"><span>魔方图</span></div>
           </div>
         </a>
-        <a href="{:url('carry/carry')}" target="rightframe">
-          <div  class="left-bar-list-item business"  >
-            <div class="left-bar-list-item-img"><img src="/easyweb/layout/static/caiwu.png" />
-            </div>
-            <div class="left-bar-list-item-font"><span>财务</span></div>
-          </div>
-        </a>
-        <a href="{:url('popular/popular')}" target="rightframe">
+        <a href="{:url('finance/finance')}" target="rightframe">
           <div  class="left-bar-list-item business"  >
             <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/caiwu.png" />
             </div>
-            <div class="left-bar-list-item-font"><span>热门搜索</span></div>
+            <div class="left-bar-list-item-font"><span>财务</span></div>
           </div>
         </a>
         <a href="{:url('integralclass/integralclass')}" target="rightframe">
@@ -289,6 +282,12 @@
               <img src="/easyweb/layout/static/right_lit.png" />
             </div>
           </a>
+          <a href="{:url('commodity/commodity_jifen_class')}" target="rightframe">
+            <div  class="left-bar-secendlist-item" >
+              <span>积分分类</span>
+              <img src="/easyweb/layout/static/right_lit.png" />
+            </div>
+          </a>
           <div class="line"></div>
         </div>
       </div>
@@ -358,6 +357,7 @@
       </div>
       <div class="left-bar-secendlist" id="8" style="display:none">
         <div   class="left-bar-secendlist-items" >
+<<<<<<< HEAD
           <a href="{:url('carry/carry')}" target="rightframe">
             <div  class="left-bar-secendlist-item" >
               <span>商户转账</span>
@@ -382,6 +382,8 @@
               <img src="/easyweb/layout/static/right_lit.png" />
             </div>
           </a>
+=======
+>>>>>>> 9f0dfe6f6544a9cb0469885902ed88dcbe705e50
           <a href="{:url('finance/finance')}" target="rightframe">
             <div  class="left-bar-secendlist-item" >
               <span>充值记录</span>
@@ -488,19 +490,20 @@
 </script>
 <script>
   $(function () {
-
     $('a').click(function () {
       var h=window.location.href;
-      var s=h.substring(h.lastIndexOf('/')+1,h.indexOf('.html'));
-      $.post("{:url('gs')}",{merchantid:s},function(e){
-      });
+      var s=parseInt(h.substring(h.lastIndexOf('/')+1,h.indexOf('.html')));
+
+      if(typeof(s)=="number" ){
+        $.post("{:url('gs')}",{merchantid:s},function(e){
+        })
+      }
 
       var domain=$(this).attr('href');
       var i = domain.lastIndexOf('/');
       var href = domain.substr(i+1);
-      if(href.indexOf('?')!=-1){
-        var href=href.substring(0,href.indexOf('?'))
-      }
+      console.log(href);
+
 
       if(href == 'setting.html' || href=='wemen.html'){
         $('#1').show();
@@ -522,7 +525,7 @@
       }else {
         $('#4').hide();
       }
-      if(href=='commodity.html' || href=='commodity_out.html' || href=='commodity_del.html' || href=='commodity_category.html' ||href=='commodity_biaoqian.html'){
+      if(href=='commodity.html' || href=='commodity_out.html' || href=='commodity_del.html' || href=='commodity_category.html' ||href=='commodity_biaoqian.html' ||href=='commodity_jifen_class.html'){
         $('#5').show();
       }else{
         $('#5').hide();
@@ -532,12 +535,12 @@
       }else{
         $('#6').hide();
       }
-      if(href=='marketing.html' || href=='youhuijuan.html' || href=='group.html'){
+      if(href=='marketing.html' || href=='youhuijuan.html' || href=='group.html'|| href=='seckill.html'){
         $('#7').show();
       }else {
         $('#7').hide();
       }
-      if(href=='finance.html' || href=='carry.html' || href=='carryrecord.html' || href=='retailcord.html' || href=='retailrecord.html'){
+      if(href=='finance.html'){
         $('#8').show();
       }else {
         $('#8').hide();

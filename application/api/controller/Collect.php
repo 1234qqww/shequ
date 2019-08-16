@@ -22,14 +22,8 @@ class Collect extends Base
      */
     public function addCollect(Request $request){
         $param=$request->param();
-        $collect=$this->collect->ifcollect($param);
-        if(!$collect){
-            $data=$this->collect->add($param);
-            return $data?json(['code'=>0,'msg'=>'已收藏','data'=>$data]):json(['code'=>1,'msg'=>'未收藏','data'=>'']);
-        }else{
-            return json(['code'=>0,'msg'=>'请勿多次收藏','data'=>'']);
-        }
-
+        $data=$this->collect->add($param);
+        return $data?json(['code'=>0,'msg'=>'已收藏','data'=>$data]):json(['code'=>1,'msg'=>'未收藏','data'=>'']);
     }
     /**
      * 取消收藏

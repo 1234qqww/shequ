@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:81:"D:\xy\project\shequshop\public/../application/admin\view\commodity\commodity.html";i:1562740829;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:81:"D:\xy\project\shequshop\public/../application/admin\view\commodity\commodity.html";i:1565926221;}*/ ?>
 
 
 <!DOCTYPE html>
@@ -69,6 +69,9 @@
                     <a class="{{#  if(d.is_show == 0){ }}shuxin{{#  } else { }}shuxin1{{#  } }}" onclick="changeTable('goods','id','{{d.id}}','is_show',this)">显示</a>
                     <a class="{{#  if(d.is_newshop == 0){ }}shuxin{{#  } else { }}shuxin1{{#  } }}" onclick="changeTable('goods','id','{{d.id}}','is_newshop',this)">新品</a>
             </script>
+            <script type="text/html" id="class">
+                {{#  if(d.is_jifen == 0){ }}普通商品{{#  } else { }}积分商品{{#  } }}
+            </script>
             <script type="text/html" id="action">
                 <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
                 <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
@@ -96,6 +99,7 @@
             ,{field: 'inventory_count', title: '销量',width: 80, sort: true,align: 'center',}
             ,{title: '状态',toolbar: '#state',width: 100}
             ,{title: '属性',toolbar: '#shuxin'}
+            ,{title: '类型',toolbar: '#class',width:100}
             ,{title: '操作', width: 200, align: 'center', fixed: 'right', toolbar: '#action'}
         ]];
         base_table(table,'list','<?php echo url("commodity/commodity"); ?>',cols);

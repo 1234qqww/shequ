@@ -9,7 +9,7 @@ use app\admin\model\BrokerModel;
 use app\admin\model\UserModel;
 use app\admin\model\CashModel;
 
-class Retail extends Base
+class Retail extends Controller
 {
     public function __construct(Request $request = null)
     {
@@ -322,12 +322,12 @@ class Retail extends Base
     /**
      * 小程序支付
      */
-    function initiatingPayment($amountmoney,$ordernumber,$openid,$appid,$mch_id,$mer_secret,$notify_url,$body,$attach)
+    function initiatingPayment($amountmoney, $ordernumber,$openid,$appid,$mch_id,$mer_secret,$notify_url,$body,$attach)
     {
         $noncestr = $this->createNonceStr(); //随机字符串
         $ordercode = $ordernumber;//商户订单号
         $totamount = $amountmoney;//金额
-        $attach = json_encode(['ordercode' => $ordercode]);
+//    $attach = json_encode(['ordercode' => $ordercode]);
         $timeStamp = '' . time() . '';
         $data = [
             'openid' => $openid,

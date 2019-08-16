@@ -4,6 +4,7 @@
 namespace app\api\controller;
 
 
+use think\cache\driver\Redis;
 use think\Config;
 use think\Db;
 

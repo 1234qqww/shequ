@@ -38,33 +38,8 @@ class Order extends Model
         return array('order'=>$order,'goods'=>$goods,'wuliu'=>$wuliu);
 
     }
-    /**
-     * 查询完成的订单
-     */
-    public function lists($param){
-        $page = empty($param['page'])?0:$param['page'];
-        $limit = empty($param['limit'])?20:$param['limit'];
-        $query=$this;
-        if(!empty($param['key'])){
-            $query = $query->where('order_sn','like',"%{$param['key']}%");
-        }
-        $data=$query->page($page)->with('good')->where('good_id','neq','-1')->limit($limit)->where('order_status',2)->where('pay',0)->order('id','Desc')->select();
-        return ['data'=>$data,'count'=>count($data)];
-    }
-    /**
-     * 关联商户表
-     */
-    public function good(){
-        return $this->hasOne('Good','id','good_id');
-    }
 
-    /**
-     * 关联用户表
-     */
-    public function user(){
-        return $this->hasOne('UserModel','id','user_id');
-    }
-
+<<<<<<< HEAD
     /**
      * 管理员转账
      */
@@ -136,4 +111,6 @@ class Order extends Model
     public function oneData($id){
         return $this->where('id',$id)->find();
     }
+=======
+>>>>>>> 9f0dfe6f6544a9cb0469885902ed88dcbe705e50
 }

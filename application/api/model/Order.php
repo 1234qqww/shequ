@@ -12,7 +12,7 @@ use think\Paginator;
 class Order extends Model
 {
     //订单生成
-    public function orders($goods_id,$user_id,$sum,$sku,$retail_id){
+    public function orders($goods_id,$user_id,$sum,$sku){
         $field='id,address_id';
         $url=Config::get('host');
         $address=model('user')->user_find(['id'=>$user_id],$field);                  //收货地址
@@ -21,6 +21,7 @@ class Order extends Model
         $goods['shop_price_num']=$goods['shop_price']*$sum;                    //计算商品总价
         $goods_marketing =Db::name('goods_marketing')->where(['good_id'=>$goods['good_id']])->find();    //商户减免
         $marketing=0;
+<<<<<<< HEAD
         if(empty($retail_id)){
             $goods['judge']=1;
             $goods['retail_id']='';
@@ -28,6 +29,8 @@ class Order extends Model
             $goods['judge']=0;
             $goods['retail_id']=$retail_id;
         }
+=======
+>>>>>>> 9f0dfe6f6544a9cb0469885902ed88dcbe705e50
         $shipping_money=0;
         $goods['num']=$sum;
         if($sku!='undefined'){
@@ -64,17 +67,75 @@ class Order extends Model
             $good['pic']=$url['url'].$good['pic'];
         }
 
+<<<<<<< HEAD
         $order=$this->order_add($user_id,$address,$goods['shop_price_num'],$marketing,$shipping_money,$goods['prom_type'],$goods['good_id'],$total_amount, $goods['price_num'],'',$goods['judge'], $goods['retail_id']);
         $this->order_good($order,$goods_id,$sum,$goods['sku']['attr_path'],$price,$goods['good_id']);
+=======
+        $order=$this->order_add($user_id,$address,$goods['shop_price_num'],$marketing,$shipping_money,$goods['prom_type'],$goods['good_id'],$total_amount, $goods['price_num'],'');
+        $this->order_good($order,$goods_id,$sum,$goods['sku']['attr_path'],$price,$goods['good_id'],$goods['sku']['id']);
+>>>>>>> 9f0dfe6f6544a9cb0469885902ed88dcbe705e50
         return  array('good'=>$good,'goods'=>$goods,'marketing'=>$marketing,'address'=>$address,'order'=>$order);
 
+    }
+    /**
+     * 秒杀订单
+     */
+    public function order_seckill($goods_id,$user_id,$sum,$sku,$seckill){
+        $field='id,address_id';
+        $url=Config::get('host');
+        $address=model('user')->user_find(['id'=>$user_id],$field);                  //收货地址
+        $goods=model('goods')->goodsFind(['id'=>$goods_id], true);                  //商品基本信息
+
+        $price=$goods['shop_price']-$seckill['discount'];
+        $goods['shop_price']=$price;
+        $goods['shop_price_num']=$price*$sum;                    //计算商品总价
+//        $goods_marketing =Db::name('goods_marketing')->where(['good_id'=>$goods['good_id']])->find();    //商户减免
+        $marketing=0;
+        $shipping_money=0;
+        $goods['num']=$sum;              //购买数量
+        if($sku!='undefined'){
+            $goods['sku']=model('goods_item_sku')->selectSku($sku,$goods_id);            //查询商品sku
+            $price=$goods['sku']['sku_shop_price']-$seckill['discount'];
+            $goods['sku']['sku_shop_price']=$price;
+            $goods['shop_price_num']=$price*$sum;
+        }else{
+            $goods['sku']=0;
+        }
+        $total_amount=$goods['shop_price_num'];
+//        if($goods_marketing!=null){
+//            $content=json_decode($goods_marketing['content'],true);//商店优惠
+//            ksort($content);
+//            foreach ($content as $k=>$v){
+//                if($goods['shop_price_num']>=$k){
+//                    $marketing=$v;
+//                }
+//            }
+//        }
+        if($goods['is_free_shipping']==0){
+            $shipping_money=$goods['shipping_money'];           //邮费
+        }
+        $goods['price_num']=$total_amount+$shipping_money;
+
+        $goods['shop_price_num']=$goods['shop_price_num']+$shipping_money-$marketing;   //应付多少
+        $goods['dissolution']=0;
+        if($goods['good_id']!=-1){
+            $good=Db::name('good')->field('id,name,pic')->where(['id'=>$goods['good_id']])->find();
+        }else{
+            $base=Config::get('base_config');
+            $good['name']='平台自营';
+            $good['pic']=$base['imgs'];
+        }
+        $good['pic']=url_imgs($good['pic']);
+        $order=$this->order_add($user_id,$address,$goods['shop_price_num'],$marketing,$shipping_money,$goods['prom_type'],$goods['good_id'],$total_amount, $goods['price_num'],'');
+        $this->order_good($order,$goods_id,$sum,$goods['sku']['attr_path'],$price,$goods['good_id'],$goods['sku']['id']);
+        return  array('good'=>$good,'goods'=>$goods,'marketing'=>$marketing,'address'=>$address,'order'=>$order);
     }
 
     /**
      * 团购订单
      */
     //订单生成
-    public function grouporders($goods_id,$user_id,$sum,$sku,$prom,$group_id,$retail_id){
+    public function grouporders($goods_id,$user_id,$sum,$sku,$prom,$group_id){
         if($group_id=='undefined'){
             $group_id=0;
         }
@@ -86,6 +147,7 @@ class Order extends Model
             $group=Db::name('group')->where('goods_id',$goods['id'])->find();
             $goods['shop_price']=$goods['shop_price']-$group['price'];
         }
+<<<<<<< HEAD
         //判断商品在哪购买
         if(empty($retail_id)){
             $goods['judge']=1;
@@ -94,6 +156,8 @@ class Order extends Model
             $goods['judge']=0;
             $goods['retail_id']=$retail_id;
         }
+=======
+>>>>>>> 9f0dfe6f6544a9cb0469885902ed88dcbe705e50
         $price=$goods['shop_price'];
         $goods['shop_price_num']=$goods['shop_price']*$sum;                    //计算商品总价
         $goods_marketing =Db::name('goods_marketing')->where(['good_id'=>$goods['good_id']])->find();    //商户减免
@@ -134,13 +198,24 @@ class Order extends Model
         if(!preg_match("/(http|https):\/\/([\w.]+\/?)\S*/",$good['pic'])){
             $good['pic']=$url['url'].$good['pic'];
         }
+<<<<<<< HEAD
         $order=$this->order_add($user_id,$address,$goods['shop_price_num'],$marketing,$shipping_money,$goods['prom_type'],$goods['good_id'],$total_amount, $goods['price_num'],$group_id,$goods['judge'],$goods['retail_id']);
         $this->order_good($order,$goods_id,$sum,$goods['sku']['attr_path'],$price,$goods['good_id']);
+=======
+
+        $order=$this->order_add($user_id,$address,$goods['shop_price_num'],$marketing,$shipping_money,$goods['prom_type'],$goods['good_id'],$total_amount, $goods['price_num'],$group_id);
+        $this->order_good($order,$goods_id,$sum,$goods['sku']['attr_path'],$price,$goods['good_id'],$goods['sku']['id']);
+>>>>>>> 9f0dfe6f6544a9cb0469885902ed88dcbe705e50
         return  array('good'=>$good,'goods'=>$goods,'marketing'=>$marketing,'address'=>$address,'order'=>$order);
+
     }
 
 
+<<<<<<< HEAD
     function order_add($user_id,$address,$shop_price_num,$marketing,$shipping_money,$prom_type,$good_id,$total_amount,$price_num,$group_id,$judge,$retail_id){
+=======
+    function order_add($user_id,$address,$shop_price_num,$marketing,$shipping_money,$prom_type,$good_id,$total_amount,$price_num,$group_id){
+>>>>>>> 9f0dfe6f6544a9cb0469885902ed88dcbe705e50
         $address_id=0;
         if(!empty($address)){
            $address_id=$address['addressid'];
@@ -157,14 +232,18 @@ class Order extends Model
             'add_time'=>date('Y-m-d H:i:s'),                 //下单时间
             'order_prom_type'=>$prom_type,                    //订单类型
             'good_id'=>$good_id,
+<<<<<<< HEAD
             'group_id'=>$group_id,
             'judge'=>$judge,
             'retail_id'=>$retail_id
+=======
+            'group_id'=>$group_id
+>>>>>>> 9f0dfe6f6544a9cb0469885902ed88dcbe705e50
         );
         $i=Db::name('order')->insertGetId($data);
         return $i;
     }
-    function  order_good($order,$goods_id,$sum,$sku,$price,$good_id){
+    function  order_good($order,$goods_id,$sum,$sku,$price,$good_id,$sku_id){
         $data=array(
             'goods_num'=>$sum,
             'order_id'=>$order,
@@ -172,6 +251,7 @@ class Order extends Model
             'sku'=>$sku,
             'price'=>$price,
             'good_id'=>$good_id,
+            'sku_id'=>$sku_id
 
         );
       return  Db::name('order_goods')->insert($data);
@@ -225,11 +305,11 @@ class Order extends Model
         }
         $zongjia=0;
         foreach ($data as $k=>$v){
-            $order=$this->order_add($user_id,$address,$v['goods_price_counts'],$v['marketing_count'],$v['shipping_money_count'],0,$k,$v['total_amount'],$v['price_num']);
+            $order=$this->order_add($user_id,$address,$v['goods_price_counts'],$v['marketing_count'],$v['shipping_money_count'],0,$k,$v['total_amount'],$v['price_num'],'');
             $zongjia+=$v['goods_price_counts'];
             foreach ($v as $x=>$n){
                 if(is_numeric($x) ){
-                    $this->order_good($order,$n['goods_id']['id'],$n['goods_sum'],$n['sku_id']['attr_path'],$n['goods_price'],$k);
+                    $this->order_good($order,$n['goods_id']['id'],$n['goods_sum'],$n['sku_id']['attr_path'],$n['goods_price'],$k,$n['sku_id']['id']);
                 }
             }
             if($k!=-1){
@@ -263,7 +343,6 @@ class Order extends Model
                $goods['money']=$y['price'];
                $num+=$y['goods_num'];
                $order[$k]['goods'][]=$goods;
-               //查看拼团人数
            }
            $order[$k]['good_nums']=$num;
             if($v['good_id'] != -1) {
@@ -334,7 +413,7 @@ class Order extends Model
      * 通过订单id查询已支付的团购订单
      */
     public function grouporder($order_id){
-        return $this->with('user')->where('dissolution',0)->where('group_id',0)->where('id',$order_id)->where('order_status',1)->where('pay_status',1)->where('order_prom_type',2)->find();
+        return $this->with('user')->where('dissolution',0)->where('group_id',0)->where('id',$order_id)->where('order_status',0)->where('pay_status',1)->where('order_prom_type',2)->find();
     }
     /**
      * 通过订单编号查询团购人员
@@ -372,6 +451,7 @@ class Order extends Model
      */
     public function hand($order_sn){
         return  $this->where('group_id',$order_sn)->select();
+
     }
     /**
      * 查询某门店所有的未支付的订单
@@ -385,5 +465,27 @@ class Order extends Model
     public function payretail($retail_id){
         return $this->where('order_status',2)->where('handle','0')->where('retail_id',$retail_id)->select();
     }
+
+     //  提交订单
+
+    public function order_sub($order,$pay_id){
+        $data=array(
+            'pay_name'=>$pay_id==1?'微信支付':'余额支付',
+            'order_status'=>1,                           //订单状态待发货
+            'pay_status'=>1,                             //支付状态已支付
+            'pay_time'=>date('Y-m-d H:i:s')
+        );
+      return Db::name('order')->where(['id'=>$order['id']])->update($data);
+
+    }
+
+
+
+
+
+
+
+
+
 
 }

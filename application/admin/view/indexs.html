@@ -87,13 +87,6 @@
                         <div class="left-bar-list-item-font"><span>商品</span></div>
                     </div>
                 </a>
-                <a href="{:url('carry/carryretail')}" target="rightframe">
-                    <div  class="left-bar-list-item business"  >
-                        <div class="left-bar-list-item-img"><img src="/easyweb/layout/static/caiwu.png" />
-                        </div>
-                        <div class="left-bar-list-item-font"><span>转账</span></div>
-                    </div>
-                </a>
                 <a href="{:url('group/group')}?merchantid={$good.id}" target="rightframe">
                     <div  class="left-bar-list-item "  >
                         <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/dingdan.png"/>
@@ -295,11 +288,6 @@
                 $('#5').show();
             }else{
                 $('#5').hide();
-            }
-            if(href=='carryretail.html' || href=='carryretailrecord.html'){
-                $('#6').show();
-            }else{
-                $('#6').hide();
             }
             //
             // $('.'+href).css({'background':'#24303C','border-radius':'3px'});

@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:79:"D:\xy\project\shequshop\public/../application/admin\view\marketing\seckill.html";i:1564652544;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:79:"D:\xy\project\shequshop\public/../application/admin\view\marketing\seckill.html";i:1565241621;}*/ ?>
 
 
 <!DOCTYPE html>
@@ -12,6 +12,24 @@
     <link rel="stylesheet" href="/static/admin/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="/static/admin/style/admin.css" media="all">
 </head>
+<style>
+    .layui-table-cell{
+        height:60px;
+        line-height:60px;
+    }
+    .layui-table img{
+        height: 60px;
+        width: 60px;
+    }
+    .shuxin{
+        margin: 0 20px;
+        color: #0e0e0e;
+    }
+    .shuxin1{
+        margin: 0 20px;
+        color: #fb0b03;
+    }
+</style>
 <body>
 <div class="layui-fluid">
     <div class="layui-card">
@@ -24,10 +42,9 @@
                 <img src="{{d.original_img}}"  lay-event="showimg" alt="图片丢失">
                 {{d.goods_name}}
             </script>
-
-
             <script type="text/html" id="action">
-                <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-search"></i>查看</a>
+                <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
+                <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
             </script>
         </div>
     </div>
@@ -72,9 +89,9 @@
         table.on('tool(list)',function(obj){
             var data=obj.data;
             if(obj.event=='del'){
-                layer.confirm('确定删除此轮播图？', function(index){
+                layer.confirm('确定删除此抢购吗？', function(index){
                     var post_json={id:data.id};
-                    hhtc.ajax('<?php echo url("banner/del_banner"); ?>',post_json,function(res){
+                    hhtc.ajax('<?php echo url("marketing/seckill_del"); ?>',post_json,function(res){
                         if(res.code==1){
                             layer.msg(res.msg,{icon:1},function(){
                                 table.reload('list');
@@ -88,8 +105,29 @@
             }else if(obj.event=='edit'){
                 layer.open({
                     type: 2
-                    ,content: '/admin/order/edit_order/id/'+data.id
+                    ,title: '编辑物流'
+                    ,content: '/admin/marketing/seckill_edit/id/'+data.id
                     ,area: ['100%', '100%']
+                    ,btn: ['确定', '取消']
+                    ,yes: function(index, layero){
+                        var iframeWindow = window['layui-layer-iframe'+ index]
+                            ,submit = layero.find('iframe').contents().find("#edit");
+                        //监听提交
+                        iframeWindow.layui.form.on('submit(edit)', function(data){
+
+                            hhtc.ajax("<?php echo url('marketing/seckill_edit'); ?>",data.field,function(res){
+                                if(res.code==1){
+                                    layer.msg(res.msg,{icon:1},function(){
+                                        table.reload('list');
+                                        layer.close(index); //关闭弹层
+                                    })
+                                }else{
+                                    layer.alert(res.msg,{icon:2});
+                                }
+                            })
+                        });
+                        submit.trigger('click');
+                    }
                 });
             }else if(obj.event='showimg'){
                 layer.open({
