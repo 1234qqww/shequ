@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:83:"D:\xy\project\shequshop\public/../application/admin\view\marketing\seckill_add.html";i:1564970794;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:83:"D:\xy\project\shequshop\public/../application/admin\view\marketing\seckill_add.html";i:1565235374;}*/ ?>
 
 <!DOCTYPE html>
 <html>

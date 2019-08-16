@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:68:"D:\xy\project\shequshop\public/../application/admin\view\\index.html";i:1564648972;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:68:"D:\xy\project\shequshop\public/../application/admin\view\\index.html";i:1565926221;}*/ ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -65,7 +65,7 @@
   <!--左侧菜单-->
   <div class="main-bot">
     <div class="left-bar">
-      <div class="left-bar-list" >
+      <div class="left-bar-list" id="s">
         <a href="<?php echo url('home/welcome'); ?>" target="rightframe">
           <div  class="left-bar-list-item mind top_banner cont_banner"  >
             <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/shouye.png" />
@@ -120,6 +120,13 @@
             <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/caiwu.png" />
             </div>
             <div class="left-bar-list-item-font"><span>财务</span></div>
+          </div>
+        </a>
+        <a href="<?php echo url('integralclass/integralclass'); ?>" target="rightframe">
+          <div  class="left-bar-list-item business"  >
+            <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/caiwu.png" />
+            </div>
+            <div class="left-bar-list-item-font"><span>积分</span></div>
           </div>
         </a>
         <a href="<?php echo url('retail/retail'); ?>" target="rightframe">
@@ -276,6 +283,12 @@
               <img src="/easyweb/layout/static/right_lit.png" />
             </div>
           </a>
+          <a href="<?php echo url('commodity/commodity_jifen_class'); ?>" target="rightframe">
+            <div  class="left-bar-secendlist-item" >
+              <span>积分分类</span>
+              <img src="/easyweb/layout/static/right_lit.png" />
+            </div>
+          </a>
           <div class="line"></div>
         </div>
       </div>
@@ -325,6 +338,12 @@
           <a href="<?php echo url('marketing/youhuijuan'); ?>" target="rightframe">
             <div  class="left-bar-secendlist-item" >
               <span>优惠卷</span>
+              <img src="/easyweb/layout/static/right_lit.png" />
+            </div>
+          </a>
+          <a href="<?php echo url('group/group'); ?>" target="rightframe">
+            <div  class="left-bar-secendlist-item" >
+              <span>拼团</span>
               <img src="/easyweb/layout/static/right_lit.png" />
             </div>
           </a>
@@ -397,9 +416,37 @@
               <img src="/easyweb/layout/static/right_lit.png" />
             </div>
           </a>
+          <a href="<?php echo url('retail/cash'); ?>" target="rightframe">
+            <div  class="left-bar-secendlist-item" >
+              <span>提现申请</span>
+              <img src="/easyweb/layout/static/right_lit.png" />
+            </div>
+          </a>
+          <a href="<?php echo url('retail/cashrecord'); ?>" target="rightframe">
+            <div  class="left-bar-secendlist-item" >
+              <span>提现记录</span>
+              <img src="/easyweb/layout/static/right_lit.png" />
+            </div>
+          </a>
+          <div class="line"></div>
+        </div>
+      </div>
+      <div class="left-bar-secendlist" id="11" style="display:none">
+        <div   class="left-bar-secendlist-items" >
           <a href="<?php echo url('system/qudao'); ?>" target="rightframe">
             <div  class="left-bar-secendlist-item" >
               <span>小程序设置</span>
+              <img src="/easyweb/layout/static/right_lit.png" />
+            </div>
+          </a>
+          <div class="line"></div>
+        </div>
+      </div>
+      <div class="left-bar-secendlist" id="12" style="display:none">
+        <div   class="left-bar-secendlist-items" >
+          <a href="<?php echo url('integralclass/integralclass'); ?>" target="rightframe">
+            <div  class="left-bar-secendlist-item" >
+              <span>积分分类</span>
               <img src="/easyweb/layout/static/right_lit.png" />
             </div>
           </a>
@@ -418,9 +465,19 @@
 <script>
   $(function () {
     $('a').click(function () {
+      var h=window.location.href;
+      var s=parseInt(h.substring(h.lastIndexOf('/')+1,h.indexOf('.html')));
+
+      if(typeof(s)=="number" ){
+        $.post("<?php echo url('gs'); ?>",{merchantid:s},function(e){
+        })
+      }
+
       var domain=$(this).attr('href');
       var i = domain.lastIndexOf('/');
       var href = domain.substr(i+1);
+      console.log(href);
+
 
       if(href == 'setting.html' || href=='wemen.html'){
         $('#1').show();
@@ -442,7 +499,7 @@
       }else {
         $('#4').hide();
       }
-      if(href=='commodity.html' || href=='commodity_out.html' || href=='commodity_del.html' || href=='commodity_category.html' ||href=='commodity_biaoqian.html'){
+      if(href=='commodity.html' || href=='commodity_out.html' || href=='commodity_del.html' || href=='commodity_category.html' ||href=='commodity_biaoqian.html' ||href=='commodity_jifen_class.html'){
         $('#5').show();
       }else{
         $('#5').hide();
@@ -452,7 +509,7 @@
       }else{
         $('#6').hide();
       }
-      if(href=='marketing.html' || href=='youhuijuan.html' || href=='seckill.html'){
+      if(href=='marketing.html' || href=='youhuijuan.html' || href=='group.html'|| href=='seckill.html'){
         $('#7').show();
       }else {
         $('#7').hide();
@@ -467,20 +524,20 @@
       }else{
         $('#9').hide();
       }
-      if(href=='retail.html' || href=='reseller.html' ||  href=='broker.html'){
+      if(href=='retail.html' || href=='reseller.html' ||  href=='broker.html' ||  href=='cash.html' ||  href=='cashrecord.html'){
         $('#10').show();
       }else{
         $('#10').hide();
       }
-      if(href=='subject.html' || href=='topic.html'){
-        $('#9').show();
+      if(href=='qudao.html' ){
+        $('#11').show();
       }else{
-        $('#9').hide();
+        $('#11').hide();
       }
-      if(href=='qudao.html' || href=='qudao.html'){
-        $('#10').show();
+      if(href=='integralclass.html' ){
+        $('#12').show();
       }else{
-        $('#10').hide();
+        $('#12').hide();
       }
       // $('.'+href).css({'background':'#24303C','border-radius':'3px'});
       // $('#'+href).find('img').show();

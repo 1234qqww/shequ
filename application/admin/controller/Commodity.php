@@ -44,12 +44,39 @@ class Commodity extends Base
         if(request()->isAjax()){
             $param=$this->request->param();
             $ret['sort']=$param['sort'];
-            if(!empty($param['sales_sum'])) {
-                if (!preg_match("/^[1-9]\d*$/", $param['give_integral'])) {   //积分
-                    return json(array('code' => 0, 'msg' => '请输入正确的赠送积分'));
+            if($param['is_jifen']==0){
+                if(!empty($param['sales_sum'])) {
+                    if (!preg_match("/^[1-9]\d*$/", $param['give_integral'])) {   //积分
+                        return json(array('code' => 0, 'msg' => '请输入正确的赠送积分'));
+                    }
+                    $ret['give_integral']=$param['give_integral'];
                 }
-                $ret['give_integral']=$param['give_integral'];
+                if(empty($param['parent_id_1']) && empty($param['parent_id_2'])  && empty($param['parent_id_3']) ){
+                    return json(array('code'=>0,'msg'=>'请选择商品分类'));
+                }
+                if(!empty($param['parent_id_1'])  && empty($param['parent_id_2']) ||empty($param['parent_id_3'])) {
+                    return json(array('code'=>0,'msg'=>'请选择二三级分类'));
+                }
+                if(!empty($param['parent_id_2']) && empty($param['parent_id_3'])){
+                    $ret['goods_category_id']=$param['parent_id_2'];
+                }
+                if(!empty($param['parent_id_3'])){
+                    $ret['goods_category_id']=$param['parent_id_3'];
+                }
+            }else{
+                if(empty($param['consume_jifen'])){
+                    return json(array('code' => 0, 'msg' => '请填写消耗积分'));
+                }
+                if (!preg_match("/^[1-9]\d*$/", $param['consume_jifen'])) {   //积分
+                    return json(array('code' => 0, 'msg' => '请输入正确的消耗积分'));
+                }
+                $ret['consume_jifen']=$param['consume_jifen'];
+                if(empty($param['goods_jifenid'])){
+                    return json(array('code'=>0,'msg'=>'请选择积分分类'));
+                }
+                $ret['goods_jifenid']=$param['goods_jifenid'];
             }
+
             if(!empty($param['sales_sum'])){
                 if(!preg_match(   "/^[1-9]\d*$/",$param['sales_sum'])){   //销量
                     return json(array('code'=>0,'msg'=>'请输入正确的销量'));
@@ -64,7 +91,7 @@ class Commodity extends Base
                     $ret['shipping_money']=$param['shipping_money'];
                 }
                  if(!empty($param['store_count'])){
-                     if(!preg_match(   "/^[1-9]\d*$/",$param['shipping_money'])){   //库存
+                     if(!preg_match(   "/^[1-9]\d*$/",$param['store_count'])){   //库存
                          return json(array('code'=>0,'msg'=>'请输入正确的库存数量'));
                      }
                      $ret['store_count']=$param['store_count'];
@@ -81,18 +108,6 @@ class Commodity extends Base
                 return json(array('code'=>0,'msg'=>'请输入正确的成本价'));
             }
             $ret['cost_price']=$param['cost_price'];
-            if(empty($param['parent_id_1']) && empty($param['parent_id_2'])  && empty($param['parent_id_3']) ){
-                return json(array('code'=>0,'msg'=>'请选择商品分类'));
-            }
-            if(!empty($param['parent_id_1'])  && empty($param['parent_id_2']) ||empty($param['parent_id_3'])) {
-                return json(array('code'=>0,'msg'=>'请选择二三级分类'));
-            }
-            if(!empty($param['parent_id_2']) && empty($param['parent_id_3'])){
-                $ret['goods_category_id']=$param['parent_id_2'];
-            }
-            if(!empty($param['parent_id_3'])){
-                $ret['goods_category_id']=$param['parent_id_3'];
-            }
             if(isset($param['is_free_shipping'])){   //是否包邮
                 $ret['is_free_shipping']=1;
             }else{
@@ -142,12 +157,8 @@ class Commodity extends Base
             $ret['goods_name']=$param['goods_name'];
             $ret['goods_gjc']=$param['goods_gjc'];
             $ret['is_reduce']=$param['is_reduce'];
-            $admin=session('admin');
-            if($admin['role_id']!=1){
-                $ret['good_id']=session('good');
-            }else{
-                $ret['good_id']=-1;        //超级管理员添加商品商户id为-1
-            }
+            $ret['good_id']=session('merchantid');
+            $ret['is_jifen']=$param['is_jifen'];
             if(isset($param['goods_content'])){
                 $ret['goods_content']=$param['goods_content'];
             }
@@ -182,8 +193,10 @@ class Commodity extends Base
 
         }
         $cat_list = Db::name('good_category')->where("parent_id = 0")->select();   //获取一级菜单
+        $jife=Db::name('jifen_class')->select();
         $this->assign([
-            'cat_list' =>$cat_list
+            'cat_list' =>$cat_list,
+            'jifen'=>$jife
         ]);
         return $this->fetch();
     }
@@ -193,11 +206,37 @@ class Commodity extends Base
         if(request()->isAjax()){
             $param=$this->request->param();
             $ret['sort']=$param['sort'];
-            if(!empty($param['sales_sum'])) {
-                if (!preg_match("/^[1-9]\d*$/", $param['give_integral'])) {   //积分
-                    return json(array('code' => 0, 'msg' => '请输入正确的赠送积分'));
+            if($param['is_jifen']==0){
+                if(!empty($param['sales_sum'])) {
+                    if (!preg_match("/^[0-9]\d*$/", $param['give_integral'])) {   //积分
+                        return json(array('code' => 0, 'msg' => '请输入正确的赠送积分'));
+                    }
+                    $ret['give_integral']=$param['give_integral'];
                 }
-                $ret['give_integral']=$param['give_integral'];
+                if(empty($param['parent_id_1']) && empty($param['parent_id_2'])  && empty($param['parent_id_3']) ){
+                    return json(array('code'=>0,'msg'=>'请选择商品分类'));
+                }
+                if(!empty($param['parent_id_1'])  && empty($param['parent_id_2']) ||empty($param['parent_id_3'])) {
+                    return json(array('code'=>0,'msg'=>'请选择二三级分类'));
+                }
+                if(!empty($param['parent_id_2']) && empty($param['parent_id_3'])){
+                    $ret['goods_category_id']=$param['parent_id_2'];
+                }
+                if(!empty($param['parent_id_3'])){
+                    $ret['goods_category_id']=$param['parent_id_3'];
+                }
+            }else{
+                if(empty($param['consume_jifen'])){
+                    return json(array('code' => 0, 'msg' => '请填写消耗积分'));
+                }
+                if (!preg_match("/^[1-9]\d*$/", $param['consume_jifen'])) {   //积分
+                    return json(array('code' => 0, 'msg' => '请输入正确的消耗积分'));
+                }
+                $ret['consume_jifen']=$param['consume_jifen'];
+                if(empty($param['goods_jifenid'])){
+                    return json(array('code'=>0,'msg'=>'请选择积分分类'));
+                }
+                $ret['goods_jifenid']=$param['goods_jifenid'];
             }
             if(!empty($param['sales_sum'])){
                 if(!preg_match(   "/^[1-9]\d*$/",$param['sales_sum'])){   //销量
@@ -230,18 +269,7 @@ class Commodity extends Base
                 return json(array('code'=>0,'msg'=>'请输入正确的成本价'));
             }
             $ret['cost_price']=$param['cost_price'];
-            if(empty($param['parent_id_1']) && empty($param['parent_id_2'])  && empty($param['parent_id_3']) ){
-                return json(array('code'=>0,'msg'=>'请选择商品分类'));
-            }
-            if(!empty($param['parent_id_1'])  && empty($param['parent_id_2']) ||empty($param['parent_id_3'])) {
-                return json(array('code'=>0,'msg'=>'请选择二三级分类'));
-            }
-            if(!empty($param['parent_id_2']) && empty($param['parent_id_3'])){
-                $ret['goods_category_id']=$param['parent_id_2'];
-            }
-            if(!empty($param['parent_id_3'])){
-                $ret['goods_category_id']=$param['parent_id_3'];
-            }
+
             if(isset($param['is_free_shipping'])){   //是否包邮
                 $ret['is_free_shipping']=1;
             }else{
@@ -287,6 +315,7 @@ class Commodity extends Base
             $ret['goods_name']=$param['goods_name'];
             $ret['goods_gjc']=$param['goods_gjc'];
             $ret['is_reduce']=$param['is_reduce'];
+            $ret['is_jifen']=$param['is_jifen'];
             if(isset($param['goods_content'])){
                 $ret['goods_content']=$param['goods_content'];
             }
@@ -332,19 +361,19 @@ class Commodity extends Base
                 Db::name('goods')->where(['id'=>$param['id']])->data(['store_count'=>$num])->update();
             }
             return json(array('code'=>1,'msg'=>'修改成功'));
-
-
-
-
         }
         $list=array();
         $goods=Db::name('goods')->where(input())->find();  //商品基本信息
-        $goods_category=model('good_category')->arr_push($goods['goods_category_id'],$list);
-        $goods['goods_category_id1']=$goods_category[1];
-        $goods['goods_category_id2']=$goods_category[0];
-        $cat_list1 = Db::name('good_category')->where("parent_id = 0")->select();   //获取一级菜单
-        $cat_list2= Db::name('good_category')->where("parent_id=$goods_category[1]")->select();   //获取3级菜单
-        $cat_list3= Db::name('good_category')->where("parent_id=$goods_category[0]")->select();   //获取3级菜单
+        if($goods['is_jifen']==0){
+            $goods_category=model('good_category')->arr_push($goods['goods_category_id'],$list);
+            $goods['goods_category_id1']=$goods_category[1];
+            $goods['goods_category_id2']=$goods_category[0];
+            $cat_list1 = Db::name('good_category')->where("parent_id = 0")->select();   //获取一级菜单
+            $cat_list2= Db::name('good_category')->where("parent_id=$goods_category[1]")->select();   //获取3级菜单
+            $cat_list3= Db::name('good_category')->where("parent_id=$goods_category[0]")->select();   //获取3级菜单
+        }
+        $jife=Db::name('jifen_class')->select();
+
         $goods_img=Db::name('goods_img')->where(['goods_id'=>$goods['id']])->select(); //商品图片
         $goods_attr_key=Db::name('goods_attr_key')->where(['goods_id'=>$goods['id']])->select();   //sku key值
         $goods_attr_value = Db::name('goods_attr_value')->where(['goods_id'=>$goods['id']])->select();
@@ -354,19 +383,18 @@ class Commodity extends Base
                 if($v['attr_key_id']==$y['id']){
                     $goods_attr_key[$x]['itemattrval'][$k]=$v;
                 }
-
             }
-
         }
         $this->assign([
             'goods_imgs'=>json_encode($goods_img,320),
             'goods_img'=>$goods_img,
             'goods'=>$goods,
-            'cat_list1'=>$cat_list1,
-            'cat_list2'=>$cat_list2,
-            'cat_list3'=>$cat_list3,
+            'cat_list1'=>isset($cat_list1)?$cat_list1:'',
+            'cat_list2'=>isset($cat_list2)?$cat_list2:'',
+            'cat_list3'=>isset($cat_list3)?$cat_list3:'',
             'itemAttr'=>$goods_attr_key,
-            'itemSku'=>json_encode($goods_item_sku,320)
+            'itemSku'=>json_encode($goods_item_sku,320),
+            'jifen'=>isset($jife)?$jife:''
         ]);
         return $this->fetch();
 
@@ -662,6 +690,71 @@ class Commodity extends Base
         $content = preg_replace($pregRule, '<img src="'.$url.'${1}" style="max-width:100%">', $content);
         return $content;
     }
+
+    public function commodity_jifen_class(){
+        if(request()->isAjax()){
+          return  Db::name('jifen_class')->order('order asc')->paginate(15);
+        }
+        return $this->fetch();
+    }
+
+    public function commodity_jifen_edit(){
+        if(request()->isAjax()){
+            $param=$this->request->param();
+            if(isset($param['is_show'])){
+                $param['is_show']=1;
+            }else{
+                $param['is_show']=0;
+            }
+            $shiping_class= Db::name('jifen_class')->where(['id'=>$param['id']])->update($param);
+            if(!$shiping_class){
+                return json(array('code'=>0,'msg'=>'修改失败'));
+            }
+            return json(array('code'=>1,'msg'=>'修改成功'));
+        }
+        $data=Db::name('jifen_class')->where(['id'=>input('id')])->find();
+        $this->assign([
+                'data'=>$data
+            ]
+
+        );
+        return $this->fetch();
+    }
+
+    public function commodity_jifen_add(){
+        if(request()->isAjax()){
+            $param=$this->request->param();
+            if(isset($param['is_show'])){
+                $param['is_show']=1;
+            }else{
+                $param['is_show']=0;
+            }
+            $shiping_class= Db::name('jifen_class')->insert($param);
+            if(!$shiping_class){
+                return json(array('code'=>0,'msg'=>'添加失败'));
+            }
+            return json(array('code'=>1,'msg'=>'添加成功'));
+
+        }
+        return $this->fetch();
+    }
+
+    public function commodity_jifen_del(){
+
+       $goods=Db::name('goods')->where(['goods_jifenid'=>input('id')])->select();
+
+       if($goods){
+           return json(array('code'=>0,'msg'=>'该分类下存在商品，请先删除商品才能删除分类'));
+       }
+        $good_category=Db::name('jifen_class')->where(['id'=>input('id')])->delete();
+        if(!$good_category){
+            return json(array('code'=>0,'msg'=>'删除失败'));
+        }
+        return json(array('code'=>1,'msg'=>'删除成功'));
+
+
+    }
+
 
 
 

@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:85:"D:\xy\project\shequshop\public/../application/admin\view\commodity\add_commodity.html";i:1562740946;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:85:"D:\xy\project\shequshop\public/../application/admin\view\commodity\add_commodity.html";i:1565926221;}*/ ?>
 
 
 <!DOCTYPE html>
@@ -81,6 +81,13 @@
 
             <div class="layui-tab-item layui-show">
                     <div class="layui-form-item">
+                        <label class="layui-form-label">商品类型</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="is_jifen"   lay-filter="erweima" value="0" title="正常商品" checked="">
+                            <input type="radio" name="is_jifen"   lay-filter="erweima"  value="1" title="积分商品">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
                         <label class="layui-form-label">商品名称</label>
                         <div class="layui-input-block">
                             <input type="text"  name="goods_name"  lay-verify="required" placeholder=请输入商品名称 value="" autocomplete="off" class="layui-input" >
@@ -100,12 +107,19 @@
                         </div>
                         <div class="layui-form-mid layui-word-aux">商品关键词,能准确搜到商品的,比如 : 海尔电视|电视 之类的</div>
                     </div>
-                    <div class="layui-form-item">
+                    <div class="layui-form-item" id="give_integral">
                         <label class="layui-form-label">赠送积分</label>
                         <div class="layui-input-inline">
                             <input type="number"  name="give_integral"    placeholder=请输入赠送积分 autocomplete="off" class="layui-input" >
                         </div>
                         <div class="layui-form-mid layui-word-aux">商品赠送积分，赠送的积分可以在积分商城进行购买商品</div>
+                    </div>
+                    <div class="layui-form-item" id="consume_jifen" style="display: none">
+                        <label class="layui-form-label">消耗积分</label>
+                        <div class="layui-input-inline">
+                            <input type="number"  name="consume_jifen"    placeholder=请输入使用积分 autocomplete="off" class="layui-input" >
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">积分商品购买消耗积分</div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">商品展示销量</label>
@@ -114,7 +128,7 @@
                         </div>
                         <div class="layui-form-mid layui-word-aux">商品展示销量是用户看到的销量</div>
                     </div>
-                    <div class="layui-form-item" id="menu_one" >
+                    <div class="layui-form-item" id="menu_one"  >
                         <label class="layui-form-label">商品类型</label>
                         <div class="layui-input-inline">
                             <select name="parent_id_1"  id="parent_id_1" model="select" lay-filter="menu_one" >
@@ -135,6 +149,18 @@
                             </select>
                         </div>
                     </div>
+                    <div class="layui-form-item" id="goods_jifenid"   style="display: none">
+                        <label class="layui-form-label">积分商品类型</label>
+                        <div class="layui-input-inline">
+                            <select name="goods_jifenid"  >
+                                <option value="0">请选择商品分类</option>
+                                <?php if(is_array($jifen) || $jifen instanceof \think\Collection || $jifen instanceof \think\Paginator): $i = 0; $__LIST__ = $jifen;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?>
+                                <option value="<?php echo $vo['id']; ?>"><?php echo $vo['name']; ?></option>
+                                <?php endforeach; endif; else: echo "" ;endif; ?>
+                            </select>
+                        </div>
+                    </div>
+
                     <div class="layui-form-item">
                         <label class="layui-form-label">市场价</label>
                         <div class="layui-input-inline">
@@ -148,7 +174,8 @@
                         <div class="layui-input-inline">
                             <input type="text"  name="cost_price"  lay-verify="required" value="" autocomplete="off" placeholder=请输入成本价 class="layui-input" >
                         </div>
-                        <div class="layui-form-mid layui-word-aux">尽量填写完整，有助于于商品销售的数据分析</div>
+                        <div class="layui-form-mid layui-word-aux" id="price1">尽量填写完整，有助于商品销售的数据分析</div>
+                        <div class="layui-form-mid layui-word-aux" id="price2" style="display: none">积分商品只使用积分兑换，本店价请填写0</div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">商品图片</label>
@@ -201,10 +228,6 @@
                             <input type="checkbox" name="is_on_sale"  lay-skin="switch" lay-text="是|否" checked>
                         </div>
                     </div>
-
-
-
-
                 </div>
             <div class="layui-tab-item">
 <!--                <div class="layui-form" lay-filter="layuiadmin-form-role" id="layuiadmin-form" style="padding:35px 45px;">-->
@@ -214,8 +237,8 @@
                             <input type="text"  name="store_count"   placeholder=请输入库存 value="" autocomplete="off" class="layui-input" >
                         </div>
                         <input type="radio" name="is_reduce" value="2" title="付款减库存" checked="">
-                        <input type="radio" name="is_reduce" value="1" title="拍下减库存" >
-                        <input type="radio" name="is_reduce" value="3" title="永不减库存">
+
+                        <input type="radio" name="is_reduce" value="1" title="永不减库存">
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">规格</label>
@@ -325,7 +348,23 @@
                     }
                 })
             });
-
+            form.on('radio(erweima)', function (data) {
+                   if(data.value==0){
+                       $('#give_integral').show();
+                        $('#consume_jifen').hide();
+                        $('#menu_one').show();
+                        $('#goods_jifenid').hide();
+                        $('#price2').hide();
+                        $('#price1').show();
+                    } else{
+                        $('#give_integral').hide();
+                        $('#consume_jifen').show();
+                       $('#menu_one').hide();
+                       $('#goods_jifenid').show();
+                       $('#price2').show();
+                       $('#price1').hide();
+                   }
+            });
 
             form.on('switch(switchTest)', function(data){
                 if(this.checked){
@@ -375,6 +414,15 @@
 
         console.log('21');
     }
+
+
+
+
+
+
+
+
+
 </script>
 
 <script>
@@ -447,7 +495,6 @@
                 last.after(lv1HTML);
             }
         });
-
         $(document).on('click', '.remove_lv1', function() {
             $(this).parents('.lv1').remove();
         });

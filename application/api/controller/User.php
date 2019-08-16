@@ -114,10 +114,11 @@ class User extends Base
         if(!$param['user_id']){
             return  json(array('code'=>0,'msg'=>'非法操作'));
         }
-        $order1=   Db::name('order')->where(['user_id'=>$param['user_id'],'order_status'=>0])->count();         //待付款
-        $order2=   Db::name('order')->where(['user_id'=>$param['user_id'],'pay_status'=>1,'shipping_status'=>0])->count();         //待发货
-        $order3=    Db::name('order')->where(['user_id'=>$param['user_id'],'order_status'=>2])->count();         //已完成
-        $order4=   Db::name('order')->where(['user_id'=>$param['user_id'],'order_status'=>3])->count();         //退款
+
+        $order1=   Db::name('order')->where(['user_id'=>$param['user_id'],'order_status'=>0,'order_prom_type'=>0])->count();         //待付款
+        $order2=   Db::name('order')->where(['user_id'=>$param['user_id'],'pay_status'=>1,'shipping_status'=>0,'order_prom_type'=>0])->count();         //待发货
+        $order3=    Db::name('order')->where(['user_id'=>$param['user_id'],'order_status'=>2,'order_prom_type'=>0])->count();         //已完成
+        $order4=   Db::name('order')->where(['user_id'=>$param['user_id'],'order_status'=>3,'order_prom_type'=>0])->count();         //退款
         return  json(array('code'=>1,'msg'=>'成功','data'=>array('order1'=>$order1,'order2'=>$order2,'order3'=>$order3,'order4'=>$order4)));
     }
 

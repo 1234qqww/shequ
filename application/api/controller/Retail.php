@@ -70,7 +70,7 @@ class Retail extends Controller
     /**
      * 生成小程序二维码
      */
-   public function QRcode($appid,$secret,$filePath,$smallPath){
+    public function QRcode($appid,$secret,$filePath,$smallPath){
         $url = "https://api.weixin.qq.com/cgi-bin/wxaapp/createwxaqrcode?access_token=".$this->accesstoken($appid,$secret);
         $data = [
             'access_token'=>$this->accesstoken($appid,$secret),
@@ -134,17 +134,17 @@ class Retail extends Controller
         if(!empty($param['headimg'])){
             $param['headimg']=$param['headimg'][0];
         }
-       if(!empty($param['backimg'])){
-           $param['backimg']=$param['backimg'][0];
-       }
-       $Txapi=new Txapi();
+        if(!empty($param['backimg'])){
+            $param['backimg']=$param['backimg'][0];
+        }
+        $Txapi=new Txapi();
         $parass=$this->tencentMap_address($Txapi->CONSTANT,$param['address']);
-       if($parass['code']==0){
-           $param['lng']=$parass['data']['lng'];
-           $param['lat']=$parass['data']['lat'];
-       }else{
-           return json_encode(['code'=>$parass['code'],'msg'=>$parass['msg'],'data'=>'']);
-       }
+        if($parass['code']==0){
+            $param['lng']=$parass['data']['lng'];
+            $param['lat']=$parass['data']['lat'];
+        }else{
+            return json_encode(['code'=>$parass['code'],'msg'=>$parass['msg'],'data'=>'']);
+        }
         $data=$this->retail->edit($param);
         return $data?json_encode(['code'=>0,'msg'=>'设置成功','data'=>$data]):json_encode(['code'=>1,'msg'=>'设置失败','data'=>$data]);
     }
@@ -315,15 +315,24 @@ class Retail extends Controller
 
         return $val;
     }
+    function createNonceStr($length = 16)
+    {
+        $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        $str = '';
+        for ($i = 0; $i < $length; $i++) {
+            $str .= substr($chars, mt_rand(0, strlen($chars) - 1), 1);
+        }
+        return $str;
+    }
     /**
      * 小程序支付
      */
-    function initiatingPayment($amountmoney,$ordernumber,$openid,$appid,$mch_id,$mer_secret,$notify_url,$body,$attach)
+    function initiatingPayment($amountmoney, $ordernumber,$openid,$appid,$mch_id,$mer_secret,$notify_url,$body,$attach)
     {
         $noncestr = $this->createNonceStr(); //随机字符串
         $ordercode = $ordernumber;//商户订单号
         $totamount = $amountmoney;//金额
-        $attach = json_encode(['ordercode' => $ordercode]);
+//    $attach = json_encode(['ordercode' => $ordercode]);
         $timeStamp = '' . time() . '';
         $data = [
             'openid' => $openid,
@@ -358,15 +367,6 @@ class Retail extends Controller
         $sign = $this->autograph($parameters,$mer_secret);
         return ['prepay_id' => 'prepay_id=' . $prepay_id, 'timeStamp' => $timeStamp, 'noncestr' => $noncestr, 'sign' => $sign, 'sign_type' => 'MD5'];
     }
-    function createNonceStr($length = 16)
-    {
-        $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        $str = '';
-        for ($i = 0; $i < $length; $i++) {
-            $str .= substr($chars, mt_rand(0, strlen($chars) - 1), 1);
-        }
-        return $str;
-    }
     /**
      * 创建支付
      */
@@ -379,8 +379,5 @@ class Retail extends Controller
         //$val = $this->doPageXmlToArray($result);
         return $result;
     }
-
-
-
 
 }

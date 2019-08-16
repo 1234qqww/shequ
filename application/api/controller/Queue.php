@@ -1,7 +1,7 @@
 <?php
 namespace app\api\controller;
 use app\api\model\GroupregimentModel;
-use app\api\model\Order;
+//use app\api\model\Order;
 use app\common\model\Txapi;
 use think\Controller;
 

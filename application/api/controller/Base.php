@@ -12,13 +12,11 @@ class Base extends Controller
         parent::_initialize();
         //初始化
        $param=$this->request->param();
-       $token='hhtc12345678';
+       $token='hhtc123456';
        if(!isset($param['token'])){
            return json(array('code'=>0,'msg'=>'非法操作！'));
        }
-
-       md5($token);
-       if(md5($param['token'])!=$token){
+       if($param['token']!=md5($token)){
           return json(array('code'=>0,'msg'=>'非法操作！'));
        }
     }

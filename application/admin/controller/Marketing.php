@@ -13,11 +13,8 @@ class Marketing extends Base
     {
         parent::__construct($request);
         $admin=session('admin');
-        if($admin['role_id']!=1){
-            $this->good_id=session('good');
-        }else{
-            $this->good_id=-1;        //超级管理员添加商品商户id为-1
-        }
+
+            $this->good_id=session('merchantid');
 
     }
 
@@ -40,12 +37,8 @@ class Marketing extends Base
                 }
             }
             $data['content']=json_encode($arr);
-            if($admin['role_id']!=1){
-                $data['good_id']=session('good');
-            }else{
-                $data['good_id']=-1;        //超级管理员添加商品商户id为-1
-            }
-            $mark=Db::name('goods_marketing')->where(['good_id'=>$data['good_id']])->find();
+            $merchantid=session('merchantid');
+            $mark=Db::name('goods_marketing')->where(['good_id'=>$merchantid])->find();
 
             if($mark){
                 Db::name('goods_marketing')->where(['id'=>$mark['id']])->data($data)->update();
@@ -54,14 +47,10 @@ class Marketing extends Base
             $marketing=Db::name('goods_marketing') ->insert($data);
             return $marketing?['code'=>1,'msg'=>'添加成功']:['code'=>0,'msg'=>'添加失败'];
         }
-        $admin=session('admin');
-        if($admin['role_id']!=1){
-            $good_id=session('good');
-        }else{
-            $good_id=-1;        //超级管理员添加商品商户id为-1
-        }
+        $merchantid=session('merchantid');
 
-        $goods_marketing=Db::name('goods_marketing')->where(['good_id'=>$good_id])->find();
+        $goods_marketing=Db::name('goods_marketing')->where(['good_id'=>$merchantid])->find();
+
         $content=json_decode($goods_marketing['content'],true);
         $this->assign(['content'=>$content]);
 
@@ -176,7 +165,7 @@ class Marketing extends Base
        return Db::name('good_seckill')
                 ->alias('s')
                 ->join('goods g','s.goods_id=g.id')
-                ->field('s.id,s.goods_id,s.good_id,s.discount,s.quantity,s.quantitys,s.purchase,s.start_time,s.end_time,g.id,g.goods_name,g.original_img')
+                ->field('s.id,s.goods_id,s.good_id,s.discount,s.quantity,s.quantitys,s.purchase,s.start_time,s.end_time,g.id as gid,g.goods_name,g.original_img')
                 ->where(['s.good_id'=>$this->good_id])
                 ->paginate(15);
         }
@@ -189,12 +178,96 @@ class Marketing extends Base
         if(request()->isAjax()){
              $param=$this->request->param();
              $merchantid=session('merchantid');
+             $start_time=explode(' ',$param['start_time']);
 
-             dump($merchantid);die();
+
+
+             if($param['quantity']<$param['purchase']){
+                return json(array('code'=>0,'msg'=>'用户抢购数量不能比总数大！'));
+             }
+            Db::name('goods')->where(['id'=>$param['goods_id']])->update(['prom_type'=>1]);     //改变商品状态
+
+
+             $arr=array(
+                'goods_id'=>$param['goods_id'],
+                 'good_id'=>$merchantid,
+                 'discount'=>$param['discount'] ,                  //抢购优惠
+                 'purchase'=>$param['purchase'],                 //用户限抢购数量
+                 'quantity'=>$param['quantity'],                 //抢购数量
+                 'start_time'=>$start_time[0],
+                 'start_his'=>$start_time[1],
+                 'end_time'=>$param['end_time'],
+                 );
+           $good_seckill=Db::name('good_seckill')->insert($arr);
+           if(!$good_seckill){
+               return json(array('code'=>0,'msg'=>'添加失败！'));
+           }
+            return json(array('code'=>1,'msg'=>'添加成功！'));
+
+
 
         }
         return $this->fetch();
     }
+
+
+    public function seckill_edit(){
+            if(request()->isAjax()){
+                    $param=$this->request->param();
+                    $merchantid=session('merchantid');
+                    $start_time=explode(' ',$param['start_time']);
+                    if($param['quantity']<$param['purchase']){
+                        return json(array('code'=>0,'msg'=>'用户抢购数量不能比总数大！'));
+                    }
+                    $seckill=Db::name('good_seckill')->where(['id'=>$param['id']])->find();
+                    if($seckill['goods_id']!=$param['goods_id']){
+                        Db::name('goods')->where(['id'=>$seckill['goods_id']])->update(['prom_type'=>0]);     //改变商品状态
+                        Db::name('goods')->where(['id'=>$param['goods_id']])->update(['prom_type'=>1]);
+                    }
+                    $arr=array(
+                        'goods_id'=>$param['goods_id'],
+                        'good_id'=>$merchantid,
+                        'discount'=>$param['discount'] ,                  //抢购优惠
+                        'purchase'=>$param['purchase'],                 //用户限抢购数量
+                        'quantity'=>$param['quantity'],                 //抢购数量
+                        'start_time'=>$start_time[0],
+                        'start_his'=>$start_time[1],
+                        'end_time'=>$param['end_time'],
+                    );
+                   $good_seckill=Db::name('good_seckill')->where(['id'=>$param['id']])->update($arr);
+                    if(!$good_seckill){
+                        return json(array('code'=>0,'msg'=>'修改失败！'));
+                    }
+                    return json(array('code'=>1,'msg'=>'修改成功！'));
+            }
+            $good_seckill=Db::name('good_seckill')
+                    ->alias('s')
+                    ->join('goods g','s.goods_id=g.id')
+                    ->field('s.id,s.goods_id,s.good_id,s.discount,s.quantity,s.quantitys,s.purchase,s.start_time,s.start_his,s.end_time,g.id as gid,g.goods_name')
+                    ->where(['s.id'=>input('id')])
+                    ->find();
+            $this->assign([
+               'data'=>$good_seckill
+            ]);
+
+          return $this->fetch();
+    }
+
+    public function seckill_del(){
+        $seckill=Db::name('good_seckill')->where(['id'=>input('id')])->find();
+                 Db::name('goods')->where(['id'=>$seckill['goods_id']])->update(['prom_type'=>0]);     //改变商品状态
+        $good_seckill=Db::name('good_seckill')->where(['id'=>input('id')])->delete();
+
+
+
+       if(!$good_seckill){
+            return json(array('code'=>0,'msg'=>'删除失败！'));
+        }
+        return json(array('code'=>1,'msg'=>'删除成功！'));
+
+
+    }
+
 
 
 }

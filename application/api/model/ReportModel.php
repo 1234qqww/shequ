@@ -9,7 +9,7 @@ class ReportModel extends Model {
      * 查看用户关于分销商的全部消息
      */
     public function allnews($param,$reseller){
-        $data=$this->with('user')->with('retail')->with('goods')->where('user_id',$param['user_id'])->where('retail_id','neq','0')->group('retail_id')->order(['id'=>'asc'])->select();
+        $data=$this->with('user')->with('retail')->with('goods')->where('user_id',$param['user_id'])->group('retail_id')->order(['id'=>'asc'])->select();
 
         foreach($data as $k=>$val){
             $data[$k]['count']=$this->where('read',0)->with('user')->with('retail')->with('goods')->where('disnate',1)->where('read',0)->where('retail_id',$val->retail_id)->where('user_id',$param['user_id'])->count();
@@ -20,7 +20,7 @@ class ReportModel extends Model {
      * 查看用户关于店铺的全部消息
      */
     public function allstore($param,$reseller){
-        $data=$this->with('user')->with('retail')->with('goods')->where('reseller',$reseller)->where('user_id',$param['user_id'])->where('store_id','neq','0')->group('store_id')->order(['id'=>'asc'])->select();
+        $data=$this->with('user')->with('retail')->with('goods')->where('reseller',$reseller)->where('user_id',$param['user_id'])->group('store_id')->order(['id'=>'asc'])->select();
         foreach($data as $k=>$val){
             $data[$k]['count']=$this->where('read',0)->with('user')->with('retail')->with('goods')->where('disnate',1)->where('read',0)->where('store_id',$val->store_id)->where('user_id',$param['user_id'])->count();
         }
@@ -145,12 +145,6 @@ class ReportModel extends Model {
      */
     public function already($id){
         $this->where('id',$id)->update(['read'=>1]);
-    }
-    /**
-     * 所有的未读消息
-     */
-    public function readreport($param){
-        return $this->where('user_id',$param['user_id'])->where('read',0)->where('disnate','neq','0')->count();
     }
 
 }

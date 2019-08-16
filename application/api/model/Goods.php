@@ -100,12 +100,24 @@ class Goods extends Model
     public function oneDatas($id,$good_id){
         return $this->where('id',$id)->where('good_id',$good_id)->find();
     }
-    /**
-     * 查询商户的商品
-     */
-    public function goodgroup($good_id){
-       return $this->where('prom_type',2)->where('good_id',$good_id)->where('is_on_sale',1)->select();
+//    /**
+//     *
+//     */
+//    public function goods(){
+//        return $this->hasOne('Goods','id','goods_id');
+//    }
+
+    //商品减库存，
+    public function  store_count($id,$num,$sku_id){
+        if(!empty($sku_id)){
+         Db::name('goods_item_sku')->where(['id'=>$sku_id])->setDec('sku_store_count',$num);   //减sku库存
+        }
+        Db::name('goods')->where(['id'=>$id])->setDec('store_count',$num);   //减库存
     }
+    //加展示销量，加实际销量
+    public function sales_sum($id,$num){
 
-
+        Db::name('goods')->where(['id'=>$id])->setInc('inventory_count',$num);              //加实际销量
+        Db::name('goods')->where(['id'=>$id])->setInc('sales_sum',$num);   //加展示销量
+    }
 }

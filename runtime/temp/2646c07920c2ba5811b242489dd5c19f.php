@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:69:"D:\xy\project\shequshop\public/../application/admin\view\\indexs.html";i:1564982655;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:69:"D:\xy\project\shequshop\public/../application/admin\view\\indexs.html";i:1565235374;}*/ ?>
 
 <!DOCTYPE html>
 <html>
@@ -88,7 +88,13 @@
                         <div class="left-bar-list-item-font"><span>商品</span></div>
                     </div>
                 </a>
-
+                <a href="<?php echo url('group/group'); ?>?merchantid=<?php echo $good['id']; ?>" target="rightframe">
+                    <div  class="left-bar-list-item "  >
+                        <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/dingdan.png"/>
+                        </div>
+                        <div class="left-bar-list-item-font"><span>拼团</span></div>
+                    </div>
+                </a>
                 <a href="<?php echo url('ceshi/ceshi'); ?>" target="rightframe">
                     <div  class="left-bar-list-item usedcar usedcar_banner"  >
                         <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/dingdan.png"/>
@@ -108,6 +114,13 @@
                         <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/guanli.png" />
                         </div>
                         <div class="left-bar-list-item-font"><span>管理</span></div>
+                    </div>
+                </a>
+                <a href="<?php echo url('trand/trand'); ?>" target="rightframe">
+                    <div  class="left-bar-list-item user"  >
+                        <div class="left-bar-list-item-img"><img  src="/easyweb/layout/static/guanli.png" />
+                        </div>
+                        <div class="left-bar-list-item-font"><span>动态</span></div>
                     </div>
                 </a>
                 <a href="<?php echo url('report/report'); ?>" target="rightframe">
@@ -230,34 +243,20 @@
         </div>
     </div>
 </div>
-<!-- 加载动画，移除位置在common.js中 -->
-<!--<div class="page-loading">-->
-<!--  <div class="ball-loader">-->
-<!--        <span>-->
-<!--            <img src="/layout/static/test.jpg" alt="">-->
-<!--        </span>-->
-<!--    <span>-->
-<!--            <img src="/layout/static/test.jpg" alt="">-->
-<!--        </span>-->
-<!--    <span>-->
-<!--            <img src="/layout/static/test.jpg" alt="">-->
-<!--        </span>-->
-<!--    <span>-->
-<!--            <img src="/layout/static/test.jpg" alt="">-->
-<!--        </span>-->
-<!--  </div>-->
-<!--</div>-->
 </body>
 <script>
-    // var domain = document.location.href;
-    // var i = domain.lastIndexOf('/');
-    // if(href == 'usedcar' || href =='usedcar_banner'){
-    //   $('#2').show();
-    // }
+
 </script>
 <script>
+
     $(function () {
+
         $('a').click(function () {
+            var h=window.location.href;
+            var s=h.substring(h.lastIndexOf('/')+1,h.indexOf('.html'));
+            $.post("<?php echo url('gs'); ?>",{merchantid:s},function(e){
+            });
+
             var domain=$(this).attr('href');
 
             var i = domain.lastIndexOf('/');
@@ -265,8 +264,6 @@
             if(href.indexOf('?')!=-1){
                 var href=href.substring(0,href.indexOf('?'))
             }
-
-
             if(href == 'setting.html' || href=='wemen.html'){
                 $('#1').show();
             }else {
