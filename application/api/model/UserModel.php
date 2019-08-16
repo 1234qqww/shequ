@@ -11,5 +11,17 @@ class UserModel extends Model {
     public function oneData($id){
         return $this->where('id',$id)->find();
     }
+    /**
+     * 通过openid 来查询用户
+     */
+    public function open($openid){
+        return $this->where('openid',$openid)->find();
+    }
+    /**
+     * 修改用户余额
+     */
+    public function edit($param){
+        return $this->where('id',$param['user_id'])->update(['user_money'=>$param['user_money']]);
+    }
 }
 ?>

@@ -47,7 +47,11 @@ class Selfshop extends Controller
     public function subjectshop(Request $request){
         $param=$request->param();
         $shelfshop=$this->selfshop->ifs($param);
-        $ids=json_decode($shelfshop->ids);
+        if($shelfshop){
+            $ids=json_decode($shelfshop->ids);
+        }else{
+            $ids=[];
+        }
         $good=[];
         if($ids){
             foreach($ids as $k=>$val){

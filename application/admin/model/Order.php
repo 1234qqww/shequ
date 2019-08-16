@@ -85,7 +85,7 @@ class Order extends Model
         return ['data'=>$data,'count'=>count($data)];
     }
     /**
-     * 分销商转账订单
+     * 门店转账订单
      */
     public function retaillist($param){
         $page = empty($param['page'])?0:$param['page'];
@@ -129,5 +129,11 @@ class Order extends Model
         }
         $data=$query->page($page)->with('retail')->where('pay','1')->where('judge','0')->where('good_id','neq','-1')->limit($limit)->where('order_status',2)->order('id','Desc')->select();
         return ['data'=>$data,'count'=>count($data)];
+    }
+    /**
+     * 订单详情
+     */
+    public function oneData($id){
+        return $this->where('id',$id)->find();
     }
 }

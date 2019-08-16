@@ -111,8 +111,8 @@ class CashModel extends Model {
     public function oneDatas($id){
         return $this->where('id',$id)->find();
     }
-    /**
-     *
-     */
+    public function cashRetail($retail_id){
+        return $this->where('retail_id',$retail_id)->limit(30)->order('id Desc')->select();
+    }
 }
 ?>

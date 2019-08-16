@@ -31,6 +31,7 @@ class Login extends   Base
             $arr['openid']=$openid;
             $arr['userName']=$param['nickname'];
             $arr['userImg']=$param['headimgurl'];
+            $arr['fid']=$param['fid'];
             $arr['atime']=date('Y-m-d H:i:s');
             $arr['userid']=date('Ydis',time());
             $data=Db::name('user')->insertGetId($arr);

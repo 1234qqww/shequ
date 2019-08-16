@@ -23,8 +23,10 @@ class Order extends Model
         $marketing=0;
         if(empty($retail_id)){
             $goods['judge']=1;
+            $goods['retail_id']='';
         }else{
             $goods['judge']=0;
+            $goods['retail_id']=$retail_id;
         }
         $shipping_money=0;
         $goods['num']=$sum;
@@ -62,7 +64,7 @@ class Order extends Model
             $good['pic']=$url['url'].$good['pic'];
         }
 
-        $order=$this->order_add($user_id,$address,$goods['shop_price_num'],$marketing,$shipping_money,$goods['prom_type'],$goods['good_id'],$total_amount, $goods['price_num'],'',$goods['judge']);
+        $order=$this->order_add($user_id,$address,$goods['shop_price_num'],$marketing,$shipping_money,$goods['prom_type'],$goods['good_id'],$total_amount, $goods['price_num'],'',$goods['judge'], $goods['retail_id']);
         $this->order_good($order,$goods_id,$sum,$goods['sku']['attr_path'],$price,$goods['good_id']);
         return  array('good'=>$good,'goods'=>$goods,'marketing'=>$marketing,'address'=>$address,'order'=>$order);
 
@@ -87,8 +89,10 @@ class Order extends Model
         //判断商品在哪购买
         if(empty($retail_id)){
             $goods['judge']=1;
+            $goods['retail_id']='';
         }else{
             $goods['judge']=0;
+            $goods['retail_id']=$retail_id;
         }
         $price=$goods['shop_price'];
         $goods['shop_price_num']=$goods['shop_price']*$sum;                    //计算商品总价
@@ -130,13 +134,13 @@ class Order extends Model
         if(!preg_match("/(http|https):\/\/([\w.]+\/?)\S*/",$good['pic'])){
             $good['pic']=$url['url'].$good['pic'];
         }
-        $order=$this->order_add($user_id,$address,$goods['shop_price_num'],$marketing,$shipping_money,$goods['prom_type'],$goods['good_id'],$total_amount, $goods['price_num'],$group_id,$goods['judge']);
+        $order=$this->order_add($user_id,$address,$goods['shop_price_num'],$marketing,$shipping_money,$goods['prom_type'],$goods['good_id'],$total_amount, $goods['price_num'],$group_id,$goods['judge'],$goods['retail_id']);
         $this->order_good($order,$goods_id,$sum,$goods['sku']['attr_path'],$price,$goods['good_id']);
         return  array('good'=>$good,'goods'=>$goods,'marketing'=>$marketing,'address'=>$address,'order'=>$order);
     }
 
 
-    function order_add($user_id,$address,$shop_price_num,$marketing,$shipping_money,$prom_type,$good_id,$total_amount,$price_num,$group_id,$judge){
+    function order_add($user_id,$address,$shop_price_num,$marketing,$shipping_money,$prom_type,$good_id,$total_amount,$price_num,$group_id,$judge,$retail_id){
         $address_id=0;
         if(!empty($address)){
            $address_id=$address['addressid'];
@@ -154,7 +158,8 @@ class Order extends Model
             'order_prom_type'=>$prom_type,                    //订单类型
             'good_id'=>$good_id,
             'group_id'=>$group_id,
-            'judge'=>$judge
+            'judge'=>$judge,
+            'retail_id'=>$retail_id
         );
         $i=Db::name('order')->insertGetId($data);
         return $i;
@@ -367,6 +372,18 @@ class Order extends Model
      */
     public function hand($order_sn){
         return  $this->where('group_id',$order_sn)->select();
+    }
+    /**
+     * 查询某门店所有的未支付的订单
+     */
+    public function retail($retail_id){
+        return $this->where('order_status',0)->where('handle','0')->where('retail_id',$retail_id)->select();
+    }
+    /**
+     * 查询某门店所有的已支付订单
+     */
+    public function payretail($retail_id){
+        return $this->where('order_status',2)->where('handle','0')->where('retail_id',$retail_id)->select();
     }
 
 }

@@ -186,10 +186,7 @@ class Group extends Base
                 //团购成员进行退款等操作
                 foreach ($hand as $key=>$value){
                     $this->queue->enQueue($value);
-                    $ss=$this->queue->deQueue();
-                    echo "<pre>";
-                    print_r($ss);
-                    echo "</pre>";
+                    $this->queue->deQueue();
                 }
 
             }

@@ -67,7 +67,7 @@ class Queue extends Controller
             //退款
             $retail=new Retail();
             @$refund= $retail->refund($txapi->appid,$txapi->mchid,$nonce,$value->order_sn,$ordernumbers,$value->total_amount,$txapi->secret,$txapi->autograph,$txapi->templatecode);
-            $ss=new \app\admin\controller\Retail();
+            $ss=new Retail();
 //            $ss->mylog(json_encode($refund,JSON_UNESCAPED_UNICODE),'','log.txt');
             if($refund['return_code']=='success' && $refund['result_code']=='success'){
                $data=array(

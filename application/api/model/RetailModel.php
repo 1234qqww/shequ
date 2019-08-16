@@ -22,7 +22,7 @@ class RetailModel extends Model {
             }
             );
         }
-        $data=$query->with('user')->with('fuser')->where('apply',0)->page($page)->limit($limit)->order('id','Desc')->group('user_id')->select();
+        $data=$query->with('user')->where('apply',0)->page($page)->limit($limit)->order('id','Desc')->group('user_id')->select();
         return ['data'=>$data,'count'=>count($data)];
     }
     /**
@@ -40,7 +40,7 @@ class RetailModel extends Model {
             }
             );
         }
-        $data=$query->with('user')->with('fuser')->where('apply',1)->page($page)->limit($limit)->order('id','Desc')->group('user_id')->select();
+        $data=$query->with('user')->where('apply',1)->page($page)->limit($limit)->order('id','Desc')->group('user_id')->select();
         return ['data'=>$data,'count'=>count($data)];
     }
     /**
@@ -61,18 +61,12 @@ class RetailModel extends Model {
     public function user(){
         return $this->hasOne('app\admin\model\UserModel','id','user_id');
     }
-    /**
-     * 推荐人
-     */
-    public function fuser(){
-        return $this->hasOne('UserModel','id','fid');
-    }
 
     /**
      * 查看是否是分销商
      */
     public function sel($param){
-        return $this->with('user')->with('fuser')->where('user_id',$param['user_id'])->find();
+        return $this->with('user')->where('user_id',$param['user_id'])->find();
     }
     /**
      * 申请成为分销商

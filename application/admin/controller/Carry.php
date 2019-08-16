@@ -15,8 +15,7 @@ class Carry extends Base
     private $order;
     private $broker;
     private $retailrecord;
-    public function _initialize()
-    {
+    public function _initialize(){
         parent::_initialize();
         $this->order=new Order();
         $this->broker=new BrokerModel();
@@ -30,13 +29,22 @@ class Carry extends Base
         $data=$this->order->lists($param);
         $broker=$this->broker->onedata();
         foreach ($data['data'] as $k=>$val){
-            $data['data'][$k]->moneys= floor(($val->order_amount*$broker->broker)*100)/100;
+            $data['data'][$k]->moneys= $val->order_amount-floor(($val->order_amount*$broker->broker+$val->order_amount*$broker->percent)*100)/100;
+            $data['data'][$k]->retail= floor(($val->order_amount*$broker->percent)*100)/100;
         }
         return $data['data']?['code'=>0,'msg'=>'完成订单','data'=>$data['data'],'count'=>$data['count']]:['code'=>1,'msg'=>'无数据','data'=>'','count'=>''];
     }
     public function edit(Request $request,$id){
         $param=$request->param();
         $data=$this->order->carry($param,$id);
+        $order= $this->order->oneData($id);
+        $broker=$this->broker->onedata();
+        $moenys=floor(($order->order_amount*$broker->percent)*100)/100;
+        $dat=array(
+            'order_id'=>$id,
+            'moneys'=>$moenys,
+        );
+        @$this->retailrecord->add($dat);
         return $data?['code'=>0,'msg'=>'完成','data'=>'']:['code'=>1,'msg'=>'失败','data'=>''];
     }
     /**
@@ -54,8 +62,8 @@ class Carry extends Base
         return $data['data']?['code'=>0,'msg'=>'完成订单','data'=>$data['data'],'count'=>$data['count']]:['code'=>1,'msg'=>'无数据','data'=>'','count'=>''];
     }
     /**
- * 给分销商转账
- */
+     * 给分销商转账
+     */
     public function retailcord(){
         return $this->fetch('retailcord');
     }

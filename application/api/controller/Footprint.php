@@ -22,7 +22,7 @@ class Footprint extends Base
      */
     public function addfootprint(Request $request){
         $param=$request->param();
-        $dat=$this->footprint->goods($param['goods_id']);
+        $dat=$this->footprint->goods($param['goods_id'],$param['user_id']);
         if($dat){
             return $dat?json(['code'=>0,'msg'=>'已浏览','data'=>$dat]):json(['code'=>1,'msg'=>'未浏览','data'=>'']);
         }else{

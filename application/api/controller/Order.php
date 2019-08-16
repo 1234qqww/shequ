@@ -103,6 +103,9 @@ class Order extends Base
         if (!$param['userid']) {
             return json(array('code' => 0, 'msg' => '非法操作'));
         }
+        if(isset($param['retail_id'])){
+            $where['retail_id']=$param['retail_id'];
+        }
         $where['user_id']=$param['userid'];
         $where['order_prom_type']=$param['prom_type'];
         if($param['status']==1){
@@ -123,24 +126,22 @@ class Order extends Base
             $where['order_status']=array('in','3,4');;            //退款/售后   订单状态售后
         }
         $order=model('order')->order_status($where);
-//        foreach($order as $ks=>$val){
-//            if($val['order_status']==0 && $val['order_prom_type']==2){
-//                    $orders=$this->order->hand($val['order_sn']);
-//                    $ordergood= $this->ordergood->regiment($val['id']);
-//                    $group=$this->group->groupshop($ordergood->goods_id);
-//                    if($group){
-//                        $ds=$group->num-count($orders)-1;
-//                        $order[$ks]['times']=round((time()+$group->times*3600*24-strtotime($val['add_time']))/3600);
-//                        if( $order[$ks]['times']<0){
-//                            $order[$ks]['times']=0;
-//                        }else{
-//                            $order[$ks]['num']=$ds;
-//                        }
-//
-//                    }
-//
-//            }
-//        }
+        foreach($order as $ks=>$val){
+            if($val['order_status']==0 && $val['order_prom_type']==2){
+                    $orders=$this->order->hand($val['order_sn']);
+                    $ordergood= $this->ordergood->regiment($val['id']);
+                    $group=$this->group->groupshop($ordergood->goods_id);
+                    if($group){
+                        $ds=$group->num-count($orders)-1;
+                        $order[$ks]['times']=round((time()+$group->times*3600*24-strtotime($val['add_time']))/3600);
+                        if( $order[$ks]['times']<0){
+                            $order[$ks]['times']=0;
+                        }else{
+                            $order[$ks]['num']=$ds;
+                        }
+                    }
+            }
+        }
         return json(array('code'=>1,'msg'=>'成功','data'=>$order));
     }
 
@@ -238,7 +239,22 @@ class Order extends Base
            return json(array('code' => 1, 'msg' => '申请退款成功'));
 
     }
+    /**
+     * 拼团订单
+     */
+    public function order_group(){
+        $param = $this->request->param();
+        unset($param['token']);
+        if (!$param['userid']) {
+            return json(array('code' => 0, 'msg' => '非法操作'));
+        }
+        $order=model('order')->order_details($param['order_id']);
+        $new=new \app\api\model\Order();
+        $groupuser=$this->order->groupuser($order['group_id']);
+//        $this->order->
+        return json(array('code' => 1, 'msg' => '查询成功','data'=>$order));
 
+    }
 
 
 

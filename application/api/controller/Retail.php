@@ -1,6 +1,7 @@
 <?php
 namespace app\api\controller;
 
+use app\api\model\EtcModel;
 use app\common\model\Txapi;
 use think\Controller;
 use think\Request;
@@ -8,8 +9,9 @@ use app\api\model\RetailModel;
 use app\api\model\BrokerModel;
 use app\api\model\UserModel;
 use app\api\model\CashModel;
+use app\api\model\Order;
 
-class Retail extends Controller
+class  Retail extends Controller
 {
     public function __construct(Request $request = null)
     {
@@ -18,6 +20,9 @@ class Retail extends Controller
         $this->broker=new BrokerModel();
         $this->user=new UserModel();
         $this->cash=new CashModel();
+        $this->etc=new EtcModel();
+        $this->order= new Order();
+        $this->subject= new Subject();
     }
     /**
      * 申请成为分销商
@@ -40,7 +45,7 @@ class Retail extends Controller
         }
         $subject=new Subject();
         $subject->nowUrl();
-        $param['code']= $subject->nowUrl().'/static/code/'.$this->QRcode($appid,$secret,$filePath,'pages/store/index?fid='.$param['user_id']);
+        $param['code']= $subject->nowUrl().'/static/code/'.$this->QRcode($appid,$secret,$filePath,'pages/login/login?fid='.$param['user_id']);
         $retail=$this->retail->add($param);
         return $retail?json_encode(['code'=>'0','msg'=>'正在审核中','data'=>$data]):json_encode(['code'=>'1','msg'=>'已申请','']);
     }
@@ -50,6 +55,10 @@ class Retail extends Controller
     public function ifapply(Request $request){
         $param=$request->param();
         $data=$this->retail->sel($param);
+        if($data){
+            $user=$this->user->oneData($data->user_id);
+            $data->fuser=$this->user->oneData($user->fid);
+        }
         return $data?json_encode(['code'=>'0','msg'=>'已申请','data'=>$data]):json_encode(['code'=>'1','msg'=>'未申请','']);
     }
 
@@ -379,8 +388,131 @@ class Retail extends Controller
         //$val = $this->doPageXmlToArray($result);
         return $result;
     }
+    /**
+     * 用户充值
+     */
+    public function useretc(Request $request){
+        $param=$request->param();
+        $user=$this->user->oneData($param['user_id']);
+        $desc='用户充值';
+        $partner_trade_no = 'Z'.date('YmdHis').rand();   //订单号
+        $txapi=new Txapi();
+        $notify_url= $this->subject->nowUrl().'/api/retail/notify';
+//        $notify_url='https://sq.zxrhyc.cn/api/retail/notify';
+        //$param['money'] 支付金额
+        $dat=$this->initiatingPayment(0.01,$partner_trade_no,$user->openid,$txapi->appid,$txapi->mchid,$txapi->secret,$notify_url,$desc,'');
+        return json($dat);
+    }
+    public function notify(){
+        $value = file_get_contents("php://input"); //接收微信参数
+        if (!empty($value)) {
+            $arr = $this->xmlToArray($value);
+            if($arr['result_code'] == 'SUCCESS' && $arr['return_code'] == 'SUCCESS'){
+                $open=$this->user->open($arr['openid']);
+                $data=array(
+                    'etc'=>0,
+                    'user_id'=>$open->id,
+                    'money'=>$arr['total_fee']/100,
+                    'amount'=>$arr['total_fee']/100+$open->user_money
+                );
+                @$ss=$this->etc->add($data);
+                $att=array(
+                    'user_id'=>$open->id,
+                    'user_money'=>$arr['total_fee']/100+$open->user_money
+                );
+                @$this->user->edit($att);
+                return 'SUCCESS';
+            }
+        }
+    }
 
+    /**
+     * @param $msg
+     * @param string $file_dir
+     * @param bool $is_default_dir
+     * 写日志
+     */
+    public function mylog($msg,$file_dir='',$is_default_dir = true) {
+        if($is_default_dir){
+            $common_dir_path = '..'.DS.'runtime/log'.DS.'log';
+            if(empty($file_dir)){
+                $file_dir = $common_dir_path.DS.date('Ym').DS.date('Y-m-d').'.log';
+            }else{
+                $file_dir = $common_dir_path.$file_dir;
+            }
+        }
+        $dir = dirname($file_dir);
+        if(!is_dir($dir)){
+            mkdir($dir,0777,true);
+        }
+        $now_time = date('Y-m-d H:i:s',time());
+        file_put_contents($file_dir,'['.$now_time.']'."\n".'log_msg:'.$msg."\n",FILE_APPEND);
+    }
+    /**
+     * 查询用户余额
+     */
+    public function user(Request $request){
+        $param=$request->param();
+        $data=$this->user->oneData($param['use_id']);
+        return $data?json(['code'=>'0','msg'=>'用户详情','data'=>$data]):json(['code'=>'1','msg'=>'无数据','data'=>'']);
+    }
+    /**
+     * 查询门店的提现记录
+     */
+    public function cashRetail(Request $request){
+        $param=$request->param();
+        $data=$this->cash->cashRetail($param['retail_id']);
+        return $data?json(['code'=>'0','msg'=>'提现记录','data'=>$data]):json(['code'=>'1','msg'=>'无数据','data'=>'']);
 
+    }
+    /**
+     * 门店佣金统计
+     */
+    public function settle(Request $request){
+        $param=$request->param();
+        $retail=$this->order->retail($param['retail_id']);
+        $amount=0;
+        if($retail){
+            foreach($retail as $k=>$val){
+                $amount= $amount+$val->total_amount;
+            }
+        }else{
+            $amount='';
+        }
+
+        $payretail=$this->order->payretail($param['retail_id']);
+        $payretails=0;
+        if($payretail){
+            foreach($payretail as $k=>$val){
+                $payretails+=$val->total_amount;
+            }
+        }else{
+            $payretails='';
+        }
+
+        $data=array(
+            'amount'=>(string)$amount,
+            'payretail'=>(string)$payretails
+        );
+        return json_encode(['code'=>0,'msg'=>'门店佣金','data'=>$data]);
+
+    }
+    /**
+     * 通过用户id获取店铺信息
+     */
+    public function userRetail(Request $request){
+        $param=$request->param();
+        $data= $this->retail->selshop($param['user_id']);
+        return json_encode(['code'=>0,'msg'=>'门店佣金','data'=>$data]);
+    }
+    /**
+     * 查询余额记录
+     */
+    public function etcbalance(Request $request){
+        $param=$request->param();
+        $data=$this->etc->useetc($param['user_id']);
+        return $data?json(['code'=>0,'msg'=>'余额记录','data'=>$data]):json(['code'=>1,'msg'=>'无数据','data'=>$data]);
+    }
 
 
 }

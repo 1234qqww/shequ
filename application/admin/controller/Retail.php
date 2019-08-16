@@ -170,17 +170,20 @@ class Retail extends Base
     public function cashadopt(Request $request){
         $param=$request->param();
         $cash=$this->cash->onedata($param['id']);
-
         $retail=$this->retail->onedata($cash->retail_id);
-        $user=$this->user->oneData($retail->user_id);
-        $nonce_str=$this->createNonceStr();
-        $desc='分销商提现';
-        $partner_trade_no = 'Z'.date('YmdHis').rand();   //订单号
-        $spbill_create_ip='127.0.0.1';
-        $txapi=new Txapi();
-
-        $dat=$this->transferAccounts($txapi->appid,$txapi->mchid,$user->openid,$nonce_str,$desc,$partner_trade_no,0.01,$spbill_create_ip,$txapi->secret,$txapi->autograph,$txapi->templatecode);
+        $proposed=$retail->proposed+$cash->money;
+        $money=$retail->money-$cash->money;
+        $this->retail->cashadopt($money,$proposed,$cash->retail_id);
+//        $user=$this->user->oneData($retail->user_id);
+//        $nonce_str=$this->createNonceStr();
+//        $desc='分销商提现';
+//        $partner_trade_no = 'Z'.date('YmdHis').rand();   //订单号
+//        $spbill_create_ip='127.0.0.1';
+//        $txapi=new Txapi();
+//
+//        $dat=$this->transferAccounts($txapi->appid,$txapi->mchid,$user->openid,$nonce_str,$desc,$partner_trade_no,0.01,$spbill_create_ip,$txapi->secret,$txapi->autograph,$txapi->templatecode);
 //         $dat=$this->initiatingPayment(0.01,12346,$user->openid,$txapi->appid,$txapi->mchid,$txapi->secret,url('admin/retail/cashreject'),0.01,'支付','');
+
         $param['type']=1;
         $data=$this->cash->adopt($param);
         return $data?['code'=>0,'msg'=>'申请通过','data'=>$data]:['code'=>1,'msg'=>'失败','data'=>$data];

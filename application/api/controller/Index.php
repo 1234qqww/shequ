@@ -155,6 +155,25 @@ class Index extends Base
 
 
     }
+    /**
+     * 话题轮播图
+     */
+    public function  slide(){
+        $param=$this->request->param();
+        unset($param['token']);
+        $subject=new Subject();
+        if(isset($param['position'])){
+            $slide=model('slide')->selectPosition($param['position']);
+            foreach($slide as $k=>$val){
+                if(!preg_match("/(http|https):\/\/([\w.]+\/?)\S*/",$val['imgs'])){
+                    $slide[$k]['imgs']=$subject->nowUrl().$val['imgs'];
+                }
+            }
+            return json(['code'=>0,'msg'=>'话题轮播图','data'=>$slide]);
+        }
+        return json(['code'=>1,'msg'=>'无数据','data'=>'']);
+
+    }
 
 
 }

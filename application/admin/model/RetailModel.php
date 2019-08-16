@@ -136,7 +136,13 @@ class RetailModel extends Model {
     public function moneys($money,$id){
         return $this->where('id',$id)->update(['money'=>$money]);
     }
+    /**
+     * 提现申请成功后增加
+     */
+    public function cashadopt($money,$proposed,$id){
+        return $this->where('id',$id)->update(['money'=>$money,'proposed'=>$proposed]);
 
+    }
 
 }
 ?>

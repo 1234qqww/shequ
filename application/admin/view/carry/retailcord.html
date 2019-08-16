@@ -74,7 +74,7 @@
       cellMinWidth: 100,
       cols: [[
         {field: 'id',align:"center",title:"id"},
-        {field: 'title', title: '分销商',align:"center",templet:function(e){
+        {field: 'title', title: '门店',align:"center",templet:function(e){
           if(e.retail!=null){
             return e.retail.name
           }else{
@@ -84,20 +84,6 @@
         {field: 'order_sn', title: '订单号',align:"center"},
         {field: 'order_amount', title: '支付金额',align:"center"},
         {field: 'moneys', title: '应付金额',align:"center"},
-        { title: '支付宝昵称',align:"center",templet:function(e){
-            if(e.retail!=null){
-              return e.retail.names
-            }else{
-              return '无'
-            }
-          }},
-        { title: '支付宝账号',align:"center",templet:function(e){
-            if(e.retail!=null){
-              return e.retail.alipay
-            }else{
-              return '无'
-            }
-          }},
         {field: 'add_time', title: '下单时间',align:"center"},
         {align: 'center', toolbar: '#tableBar', title: '操作', minWidth: 200}
       ]]
